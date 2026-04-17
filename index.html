@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palma Codes | Sistema de Reservas para Barberías</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #e4a64f;
+            --gold-dark: #c4842f;
+            --gold-glow: rgba(228,166,79,0.35);
+            --dark: #0d0d0d;
+            --dark2: #161616;
+            --dark3: #1e1e1e;
+            --dark4: #252525;
+            --text: #f0ece4;
+            --text-muted: rgba(240,236,228,0.5);
+            --danger: #ff5252;
+            --success: #33d17a;
+            --sombra: 0 10px 40px rgba(0,0,0,0.25);
+            --radio: 18px;
+            --t: all 0.3s cubic-bezier(0.4,0,0.2,1);
+
+            /* Palma brand */
+            --palma-blue: #0066CC;
+            --palma-blue-dark: #004499;
+            --palma-orange: #FF6B35;
+            --palma-orange-light: #FF8C5A;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', system-ui, 'Poppins';
+            background: var(--dark);
+            color: var(--text);
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ========== NAVBAR ========== */
+        .palma-navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(228,166,79,0.12);
+            z-index: 9999;
+            padding: 0.7rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--t);
+        }
+        .palma-navbar.scrolled {
+            box-shadow: 0 4px 40px rgba(0,0,0,0.6);
+            border-bottom-color: rgba(228,166,79,0.22);
+        }
+
+        /* LOGO — mismo que catálogo inteligente con animaciones */
+        .palma-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .palma-logo:hover { transform: scale(1.02); }
+
+        .palma-logo-icon {
+            width: 42px; height: 42px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .palma-shield {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--palma-blue) 0%, var(--palma-blue-dark) 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(0,102,204,0.4);
+            animation: shieldPulse 3s ease-in-out infinite;
+        }
+        @keyframes shieldPulse {
+            0%,100% { box-shadow: 0 0 20px rgba(0,102,204,0.4); }
+            50% { box-shadow: 0 0 32px rgba(0,102,204,0.7); }
+        }
+        .palma-code-brackets {
+            color: white;
+            font-family: 'Poppins', 'Consolas', monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+        }
+        .palma-code-brackets::before {
+            content: '<';
+            color: var(--palma-orange);
+            margin-right: 2px;
+            animation: bracketBlink 2s ease-in-out infinite;
+        }
+        .palma-code-brackets::after {
+            content: '/';
+            color: var(--palma-orange);
+            margin-right: 1px;
+        }
+        .palma-code-brackets span::after {
+            content: '>';
+            color: var(--palma-orange);
+            margin-left: 1px;
+            animation: bracketBlink 2s ease-in-out infinite 0.5s;
+        }
+        @keyframes bracketBlink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .palma-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+        .palma-logo-palma { font-size: 1.3rem; font-weight: 800; color: var(--palma-blue); letter-spacing: 1px; text-transform: uppercase; font-family: 'Poppins', 'Poppins'; }
+        .palma-logo-codes { font-size: 0.88rem; font-weight: 700; color: var(--palma-orange); letter-spacing: 3px; text-transform: uppercase; }
+
+        .palma-nav-links { display: flex; align-items: center; gap: 1.5rem; }
+        .palma-nav-link {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-size: 0.9rem; font-weight: 500;
+            transition: var(--t);
+            position: relative;
+            white-space: nowrap;
+        }
+        .palma-nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        .palma-nav-link:hover { color: white; }
+        .palma-nav-link:hover::after { width: 100%; }
+        .palma-nav-cta {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #111; padding: 0.55rem 1.1rem;
+            border-radius: 8px; font-weight: 700; font-size: 0.88rem;
+            text-decoration: none; transition: var(--t);
+            box-shadow: 0 4px 16px var(--gold-glow);
+            border: none; cursor: pointer;
+            white-space: nowrap;
+        }
+        .palma-nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-glow); }
+
+        /* HAMBURGER (mobile) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px; height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+            transition: var(--t);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 60px; left: 0; right: 0;
+            background: rgba(10,10,10,0.98);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(228,166,79,0.15);
+            padding: 1.5rem 2rem 2rem;
+            z-index: 9998;
+            flex-direction: column;
+            gap: 1.25rem;
+            animation: slideDown 0.25s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 1rem; font-weight: 600;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            transition: color 0.2s;
+        }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-menu .mobile-cta {
+            margin-top: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #111; padding: 0.9rem 1.5rem;
+            border-radius: 10px; font-weight: 700; font-size: 1rem;
+            text-decoration: none;
+            box-shadow: 0 4px 16px var(--gold-glow);
+        }
+
+        /* CODE BAR */
+        .palma-code-bar {
+            background: #080808;
+            border-bottom: 1px solid rgba(228,166,79,0.08);
+            padding: 0.4rem 2rem;
+            font-family: 'Poppins', 'Consolas', monospace;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.3);
+            display: flex; align-items: center; gap: 1.5rem;
+            margin-top: 59px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+        .code-comment { color: #6a9955; }
+        .code-keyword { color: #569cd6; }
+        .code-string { color: #ce9178; }
+        .code-function { color: #dcdcaa; }
+        .palma-cursor {
+            display: inline-block; width: 7px; height: 13px;
+            background: var(--gold);
+            animation: cursorBlink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            background: radial-gradient(ellipse at 20% 50%, rgba(228,166,79,0.06) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 20%, rgba(0,102,204,0.05) 0%, transparent 60%),
+                        linear-gradient(160deg, #0d0d0d 0%, #141010 100%);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 2rem;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(228,166,79,0.025) 1px, transparent 1px);
+            background-size: 52px 52px;
+            animation: moveGrid 25s linear infinite;
+        }
+        @keyframes moveGrid { 0%{transform:translate(0,0)} 100%{transform:translate(52px,52px)} }
+
+        .hero-content { position: relative; z-index: 2; max-width: 820px; }
+
+        .badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(228,166,79,0.1); color: var(--gold);
+            padding: 0.5rem 1.1rem; border-radius: 50px;
+            font-size: 0.82rem; font-weight: 700; margin-bottom: 1.5rem;
+            border: 1px solid rgba(228,166,79,0.25);
+            letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-family: 'Poppins', 'Poppins';
+            font-size: clamp(2.8rem, 6.5vw, 5rem);
+            font-weight: 800; color: white;
+            line-height: 1.05; margin-bottom: 1.4rem;
+            letter-spacing: -1px;
+        }
+        .hero h1 span { color: var(--gold); }
+        .hero-subtitle { font-size: 1.15rem; color: rgba(255,255,255,0.65); max-width: 580px; margin: 0 auto 2.5rem; }
+
+        .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn {
+            padding: 0.95rem 1.9rem; border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: var(--t); border: none;
+            display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+            font-family: 'DM Sans', 'Poppins';
+        }
+        .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #111; box-shadow: 0 4px 18px var(--gold-glow); }
+        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 10px 30px var(--gold-glow); }
+        .btn-outline { background: rgba(255,255,255,0.06); color: white; border: 1.5px solid rgba(255,255,255,0.18); backdrop-filter: blur(10px); }
+        .btn-outline:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.35); transform: translateY(-2px); }
+
+        /* PHONE MOCKUP */
+        .demo-phone { position: relative; margin-top: 3.5rem; z-index: 2; }
+        .phone-frame {
+            width: 270px; height: 560px;
+            background: #0a0a0a; border-radius: 40px; padding: 11px;
+            box-shadow: 0 30px 90px rgba(0,0,0,0.7), 0 0 0 1px rgba(228,166,79,0.12);
+            border: 3px solid #2a2a2a; position: relative; margin: 0 auto;
+        }
+        .phone-notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 110px; height: 22px;
+            background: #0a0a0a; border-radius: 0 0 18px 18px; z-index: 10;
+        }
+        .phone-screen { width: 100%; height: 100%; background: #111; border-radius: 30px; overflow: hidden; }
+        .app-header { background: linear-gradient(135deg, #0d0d0d, #1a1208); padding: 1rem; color: white; }
+        .app-logo { font-weight: 800; font-size: 1rem; display: flex; align-items: center; gap: 0.4rem; color: var(--gold); font-family: 'Poppins', 'Poppins'; }
+        .app-search { background: rgba(255,255,255,0.07); border-radius: 20px; padding: 0.45rem 0.9rem; margin-top: 0.6rem; font-size: 0.75rem; color: rgba(255,255,255,0.45); }
+        .app-days { display: flex; gap: 0.35rem; padding: 0.65rem; overflow-x: auto; background: #141414; }
+        .day-pill { padding: 0.3rem 0.55rem; border-radius: 16px; font-size: 0.65rem; white-space: nowrap; display: flex; flex-direction: column; align-items: center; }
+        .day-pill.green { background: rgba(51,209,122,0.15); color: #33d17a; border: 1px solid rgba(51,209,122,0.3); }
+        .day-pill.red { background: rgba(255,82,82,0.12); color: #ff5252; border: 1px solid rgba(255,82,82,0.25); }
+        .day-pill strong { font-size: 0.8rem; }
+        .app-services { padding: 0.65rem; }
+        .service-item {
+            background: #1a1a1a; border: 1px solid rgba(228,166,79,0.15);
+            border-radius: 9px; padding: 0.55rem; margin-bottom: 0.45rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .service-name { font-size: 0.72rem; color: #f1f1f1; font-weight: 600; }
+        .service-price { font-size: 0.7rem; color: var(--gold); font-weight: 700; }
+        .service-badge { font-size: 0.55rem; background: rgba(51,209,122,0.15); color: #33d17a; padding: 2px 5px; border-radius: 8px; }
+
+        /* ========== SECTIONS ========== */
+        .section-wrap { padding: 5rem 2rem; max-width: 1160px; margin: 0 auto; }
+        .section-header { text-align: center; max-width: 640px; margin: 0 auto 4rem; }
+        .section-tag { color: var(--gold); font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 0.75rem; }
+        .section-title { font-family: 'Poppins', 'Poppins'; font-size: clamp(2rem,4vw,3rem); font-weight: 800; margin-bottom: 1rem; line-height: 1.15; color: white; }
+        .section-desc { color: var(--text-muted); font-size: 1.05rem; }
+
+        /* ========== PROBLEMAS (muy llamativo) ========== */
+        .problemas-bg {
+            background: linear-gradient(180deg, var(--dark) 0%, #0f0a0a 50%, var(--dark) 100%);
+            padding: 6rem 0;
+        }
+        .problems-header-pill {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            background: rgba(255,82,82,0.12);
+            color: #ff6b6b; padding: 0.5rem 1.2rem;
+            border-radius: 50px; font-size: 0.82rem; font-weight: 700;
+            border: 1px solid rgba(255,82,82,0.25); margin-bottom: 1rem;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .problem-card {
+            background: linear-gradient(135deg, rgba(255,82,82,0.06) 0%, rgba(30,15,15,0.9) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,82,82,0.2);
+            transition: var(--t);
+            position: relative;
+            overflow: hidden;
+        }
+        .problem-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff5252, #ff8a80);
+            border-radius: 20px 20px 0 0;
+        }
+        .problem-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255,82,82,0.4);
+            box-shadow: 0 20px 60px rgba(255,82,82,0.12);
+        }
+        .problem-num {
+            font-family: 'Poppins', 'Poppins';
+            font-size: 3.5rem; font-weight: 800;
+            color: rgba(255,82,82,0.12);
+            line-height: 1;
+            position: absolute; top: 1rem; right: 1.5rem;
+        }
+        .problem-icon {
+            width: 48px; height: 48px;
+            background: rgba(255,82,82,0.15);
+            color: #ff6b6b; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; margin-bottom: 1rem;
+            border: 1px solid rgba(255,82,82,0.25);
+        }
+        .problem-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; color: #ffcdd2; font-family: 'Poppins', 'Poppins'; }
+        .problem-desc { color: rgba(255,205,210,0.6); font-size: 0.92rem; line-height: 1.6; }
+
+        /* ========== SOLUCIÓN ========== */
+        .solution-showcase {
+            background: linear-gradient(135deg, #111 0%, #160d00 100%);
+            border-radius: 28px; padding: 4rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+            border: 1px solid rgba(228,166,79,0.12);
+        }
+        .feature-list { list-style: none; }
+        .feature-item {
+            display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.1rem;
+            padding: 0.9rem 1rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(228,166,79,0.1);
+            border-radius: 12px; transition: var(--t);
+        }
+        .feature-item:hover { transform: translateX(8px); background: rgba(228,166,79,0.07); border-color: rgba(228,166,79,0.25); }
+        .feature-icon { width: 38px; height: 38px; background: var(--gold); color: #111; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.95rem; }
+        .feature-text h4 { font-weight: 700; margin-bottom: 0.15rem; color: white; font-size: 0.95rem; }
+        .feature-text p { color: var(--text-muted); font-size: 0.88rem; }
+
+        .solution-panel {
+            background: #0d0d0d; border-radius: 18px; padding: 1.5rem;
+            border: 1px solid rgba(228,166,79,0.18);
+        }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .panel-title { font-weight: 700; color: var(--gold); font-size: 0.95rem; }
+        .live-dot { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--success); }
+        .stat-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 1rem; }
+        .stat-mini { background: rgba(255,255,255,0.04); padding: 0.75rem; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-mini-num { font-size: 1.6rem; font-weight: 800; color: var(--gold); font-family: 'Poppins', 'Poppins'; }
+        .stat-mini-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+        .reserva-mini { display: flex; align-items: center; justify-content: space-between; padding: 0.55rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .reserva-mini:last-child { border-bottom: none; }
+        .reserva-mini-name { font-size: 0.82rem; color: white; font-weight: 600; }
+        .reserva-mini-service { font-size: 0.7rem; color: var(--text-muted); }
+        .reserva-mini-hora { font-size: 0.88rem; color: var(--gold); font-weight: 700; }
+
+        /* ========== COMPARACIÓN (muy llamativa) ========== */
+        .comparacion-bg {
+            padding: 6rem 0;
+            background: linear-gradient(180deg, var(--dark) 0%, #080c14 50%, var(--dark) 100%);
+        }
+        .vs-badge {
+            display: inline-flex; align-items: center; gap: 0.8rem;
+            background: rgba(0,102,204,0.1);
+            color: #6ba3f0; padding: 0.5rem 1.2rem;
+            border-radius: 50px; font-size: 0.82rem; font-weight: 700;
+            border: 1px solid rgba(0,102,204,0.2); margin-bottom: 1rem;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .comparison-wrapper {
+            display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
+            border-radius: 24px; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+        }
+        .comparison-col-bad {
+            background: linear-gradient(160deg, #1a0a0a, #120808);
+            padding: 2.5rem;
+            border: 1px solid rgba(255,82,82,0.2);
+            border-radius: 24px 0 0 24px;
+        }
+        .comparison-col-good {
+            background: linear-gradient(160deg, #0d1a08, #0a1305);
+            padding: 2.5rem;
+            border: 1px solid rgba(228,166,79,0.25);
+            border-radius: 0 24px 24px 0;
+            position: relative;
+        }
+        .comparison-col-good::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+        }
+        .vs-divider {
+            background: linear-gradient(180deg, rgba(255,82,82,0.15), rgba(228,166,79,0.15));
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 0.5rem;
+            min-width: 60px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .vs-text {
+            font-family: 'Poppins', 'Poppins';
+            font-size: 1.5rem; font-weight: 800;
+            background: linear-gradient(180deg, #ff5252, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            letter-spacing: 4px;
+        }
+        .comp-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-weight: 800; font-size: 1.1rem; font-family: 'Poppins', 'Poppins'; }
+        .comp-header.bad { color: #ff6b6b; }
+        .comp-header.good { color: var(--gold); }
+        .comp-list { list-style: none; }
+        .comp-list li {
+            padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex; align-items: flex-start; gap: 0.65rem; font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        .comp-list li:last-child { border-bottom: none; }
+        .comp-list i { margin-top: 3px; flex-shrink: 0; }
+        .comp-total-bad { margin-top: 1.5rem; padding: 1rem; background: rgba(255,82,82,0.08); border-radius: 12px; text-align: center; border: 1px solid rgba(255,82,82,0.2); }
+        .comp-total-good { margin-top: 1.5rem; padding: 1rem; background: rgba(228,166,79,0.07); border-radius: 12px; text-align: center; border: 1px solid rgba(228,166,79,0.2); }
+        .comp-price-bad { font-size: 2rem; font-weight: 800; color: #ff5252; font-family: 'Poppins', 'Poppins'; }
+        .comp-price-good { font-size: 2rem; font-weight: 800; color: var(--gold); font-family: 'Poppins', 'Poppins'; }
+        .comp-sub { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+
+        /* ========== DEMO (cómo funciona) ========== */
+        .como-bg {
+            background: linear-gradient(135deg, #0d0d0d, #100d00);
+            border-radius: 28px;
+            padding: 4rem;
+            border: 1px solid rgba(228,166,79,0.1);
+        }
+        .demo-screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+        .demo-screen {
+            background: #161616;
+            border-radius: 18px; padding: 1.5rem;
+            border: 1px solid rgba(228,166,79,0.12);
+            transition: var(--t);
+        }
+        .demo-screen:hover { transform: translateY(-5px); border-color: rgba(228,166,79,0.3); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .demo-screen-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.07); }
+        .demo-screen-icon { width: 38px; height: 38px; background: var(--gold); color: #111; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .demo-screen h4 { font-weight: 700; color: white; font-size: 0.95rem; margin-bottom: 0.1rem; }
+        .demo-screen .sub { font-size: 0.78rem; color: var(--text-muted); }
+        .demo-screen p { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+        .demo-highlight { margin-top: 1rem; padding: 0.7rem 0.9rem; background: rgba(228,166,79,0.08); border-radius: 9px; font-size: 0.82rem; border-left: 3px solid var(--gold); color: rgba(255,255,255,0.7); }
+
+        /* ========== PRECIO ========== */
+        .precio-bg {
+            background: radial-gradient(ellipse at 50% 0%, rgba(228,166,79,0.06) 0%, transparent 70%);
+            padding: 6rem 0;
+        }
+        .pricing-card-single {
+            max-width: 480px; margin: 0 auto;
+            background: linear-gradient(160deg, #141414, #0f0c00);
+            border-radius: 28px; padding: 3rem;
+            border: 1.5px solid rgba(228,166,79,0.3);
+            box-shadow: 0 0 60px rgba(228,166,79,0.08), 0 30px 80px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
+            text-align: center;
+        }
+        .pricing-card-single::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+        }
+        .plan-name { font-family: 'Poppins', 'Poppins'; font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 0.4rem; }
+        .plan-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .plan-price { font-family: 'Poppins', 'Poppins'; font-size: 4rem; font-weight: 800; color: var(--gold); line-height: 1; }
+        .plan-once {
+            display: inline-block;
+            background: rgba(228,166,79,0.12);
+            color: var(--gold); padding: 0.35rem 1rem;
+            border-radius: 20px; font-size: 0.82rem; font-weight: 700;
+            border: 1px solid rgba(228,166,79,0.25); margin: 0.75rem 0 1.5rem;
+        }
+        .plan-features { list-style: none; margin: 1.5rem 0 2rem; text-align: left; }
+        .plan-features li {
+            padding: 0.65rem 0; display: flex; align-items: center; gap: 0.75rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.93rem;
+            color: rgba(255,255,255,0.8);
+        }
+        .plan-features li:last-child { border-bottom: none; }
+        .plan-features i { color: var(--gold); font-size: 0.85rem; }
+
+        .promo-banner {
+            margin-top: 2rem; padding: 1.2rem 2rem;
+            background: rgba(228,166,79,0.07); border-radius: 14px;
+            border: 1px dashed rgba(228,166,79,0.3); text-align: center;
+        }
+
+        /* ========== FAQ ========== */
+        .faq-list { max-width: 760px; margin: 0 auto; }
+        .faq-item {
+            background: #111; border-radius: 14px; margin-bottom: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.07);
+            overflow: hidden; transition: var(--t);
+        }
+        .faq-item:hover { border-color: rgba(228,166,79,0.2); }
+        .faq-question {
+            padding: 1.2rem 1.4rem; display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: var(--t);
+        }
+        .faq-question:hover { color: var(--gold); }
+        .faq-answer { padding: 0 1.4rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .faq-item.active .faq-answer { padding: 0 1.4rem 1.4rem; max-height: 300px; }
+        .faq-icon { transition: transform 0.3s ease; color: var(--gold); flex-shrink: 0; }
+        .faq-item.active .faq-icon { transform: rotate(180deg); }
+
+        /* ========== CTA FINAL ========== */
+        .final-cta {
+            background: linear-gradient(135deg, #0d0d0d, #14100a);
+            border-radius: 28px; padding: 4rem;
+            text-align: center; color: white; margin-bottom: 4rem;
+            border: 1px solid rgba(228,166,79,0.2);
+            position: relative; overflow: hidden;
+        }
+        .final-cta::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(228,166,79,0.07) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .final-cta h2 { font-family: 'Poppins', 'Poppins'; font-size: clamp(2rem,4vw,3rem); margin-bottom: 1rem; color: var(--gold); position: relative; z-index: 1; }
+        .final-cta p { font-size: 1.1rem; opacity: 0.75; max-width: 580px; margin: 0 auto 2rem; position: relative; z-index: 1; }
+
+        /* ========== VIDEO MODAL ========== */
+        .video-trigger-btn {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #111; padding: 1.1rem 2.2rem;
+            border-radius: 14px; font-weight: 800; font-size: 1rem;
+            cursor: pointer; border: none;
+            box-shadow: 0 8px 30px var(--gold-glow);
+            transition: var(--t); font-family: 'DM Sans', 'Poppins';
+            position: relative; overflow: hidden;
+        }
+        .video-trigger-btn::before {
+            content: '';
+            position: absolute; top: 50%; left: -60px;
+            width: 40px; height: 100%;
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-50%) skewX(-20deg);
+            transition: left 0.6s ease;
+        }
+        .video-trigger-btn:hover::before { left: 120%; }
+        .video-trigger-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px var(--gold-glow); }
+        .play-icon {
+            width: 32px; height: 32px;
+            background: rgba(0,0,0,0.25); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* MODAL OVERLAY */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center; justify-content: center;
+            padding: 1.5rem;
+        }
+        .modal-overlay.open { display: flex; animation: fadeOverlay 0.3s ease; }
+        @keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-box {
+            background: #111;
+            border-radius: 22px;
+            overflow: hidden;
+            max-width: 820px; width: 100%;
+            border: 1px solid rgba(228,166,79,0.2);
+            box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+            animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .modal-close {
+            position: absolute; top: 14px; right: 16px;
+            background: rgba(255,255,255,0.1); border: none; color: white;
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10; font-size: 0.9rem; transition: var(--t);
+        }
+        .modal-close:hover { background: rgba(255,82,82,0.4); }
+        .modal-video-wrap {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 */
+            background: #000;
+        }
+        .modal-video-wrap video {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: contain;
+        }
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+            background: #0d0d0d;
+            border-top: 1px solid rgba(255,255,255,0.07);
+        }
+        .modal-footer p { color: var(--text-muted); font-size: 0.85rem; text-align: center; }
+        .btn-wa {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            background: linear-gradient(135deg, #25d366, #1ead52);
+            color: white; padding: 0.9rem 2rem;
+            border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            text-decoration: none; transition: var(--t);
+            box-shadow: 0 6px 20px rgba(37,211,102,0.35);
+            border: none; cursor: pointer;
+        }
+        .btn-wa:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(37,211,102,0.5); }
+        .btn-wa i { font-size: 1.1rem; }
+
+        /* ========== FOOTER ========== */
+        footer { background: #080808; color: white; padding: 3rem 2rem; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); }
+        .footer-content { max-width: 1160px; margin: 0 auto; }
+        .footer-logo-wrap { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1.5rem 0; flex-wrap: wrap; }
+        .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.88rem; transition: color 0.3s; }
+        .footer-links a:hover { color: var(--gold); }
+
+        /* ========== FADE IN ========== */
+        .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0d0d0d; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .solution-showcase { grid-template-columns: 1fr; padding: 2.5rem; gap: 2.5rem; }
+            .comparison-wrapper { grid-template-columns: 1fr; }
+            .vs-divider { display: none; }
+            .comparison-col-bad { border-radius: 20px; margin-bottom: 1rem; }
+            .comparison-col-good { border-radius: 20px; }
+            .como-bg { padding: 2.5rem 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            .palma-nav-links { display: none; }
+            .hamburger { display: flex; }
+            .palma-code-bar { display: none; }
+            .section-wrap { padding: 4rem 1.25rem; }
+            .solution-showcase { padding: 2rem; }
+            .final-cta { padding: 2.5rem 1.5rem; }
+            .pricing-card-single { padding: 2rem 1.5rem; }
+            .comparison-col-bad, .comparison-col-good { padding: 1.75rem 1.25rem; }
+            .modal-footer { padding: 1.25rem 1.25rem; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2.4rem; }
+            .demo-screens { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="palma-navbar" id="palmaNavbar">
+    <a href="#" class="palma-logo">
+        <div class="palma-logo-icon">
+            <div class="palma-shield">
+                <div class="palma-code-brackets"><span></span></div>
+            </div>
+        </div>
+        <div class="palma-logo-text">
+            <span class="palma-logo-palma">PALMA</span>
+            <span class="palma-logo-codes">CODES</span>
+        </div>
+    </a>
+
+    <div class="palma-nav-links">
+        <a href="#problemas" class="palma-nav-link">Problemas</a>
+        <a href="#solucion" class="palma-nav-link">Solución</a>
+        <a href="#como-funciona" class="palma-nav-link">Cómo funciona</a>
+        <a href="#precios" class="palma-nav-link">Precio</a>
+        <a href="#faq" class="palma-nav-link">FAQ</a>
+        <button class="palma-nav-cta" onclick="openVideoModal()">
+            <i class="fas fa-play"></i> Ver demo
+        </button>
+    </div>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#problemas" onclick="closeMobileMenu()">Problemas</a>
+    <a href="#solucion" onclick="closeMobileMenu()">Solución</a>
+    <a href="#como-funciona" onclick="closeMobileMenu()">Cómo funciona</a>
+    <a href="#precios" onclick="closeMobileMenu()">Precio</a>
+    <a href="#faq" onclick="closeMobileMenu()">FAQ</a>
+    <button class="mobile-cta btn-wa" onclick="openVideoModal(); closeMobileMenu();">
+        <i class="fas fa-play"></i> Ver demo del sistema
+    </button>
+</div>
+
+<!-- CODE BAR -->
+<div class="palma-code-bar">
+    <span class="code-comment">// Sistema desarrollado por Diego Palma · Palma Codes</span>
+    <span>
+        <span class="code-keyword">const</span>
+        <span style="color:#4ec9b0;"> tuBarbería</span> =
+        <span class="code-keyword"> new</span>
+        <span class="code-function"> SistemaReservas</span>({
+        <span style="color:#9cdcfe;"> reservas</span>: <span class="code-string">'automáticas'</span>,
+        <span style="color:#9cdcfe;"> cobro</span>: <span class="code-string">'únicoPago'</span>
+        })<span class="palma-cursor"></span>
+    </span>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="badge">
+            <i class="fas fa-scissors"></i>
+            Sistema exclusivo para barberías
+        </div>
+        <h1>Tu barbería que <span>reserva sola</span></h1>
+        <p class="hero-subtitle">
+            Deja de gestionar horas por WhatsApp. Tus clientes reservan, el sistema los organiza y tú solo cortas pelo.
+        </p>
+        <div class="hero-cta">
+            <button class="video-trigger-btn" onclick="openVideoModal()">
+                <div class="play-icon"><i class="fas fa-play" style="font-size:0.8rem; margin-left:2px;"></i></div>
+                Ver cómo funciona — demo real
+            </button>
+            <a onclick="openTermsModal()"  class="btn btn-outline">
+                <i class="fab fa-whatsapp"></i> Escribir a Diego
+            </a>
+        </div>
+    </div>
+
+    <div class="demo-phone">
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <div class="app-header">
+                    <div class="app-logo">✂️ Barbershop</div>
+                    <div class="app-search">📅 Elige un día disponible</div>
+                </div>
+                <div class="app-days">
+                    <div class="day-pill red"><strong>17</strong><span style="font-size:0.58rem">LUN</span></div>
+                    <div class="day-pill green"><strong>18</strong><span style="font-size:0.58rem">MAR</span></div>
+                    <div class="day-pill green"><strong>19</strong><span style="font-size:0.58rem">MIÉ</span></div>
+                    <div class="day-pill red"><strong>20</strong><span style="font-size:0.58rem">JUE</span></div>
+                    <div class="day-pill green"><strong>21</strong><span style="font-size:0.58rem">VIE</span></div>
+                </div>
+                <div class="app-services">
+                    <div style="font-size:0.68rem; color:rgba(255,255,255,0.4); margin-bottom:0.45rem; text-transform:uppercase; letter-spacing:1px;">Servicios</div>
+                    <div class="service-item">
+                        <div><div class="service-name">Corte Clásico</div><div class="service-price">$10.000</div></div>
+                        <div class="service-badge">✓</div>
+                    </div>
+                    <div class="service-item">
+                        <div><div class="service-name">Degradado</div><div class="service-price">$12.000</div></div>
+                        <div class="service-badge" style="background:rgba(228,166,79,0.15);color:#e4a64f;">+</div>
+                    </div>
+                    <div class="service-item">
+                        <div><div class="service-name">Barba</div><div class="service-price">$6.000</div></div>
+                        <div class="service-badge" style="background:rgba(228,166,79,0.15);color:#e4a64f;">+</div>
+                    </div>
+                    <div style="margin-top:0.6rem; padding:0.55rem; background:rgba(228,166,79,0.08); border-radius:8px; border:1px solid rgba(228,166,79,0.2); text-align:center;">
+                        <div style="font-size:0.68rem; color:rgba(255,255,255,0.4);">Total</div>
+                        <div style="font-size:1rem; font-weight:800; color:#e4a64f;">$10.000</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROBLEMAS ===== -->
+<div class="problemas-bg" id="problemas">
+    <div class="section-wrap">
+        <div class="section-header fade-in">
+            <div class="problems-header-pill">
+                <i class="fas fa-exclamation-triangle"></i>
+                El problema real
+            </div>
+            <h2 class="section-title" style="color:#ffcdd2;">¿Te suena familiar?</h2>
+            <p class="section-desc" style="color:rgba(255,205,210,0.55);">
+                La mayoría de barberías pierden dinero y tiempo todos los días por cosas que parecen pequeñas, pero que suman muchísimo al mes.
+            </p>
+        </div>
+        <div class="problems-grid">
+            <div class="problem-card fade-in">
+                <div class="problem-num">01</div>
+                <div class="problem-icon"><i class="fab fa-whatsapp"></i></div>
+                <div class="problem-title">El WhatsApp eterno</div>
+                <div class="problem-desc">30 mensajes al día: "¿a qué hora tienes?", "¿cuánto el degradado?". Tiempo que no estás generando ingresos.</div>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-num">02</div>
+                <div class="problem-icon"><i class="fas fa-ghost"></i></div>
+                <div class="problem-title">El cliente fantasma</div>
+                <div class="problem-desc">Reservan y no aparecen. Hora bloqueada, plata perdida y sin posibilidad de dar ese cupo a otro.</div>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-num">03</div>
+                <div class="problem-icon"><i class="fas fa-moon"></i></div>
+                <div class="problem-title">Cerrado = sin reservas</div>
+                <div class="problem-desc">A las 9pm tu disponibilidad desaparece. El cliente que quiere agendar para mañana va con tu competencia que sí tiene sistema.</div>
+            </div>
+            <div class="problem-card fade-in">
+                <div class="problem-num">04</div>
+                <div class="problem-icon"><i class="fas fa-credit-card"></i></div>
+                <div class="problem-title">Mensualidad para siempre</div>
+                <div class="problem-desc">Apps como Agenda Pro cobran todos los meses. Si dejas de pagar, pierdes todo y tus clientes se quedan sin acceso.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SOLUCIÓN ===== -->
+<div id="solucion" style="padding: 2rem 0;">
+    <div class="section-wrap">
+        <div class="solution-showcase fade-in">
+            <div>
+                <div class="section-tag">La solución</div>
+                <h2 class="section-title">Un sistema que trabaja mientras tú cortas</h2>
+                <p style="color:var(--text-muted); margin-bottom:2rem; font-size:0.95rem;">
+                    No es solo una agenda online. Es tu barbería funcionando 24/7, con horarios personalizados, servicios, precios y notificaciones automáticas. Pago único, tuyo para siempre.
+                </p>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="feature-text"><h4>Reservas automáticas</h4><p>El cliente elige día, hora y servicio. Tú recibes notificación al instante y la hora queda bloqueada.</p></div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                        <div class="feature-text"><h4>Control total de horarios</h4><p>Bloquea días, configura horarios distintos por día y activa o desactiva horas desde el celular.</p></div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-scissors"></i></div>
+                        <div class="feature-text"><h4>Servicios con precio y duración</h4><p>El cliente ve exactamente qué incluye cada servicio y cuánto paga antes de confirmar.</p></div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon"><i class="fas fa-bell"></i></div>
+                        <div class="feature-text"><h4>Notificación inmediata</h4><p>Cada vez que alguien reserva o cancela, te llega una alerta al celular en tiempo real.</p></div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <div class="solution-panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Panel Admin — Hoy</div>
+                        <div class="live-dot"><i class="fas fa-circle" style="font-size:0.45rem;"></i> En vivo</div>
+                    </div>
+                    <div class="stat-mini-grid">
+                        <div class="stat-mini"><div class="stat-mini-num">8</div><div class="stat-mini-label">Reservas hoy</div></div>
+                        <div class="stat-mini"><div class="stat-mini-num">$96k</div><div class="stat-mini-label">Ingresos est.</div></div>
+                        <div class="stat-mini"><div class="stat-mini-num">3</div><div class="stat-mini-label">Pendientes</div></div>
+                        <div class="stat-mini"><div class="stat-mini-num">2</div><div class="stat-mini-label">Disponibles</div></div>
+                    </div>
+                    <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px;">Próximas reservas</div>
+                    <div class="reserva-mini">
+                        <div><div class="reserva-mini-name">Carlos M.</div><div class="reserva-mini-service">Corte + Barba</div></div>
+                        <div class="reserva-mini-hora">11:00</div>
+                    </div>
+                    <div class="reserva-mini">
+                        <div><div class="reserva-mini-name">Sebastián T.</div><div class="reserva-mini-service">Degradado</div></div>
+                        <div class="reserva-mini-hora">12:00</div>
+                    </div>
+                    <div class="reserva-mini">
+                        <div><div class="reserva-mini-name">Felipe R.</div><div class="reserva-mini-service">Corte Clásico</div></div>
+                        <div class="reserva-mini-hora">13:00</div>
+                    </div>
+                    <div style="margin-top:1rem; padding:0.7rem; background:rgba(51,209,122,0.06); border-radius:10px; border:1px solid rgba(51,209,122,0.15); font-size:0.8rem; color:var(--text-muted);">
+                        <i class="fas fa-check-circle" style="color:var(--success);"></i> Todo sincronizado en tiempo real
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== COMPARACIÓN ===== -->
+<div class="comparacion-bg" id="comparacion">
+    <div class="section-wrap">
+        <div class="section-header fade-in">
+            <div class="vs-badge">
+                <i class="fas fa-balance-scale"></i>
+                Comparación directa
+            </div>
+            <h2 class="section-title">Agenda <span style="color: purple;"> Pro </span><span style="color:#fff;">vs</span> <span style="color:#ff5252;">Palma</span> <span style="color:rgb(0, 110, 255);"> Codes</span></h2>
+            <p class="section-desc">Por qué pagar de por vida no tiene sentido cuando puedes pagar una sola vez.</p>
+        </div>
+
+        <div class="comparison-wrapper fade-in">
+            <div class="comparison-col-bad">
+                <div class="comp-header bad">
+                    <i class="fas fa-times-circle"></i> Agenda Pro
+                </div>
+                <ul class="comp-list">
+                    <li><i class="fas fa-times" style="color:#ff5252;"></i> Pagas todos los meses, para siempre</li>
+                    <li><i class="fas fa-times" style="color:#ff5252;"></i> Si dejas de pagar, pierdes todo</li>
+                    <li><i class="fas fa-times" style="color:#ff5252;"></i> Diseño genérico, no es tu barbería</li>
+                    <li><i class="fas fa-times" style="color:#ff5252;"></i> Soporte impersonal por tickets</li>
+                    <li><i class="fas fa-times" style="color:#ff5252;"></i> Funciones que no necesitas (y que igual cobran)</li>
+                    <li><i class="fas fa-times" style="color:#ff5252;"></i> El precio puede subir en cualquier momento</li>
+                </ul>
+                <div class="comp-total-bad">
+                    <div style="font-size:0.8rem; color:#ff6b6b; margin-bottom:4px;">Costo estimado (2 años)</div>
+                    <div class="comp-price-bad">+$360.000</div>
+                    <div class="comp-sub">Y sigue acumulando cada mes</div>
+                </div>
+            </div>
+
+            <div class="vs-divider"><div class="vs-text">VS</div></div>
+
+            <div class="comparison-col-good">
+                <div class="comp-header good">
+                    <i class="fas fa-check-circle"></i> Palma Codes
+                </div>
+                <ul class="comp-list">
+                    <li><i class="fas fa-check" style="color:var(--gold);"></i> Pagas una sola vez — es tuyo para siempre</li>
+                    <li><i class="fas fa-check" style="color:var(--gold);"></i> Nunca pierdes tus datos ni tus clientes</li>
+                    <li><i class="fas fa-check" style="color:var(--gold);"></i> 100% personalizado con tu nombre y servicios</li>
+                    <li><i class="fas fa-check" style="color:var(--gold);"></i> Soporte directo con Diego por WhatsApp</li>
+                    <li><i class="fas fa-check" style="color:var(--gold);"></i> Solo las funciones que realmente necesitas</li>
+                    <li><i class="fas fa-check" style="color:var(--gold);"></i> Sin sorpresas, sin letra chica</li>
+                </ul>
+                <div class="comp-total-good">
+                    <div style="font-size:0.8rem; color:var(--gold-dark); margin-bottom:4px;">Costo total — para siempre</div>
+                    <div class="comp-price-good">$30.000</div>
+                    <div class="comp-sub">Una vez. Jamás más.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CÓMO FUNCIONA ===== -->
+<div id="como-funciona" style="padding: 2rem 0;">
+    <div class="section-wrap">
+        <div class="como-bg fade-in">
+            <div class="section-tag" style="color:rgba(228,166,79,0.7);">Cómo funciona</div>
+            <h2 class="section-title" style="color:var(--gold);">Dos páginas, todo resuelto</h2>
+            <p style="color:var(--text-muted); max-width:580px; margin: 0.5rem auto 0; font-size:0.95rem;">
+                Una app para que tus clientes reserven y un panel admin para que tú controles todo — desde el celular, sin complicaciones.
+            </p>
+
+            <div class="demo-screens">
+                <div class="demo-screen">
+                    <div class="demo-screen-header">
+                        <div class="demo-screen-icon"><i class="fas fa-mobile-alt"></i></div>
+                        <div><h4>App del cliente</h4><div class="sub">Lo que ve quien reserva</div></div>
+                    </div>
+                    <p>📅 Ve el calendario con días disponibles<br>
+                    ✂️ Elige sus servicios y ve el total<br>
+                    ⏰ Selecciona la hora libre que quiera<br>
+                    ✅ Confirma con su nombre y listo<br>
+                    🗑️ Puede cancelar cuando quiera</p>
+                    <div class="demo-highlight">
+                        <i class="fas fa-bell" style="color:var(--gold);"></i>
+                        <strong> Automático:</strong> recibes notificación al instante en tu celular.
+                    </div>
+                </div>
+                <div class="demo-screen">
+                    <div class="demo-screen-header">
+                        <div class="demo-screen-icon"><i class="fas fa-lock"></i></div>
+                        <div><h4>Panel de admin</h4><div class="sub">Solo tú tienes acceso</div></div>
+                    </div>
+                    <p>📊 Ves todas las reservas del día<br>
+                    🔒 Bloqueas días de descanso o feriados<br>
+                    ⚙️ Configuras horarios distintos por día<br>
+                    🗑️ Eliminas reservas desde el panel<br>
+                    📸 Subes fotos de promos para tus clientes</p>
+                    <div class="demo-highlight">
+                        <i class="fas fa-shield-alt" style="color:var(--gold);"></i>
+                        <strong> Acceso por clave:</strong> nadie más puede entrar al panel.
+                    </div>
+                </div>
+                <div class="demo-screen">
+                    <div class="demo-screen-header">
+                        <div class="demo-screen-icon"><i class="fas fa-sync-alt"></i></div>
+                        <div><h4>En tiempo real</h4><div class="sub">Todo sincronizado</div></div>
+                    </div>
+                    <p>🟢 Un cliente reserva las 14:00<br>
+                    ⛔ Esa hora desaparece del calendario<br>
+                    📩 Recibes alerta en tu celular<br>
+                    🔄 Cualquier cambio se refleja al instante<br>
+                    📱 Funciona perfecto en celular y PC</p>
+                    <div class="demo-highlight">
+                        <i class="fas fa-database" style="color:var(--gold);"></i>
+                        <strong> Firebase:</strong> base de datos en la nube, cero caídas.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PRECIO ===== -->
+<div class="precio-bg" id="precios">
+    <div class="section-wrap">
+        <div class="section-header fade-in">
+            <div class="section-tag">Inversión</div>
+            <h2 class="section-title">Menos de lo que cobras en un día de trabajo</h2>
+            <p class="section-desc">Y lo que pierdes por no tenerlo es mucho más que eso cada semana.</p>
+        </div>
+
+        <div class="pricing-card-single fade-in">
+            <div class="plan-name">Sistema Completo</div>
+            <div class="plan-desc">Todo lo que necesita tu barbería — sin letra chica</div>
+            <div class="plan-price">$30.000</div>
+            <div class="plan-once">✓ Pago único — para siempre</div>
+            <ul class="plan-features">
+                <li><i class="fas fa-check"></i> App de reservas para clientes</li>
+                <li><i class="fas fa-check"></i> Servicios ilimitados con precios</li>
+                <li><i class="fas fa-check"></i> Panel admin completo</li>
+                <li><i class="fas fa-check"></i> Horarios personalizados por día</li>
+                <li><i class="fas fa-check"></i> Bloqueo de días y feriados</li>
+                <li><i class="fas fa-check"></i> Notificaciones en tiempo real</li>
+                <li><i class="fas fa-check"></i> Galería de promos</li>
+                <li><i class="fas fa-check"></i> Cancelación de reservas por cliente</li>
+                <li><i class="fas fa-check"></i> Personalización completa de marca</li>
+                <li><i class="fas fa-check"></i> Soporte directo con Diego por WhatsApp</li>
+            </ul>
+            <button onclick="openTermsModal()" class="btn-wa" style="width:100%; justify-content:center;" >
+                <i class="fab fa-whatsapp"></i> Quiero este sistema
+            </button>
+
+          
+        </div>
+    </div>
+</div>
+
+<!-- ===== FAQ ===== -->
+<div style="padding: 2rem 0;" id="faq">
+    <div class="section-wrap">
+        <div class="section-header fade-in">
+            <div class="section-tag">Preguntas</div>
+            <h2 class="section-title">Lo que todos preguntan</h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item fade-in">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ¿En qué se diferencia de Agenda Pro?
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Agenda Pro cobra mensualmente, para siempre. Si dejas de pagar, pierdes el acceso y tus clientes quedan sin sistema. Con Palma Codes pagas una sola vez y el sistema es tuyo para siempre. Además está 100% personalizado para tu barbería, no es un sistema genérico.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ¿Cuánto tiempo tarda en estar listo?
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Respuesta Entre 24 y 48 horas desde que me envías la información: nombre, logo, servicios con precios y horarios. Yo configuro todo y te entrego el link listo para compartir con tus clientes.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ¿Mis clientes necesitan descargar alguna app?
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    No. Es una página web que se abre directo desde el celular. Tus clientes solo necesitan el link, que puedes compartir por WhatsApp, en Instagram, en tu bio o donde quieras. Sin descargas, sin registros complicados.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ¿Qué pasa si necesito cambiar servicios o precios?
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Los ajustes básicos como precios, horarios y bloqueo de días los puedes hacer tú mismo desde el panel. Para cambios en la estructura de servicios me encargo yo por WhatsApp, sin costo adicional.
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    ¿Puedo verlo antes de pagar?
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Sí. Te mando el link del sistema funcionando para que lo explores antes de comprometerte. Sin costo, sin presión.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CTA FINAL ===== -->
+<div style="padding: 2rem 2rem 0;" id="contacto">
+    <div class="section-wrap" style="padding-top:0; padding-bottom:0;">
+        <div class="final-cta fade-in">
+            <h2>¿Listo para dejar de perder clientes?</h2>
+            <p>
+                Cada semana gestionando reservas por WhatsApp es tiempo que no estás cortando y plata que se va. El sistema se paga solo en el primer mes.
+            </p>
+            <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; position:relative; z-index:1;">
+                <button class="video-trigger-btn" onclick="openVideoModal()">
+                    <div class="play-icon"><i class="fas fa-play" style="font-size:0.8rem; margin-left:2px;"></i></div>
+                    Ver el sistema en acción
+                </button>
+                <a onclick="openTermsModal()" class="btn btn-outline">
+                    <i class="fab fa-whatsapp"></i> Contactar
+                </a>
+            </div>
+            <p style="margin-top:1.5rem; font-size:0.85rem; opacity:0.5; position:relative; z-index:1;">
+                <i class="fas fa-clock"></i> Respuesta en 24-48 horas &nbsp;·&nbsp; Sin compromiso &nbsp;·&nbsp; Sin mensualidades
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer style="margin-top:4rem;">
+    <div class="footer-content">
+        <div class="footer-logo-wrap">
+            <div class="palma-logo-icon" style="width:38px;height:38px;">
+                <div class="palma-shield">
+                    <div class="palma-code-brackets"><span></span></div>
+                </div>
+            </div>
+            <div class="palma-logo-text">
+                <span class="palma-logo-palma" style="font-size:1.2rem;">PALMA</span>
+                <span class="palma-logo-codes" style="font-size:0.8rem;">CODES</span>
+            </div>
+        </div>
+        <p style="opacity:0.45; margin-bottom:1rem; font-size:0.88rem;">Sistema de reservas para barberías — desarrollado por Diego Palma</p>
+        <div class="footer-links">
+             <div class="footer-content">
+
+        
+        <div class="footer-links">
+            <a href="#problemas">Problemas</a>
+            <a href="#solucion">Solución</a>
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#precios">Precio</a>
+            <a href="#faq">FAQ</a>
+            <!-- AÑADE ESTOS DOS: -->
+            <a href="terminos.html">Términos</a>
+            <a href="privacidad.html">Privacidad</a>
+        </div>
+        </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:1.5rem; margin-top:1.5rem; font-size:0.82rem; opacity:0.35;">
+            © 2026 Palma Codes · Hecho  para barberías
+        </div>
+    </div>
+    
+</footer>
+
+<!-- ===== VIDEO MODAL ===== -->
+<div class="modal-overlay" id="videoModal" onclick="handleOverlayClick(event)">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeVideoModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-video-wrap">
+            <video id="demoVideo" controls playsinline preload="metadata">
+                <source src="demo.mp4" type="video/mp4">
+                <p style="color:white; text-align:center; padding:2rem;">Tu navegador no soporta video HTML5.</p>
+            </video>
+        </div>
+        <div class="modal-footer">
+            <p>¿Te convenció? Escríbele a Diego ahora mismo y ten tu sistema. Respuesta: en 24–48 horas.</p>
+            <a href="https://wa.me/56954998792?text=Hola%20Diego,%20vi%20el%20video%20y%20quiero%20el%20sistema%20para%20mi%20barbería" class="btn-wa" target="_blank">
+                <i class="fab fa-whatsapp"></i> Contactar a Diego por WhatsApp
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── Navbar scroll
+    window.addEventListener('scroll', () => {
+        document.getElementById('palmaNavbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ── Hamburger menu
+    const hamburger = document.getElementById('hamburgerBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+    });
+    function closeMobileMenu() {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    }
+
+    // ── Fade in observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ── FAQ
+    function toggleFaq(el) {
+        const item = el.parentElement;
+        const wasActive = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('active'));
+        if (!wasActive) item.classList.add('active');
+    }
+
+    // ── Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+            closeMobileMenu();
+        });
+    });
+
+    // ── Video modal
+    function openVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('demoVideo');
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        video.play().catch(() => {});
+    }
+    function closeVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('demoVideo');
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        video.pause();
+        video.currentTime = 0;
+    }
+    function handleOverlayClick(e) {
+        if (e.target === document.getElementById('videoModal')) closeVideoModal();
+    }
+    // ESC key closes modal
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeVideoModal();
+    });
+</script>
+<!-- ===== MODAL TÉRMINOS Y CONDICIONES ===== -->
+<div class="modal-overlay" id="termsModal" onclick="handleTermsOverlay(event)">
+    <div class="terms-modal-box">
+        <button class="modal-close" onclick="closeTermsModal()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="terms-modal-header">
+            <div class="terms-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Antes de contactar</h3>
+            <p>Para continuar, debes aceptar nuestros términos</p>
+        </div>
+
+        <div class="terms-content">
+            <label class="checkbox-container">
+                <input type="checkbox" id="termsCheckbox">
+                <span class="checkmark"></span>
+                <div class="checkbox-text">
+                    He leído y acepto los 
+                    <a href="terminos.html" target="_blank">Términos y Condiciones</a> 
+                    y la 
+                    <a href="privacidad.html" target="_blank">Política de Privacidad</a>
+                    de Palma Codes. Entiendo que seré redirigido a WhatsApp para conversar con Diego Palma.
+                </div>
+            </label>
+        </div>
+
+        <div class="terms-actions">
+            <button class="btn-cancel" onclick="closeTermsModal()">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+            <button class="btn-accept" id="acceptBtn" onclick="window.open('https://wa.me/56954998792?text=*Hola%20Diego,%20quiero%20el%20sistema%20para%20barbería*')" disabled>
+                <i class="fab fa-whatsapp"></i> Continuar a WhatsApp
+            </button>
+        </div>
+
+        <div class="terms-footer">
+            <i class="fas fa-lock"></i> Tu información está protegida según nuestra política de privacidad
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Estilos del Modal de Términos */
+    #termsModal.modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 10001;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+    #termsModal.modal-overlay.open { 
+        display: flex; 
+        animation: fadeOverlay 0.3s ease; 
+    }
+
+    .terms-modal-box {
+        background: linear-gradient(160deg, #141414, #0f0c00);
+        border-radius: 24px;
+        max-width: 480px;
+        width: 100%;
+        border: 1px solid rgba(228,166,79,0.25);
+        box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 60px rgba(228,166,79,0.1);
+        animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        position: relative;
+        overflow: hidden;
+    }
+    .terms-modal-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+    }
+
+    .terms-modal-header {
+        text-align: center;
+        padding: 2rem 1.5rem 1.5rem;
+    }
+    .terms-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, rgba(228,166,79,0.2), rgba(228,166,79,0.05));
+        border: 2px solid rgba(228,166,79,0.3);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.5rem;
+        color: var(--gold);
+    }
+    .terms-modal-header h3 {
+        font-family: 'Poppins';
+        font-size: 1.4rem;
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+    .terms-modal-header p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .terms-content {
+        padding: 0 1.5rem 1.5rem;
+    }
+
+    /* Checkbox personalizado */
+    .checkbox-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        cursor: pointer;
+        padding: 1.2rem;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 14px;
+        transition: all 0.3s;
+    }
+    .checkbox-container:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(228,166,79,0.2);
+    }
+    .checkbox-container input {
+        display: none;
+    }
+    .checkmark {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        background: rgba(255,255,255,0.08);
+        border: 2px solid rgba(255,255,255,0.2);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        margin-top: 2px;
+    }
+    .checkmark::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: white;
+        font-size: 0.8rem;
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.2s;
+    }
+    .checkbox-container input:checked ~ .checkmark {
+        background: var(--gold);
+        border-color: var(--gold);
+    }
+    .checkbox-container input:checked ~ .checkmark::after {
+        opacity: 1;
+        transform: scale(1);
+    }
+    .checkbox-text {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.8);
+        line-height: 1.6;
+    }
+    .checkbox-text a {
+        color: var(--gold);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .checkbox-text a:hover {
+        text-decoration: underline;
+    }
+
+    .terms-actions {
+        display: flex;
+        gap: 1rem;
+        padding: 0 1.5rem 1.5rem;
+    }
+    .btn-cancel, .btn-accept {
+        flex: 1;
+        padding: 0.9rem 1rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .btn-cancel {
+        background: rgba(255,255,255,0.06);
+        color: rgba(255,255,255,0.7);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-cancel:hover {
+        background: rgba(255,255,255,0.1);
+        color: white;
+    }
+    .btn-accept {
+        background: linear-gradient(135deg, #25d366, #1ead52);
+        color: white;
+        box-shadow: 0 4px 15px rgba(37,211,102,0.3);
+    }
+    .btn-accept:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(37,211,102,0.4);
+    }
+    .btn-accept:disabled {
+        background: rgba(255,255,255,0.1);
+        color: rgba(255,255,255,0.3);
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .terms-footer {
+        text-align: center;
+        padding: 1rem 1.5rem;
+        background: rgba(0,0,0,0.3);
+        border-top: 1px solid rgba(255,255,255,0.05);
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.4);
+    }
+    .terms-footer i {
+        color: var(--gold);
+        margin-right: 0.3rem;
+    }
+
+    /* Animaciones */
+    @keyframes fadeOverlay { 
+        from { opacity: 0; } 
+        to { opacity: 1; } 
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(40px) scale(0.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+        .terms-actions {
+            flex-direction: column;
+        }
+        .terms-modal-header h3 {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+<script>
+    // Variable para guardar el link de WhatsApp
+    let pendingWhatsAppLink = '';
+
+    // Abrir modal de términos
+    function openTermsModal(whatsappLink) {
+        pendingWhatsAppLink = whatsappLink;
+        const modal = document.getElementById('termsModal');
+        const checkbox = document.getElementById('termsCheckbox');
+        const acceptBtn = document.getElementById('acceptBtn');
+        
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        
+        // Resetear checkbox
+        checkbox.checked = false;
+        acceptBtn.disabled = true;
+    }
+
+    // Cerrar modal
+    function closeTermsModal() {
+        const modal = document.getElementById('termsModal');
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+        pendingWhatsAppLink = '';
+    }
+
+    // Manejar click en overlay
+    function handleTermsOverlay(e) {
+        if (e.target === document.getElementById('termsModal')) {
+            closeTermsModal();
+        }
+    }
+
+    // Habilitar/deshabilitar botón según checkbox
+    document.getElementById('termsCheckbox').addEventListener('change', function() {
+        document.getElementById('acceptBtn').disabled = !this.checked;
+    });
+
+    // Proceder a WhatsApp
+    function proceedToWhatsApp() {
+        if (pendingWhatsAppLink && document.getElementById('termsCheckbox').checked) {
+            closeTermsModal();
+            // Pequeña demora para que cierre el modal antes de redirigir
+            setTimeout(() => {
+                window.open(pendingWhatsAppLink, '_blank');
+            }, 300);
+        }
+    }
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeTermsModal();
+    });
+</script>
+</body>
+</html>
