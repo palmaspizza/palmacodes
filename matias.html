@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudio Redes — Módulo 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --bg2: #0f1320;
+    --bg3: #151b2e;
+    --card: #111827;
+    --border: #1e2d4a;
+    --cyan: #00e5ff;
+    --green: #39ff8a;
+    --yellow: #ffe156;
+    --red: #ff4d6a;
+    --purple: #b56aff;
+    --text: #e2eaf8;
+    --muted: #6b7fa3;
+    --correct: #1a3d2b;
+    --wrong: #3d1a22;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events:none; z-index:0;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left:0; top:0; bottom:0;
+    width: 220px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    z-index: 100;
+    padding: 24px 0;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .sidebar-logo span {
+    font-family:'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .sidebar-logo h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 4px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--muted);
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+    text-decoration: none;
+  }
+  .nav-item:hover, .nav-item.active {
+    color: var(--cyan);
+    background: rgba(0,229,255,0.05);
+    border-left-color: var(--cyan);
+  }
+  .nav-item .icon { font-size: 16px; width: 20px; text-align:center; }
+
+  /* MAIN */
+  .main {
+    margin-left: 220px;
+    padding: 48px 48px 80px;
+    max-width: 1100px;
+    position: relative; z-index: 1;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    margin-bottom: 32px;
+  }
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .section-title span { color: var(--cyan); }
+  .section-desc {
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--bg3) 0%, #0d1a30 100%);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content:'';
+    position:absolute; right:-40px; top:-40px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.3);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--cyan);
+    font-family: 'Space Mono',monospace;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--cyan); }
+  .hero p { color: var(--muted); font-size: 15px; line-height:1.7; max-width:520px; }
+  .hero-stats {
+    display: flex; gap: 24px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+  }
+  .stat-box .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 28px;
+    color: var(--cyan);
+    font-weight: 700;
+  }
+  .stat-box .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* CONCEPT SECTION */
+  .topic-section { margin-bottom: 64px; }
+  .topic-section:target .topic-card { animation: highlight 1s ease; }
+
+  @keyframes highlight {
+    0%,100% { border-color: var(--border); }
+    50% { border-color: var(--cyan); box-shadow: 0 0 20px rgba(0,229,255,0.2); }
+  }
+
+  /* CARDS */
+  .topic-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s;
+  }
+  .topic-card:hover { border-color: rgba(0,229,255,0.3); }
+
+  .card-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items:center; justify-content:center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .icon-cyan { background: rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.2); }
+  .icon-green { background: rgba(57,255,138,0.1); border:1px solid rgba(57,255,138,0.2); }
+  .icon-yellow { background: rgba(255,225,86,0.1); border:1px solid rgba(255,225,86,0.2); }
+  .icon-purple { background: rgba(181,106,255,0.1); border:1px solid rgba(181,106,255,0.2); }
+
+  .card-title { font-size: 18px; font-weight: 700; }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .compare-table th {
+    background: var(--bg2);
+    padding: 12px 16px;
+    text-align:left;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--cyan);
+    border-bottom: 1px solid var(--border);
+  }
+  .compare-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+  }
+  .badge-cyan { background: rgba(0,229,255,0.15); color: var(--cyan); }
+  .badge-red { background: rgba(255,77,106,0.15); color: var(--red); }
+  .badge-green { background: rgba(57,255,138,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(255,225,86,0.15); color: var(--yellow); }
+  .badge-purple { background: rgba(181,106,255,0.15); color: var(--purple); }
+
+  /* GRID 2 COL */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+  .mini-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .mini-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .mini-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  /* KEY CONCEPT PILLS */
+  .concept-list {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 12px;
+  }
+  .concept-pill {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    display: flex; align-items:center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .concept-pill:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+  .concept-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    flex-shrink: 0;
+  }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ACCORDION */
+  .accordion-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .accordion-header {
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex; align-items:center; justify-content:space-between;
+    background: var(--bg2);
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .accordion-header:hover { background: var(--bg3); }
+  .accordion-header h3 { font-size: 14px; font-weight: 600; }
+  .accordion-icon { font-size: 18px; color: var(--muted); transition: transform 0.3s; }
+  .accordion-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 20px;
+    background: var(--card);
+  }
+  .accordion-body.open {
+    max-height: 600px;
+    padding: 20px;
+  }
+  .accordion-icon.open { transform: rotate(180deg); }
+
+  /* QUIZ SECTION */
+  #quiz {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+  }
+  .quiz-header {
+    display: flex; align-items:center; justify-content:space-between;
+    margin-bottom: 32px;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .quiz-progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 32px;
+    overflow:hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: var(--cyan);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+  .quiz-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .question-text {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    color: var(--text);
+  }
+  .quiz-type-badge {
+    display: inline-flex; align-items:center; gap:5px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-family:'Space Mono',monospace;
+    margin-bottom: 12px;
+  }
+  .options-list { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: flex; align-items:center; gap: 12px;
+    background: var(--card);
+    position: relative;
+    overflow: hidden;
+  }
+  .option:hover:not(.disabled) {
+    border-color: var(--cyan);
+    background: rgba(0,229,255,0.04);
+  }
+  .option.selected { border-color: var(--cyan); background: rgba(0,229,255,0.08); }
+  .option.correct { border-color: var(--green) !important; background: rgba(57,255,138,0.1) !important; }
+  .option.wrong { border-color: var(--red) !important; background: rgba(255,77,106,0.08) !important; }
+  .option.disabled { cursor: default; }
+  .option-letter {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    display: flex; align-items:center; justify-content:center;
+    font-family:'Space Mono',monospace; font-size:12px;
+    flex-shrink:0;
+    transition: all 0.2s;
+  }
+  .option.selected .option-letter { background: var(--cyan); color: var(--bg); border-color: var(--cyan); }
+  .option.correct .option-letter { background: var(--green); color: var(--bg); border-color: var(--green); }
+  .option.wrong .option-letter { background: var(--red); color: white; border-color: var(--red); }
+
+  .quiz-actions {
+    display: flex; gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+    align-items:center; justify-content:space-between;
+  }
+
+  .btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    font-family:'DM Sans',sans-serif;
+    transition: all 0.2s;
+    display: inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--bg);
+  }
+  .btn-primary:hover { background: #00c7e0; transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--bg3);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--cyan); color: var(--cyan); }
+  .btn:disabled { opacity: 0.4; cursor:not-allowed; transform:none !important; }
+
+  .feedback-box {
+    margin-top: 16px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    line-height: 1.6;
+    display:none;
+  }
+  .feedback-box.show { display:block; }
+  .feedback-box.correct-fb { background: rgba(57,255,138,0.08); border:1px solid rgba(57,255,138,0.3); color: var(--green); }
+  .feedback-box.wrong-fb { background: rgba(255,77,106,0.08); border:1px solid rgba(255,77,106,0.3); color: var(--red); }
+
+  /* SCORE */
+  .score-screen {
+    text-align:center;
+    padding: 40px 0;
+    display:none;
+  }
+  .score-circle {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    border: 4px solid var(--border);
+    display: flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    margin: 0 auto 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .score-circle::before {
+    content:'';
+    position:absolute; inset:0;
+    border-radius:50%;
+    background: conic-gradient(var(--cyan) var(--pct), var(--border) 0%);
+    opacity:0.3;
+  }
+  .score-num {
+    font-family:'Space Mono',monospace;
+    font-size: 36px;
+    font-weight:700;
+    color: var(--cyan);
+    position:relative;
+  }
+  .score-label { font-size: 12px; color: var(--muted); position:relative; }
+
+  /* POE COMPARISON */
+  .poe-bar {
+    height: 12px;
+    border-radius: 6px;
+    margin: 6px 0 2px;
+    position: relative;
+    overflow:hidden;
+  }
+  .poe-fill { height:100%; border-radius:6px; transition: width 1s ease; }
+
+  /* WIFI TABLE */
+  .wifi-row-ac td:first-child { color: var(--green); font-weight:700; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius:3px; }
+
+  /* FLASHCARD */
+  .flashcard-container {
+    perspective: 1000px;
+    height: 200px;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .flashcard-inner {
+    width:100%; height:100%;
+    position:relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+  }
+  .flashcard-container.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .fc-front, .fc-back {
+    position:absolute; inset:0;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    padding:20px;
+    text-align:center;
+    backface-visibility: hidden;
+    border: 1px solid var(--border);
+  }
+  .fc-front { background: var(--card); }
+  .fc-back { background: var(--bg3); transform: rotateY(180deg); border-color: var(--cyan); }
+  .fc-label { font-size:10px; letter-spacing:3px; font-family:'Space Mono',monospace; margin-bottom:12px; }
+  .fc-front .fc-label { color: var(--muted); }
+  .fc-back .fc-label { color: var(--cyan); }
+  .fc-text { font-size:15px; line-height:1.5; color: var(--text); }
+  .fc-back .fc-text { font-size:13px; color: var(--muted); }
+  .fc-hint { font-size:11px; color: var(--muted); margin-top:12px; }
+
+  .fc-nav { display:flex; gap:8px; justify-content:center; margin-top:12px; }
+
+  /* SECTION LABELS */
+  .section-anchor { scroll-margin-top: 30px; }
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    .sidebar { display:none; }
+    .main { margin-left:0; padding: 24px; }
+    .grid-2,.grid-3 { grid-template-columns:1fr; }
+    .hero { padding:24px; }
+    .hero h1 { font-size:26px; }
+    #quiz { padding:24px; }
+  }
+
+  /* SEPARATOR */
+  .topic-sep {
+    display:flex; align-items:center; gap:12px;
+    margin: 48px 0 32px;
+  }
+  .topic-sep-line { flex:1; height:1px; background: var(--border); }
+  .topic-sep-text {
+    font-family:'Space Mono',monospace; font-size:10px;
+    color: var(--muted); letter-spacing:3px; white-space:nowrap;
+  }
+
+  /* GLOW EFFECT */
+  .glow { text-shadow: 0 0 20px rgba(0,229,255,0.5); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>M3 — A1</span>
+    <h2>Redes de Datos</h2>
+  </div>
+  <a class="nav-item" href="#inicio"><span class="icon">🏠</span>Inicio</a>
+  <a class="nav-item" href="#switches"><span class="icon">🔀</span>Switches vs Hubs</a>
+  <a class="nav-item" href="#vlan"><span class="icon">🗂️</span>VLANs</a>
+  <a class="nav-item" href="#puertos"><span class="icon">🔌</span>Puertos Trunk</a>
+  <a class="nav-item" href="#wireless"><span class="icon">📡</span>Wi-Fi 802.11</a>
+  <a class="nav-item" href="#ap-modes"><span class="icon">📶</span>Modos AP</a>
+  <a class="nav-item" href="#transmision"><span class="icon">📨</span>Unicast/Multicast</a>
+  <a class="nav-item" href="#flooding"><span class="icon">🌊</span>Flooding</a>
+  <a class="nav-item" href="#poe"><span class="icon">⚡</span>PoE / PoE+</a>
+  <a class="nav-item" href="#flashcards"><span class="icon">🃏</span>Flashcards</a>
+  <a class="nav-item" href="#quiz"><span class="icon">📝</span>Quiz</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <section id="inicio" class="section-anchor">
+    <div class="hero">
+      <div class="hero-badge">● MÓDULO 3 — SEMANA 1</div>
+      <h1>Guía de Estudio<br><span>Redes de Datos</span></h1>
+      <p>Domina todos los conceptos del Test M3-A1: switches, VLANs, Wi-Fi, PoE y mucho más. Estudia con flashcards y pon a prueba tus conocimientos con el quiz interactivo.</p>
+      <div class="hero-stats">
+        <div class="stat-box"><div class="num">8</div><div class="lbl">Temas</div></div>
+        <div class="stat-box"><div class="num">13</div><div class="lbl">Preguntas del test</div></div>
+        <div class="stat-box"><div class="num">12</div><div class="lbl">Flashcards</div></div>
+        <div class="stat-box"><div class="num">∞</div><div class="lbl">Intentos</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SWITCHES VS HUBS ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 01</span><div class="topic-sep-line"></div></div>
+  <section id="switches" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Dispositivos de Red</div>
+      <h2 class="section-title">Switches <span>vs</span> Hubs</h2>
+      <p class="section-desc">Comprende las diferencias fundamentales entre estos dos dispositivos de capa 2 y por qué los switches son superiores en redes modernas.</p>
+    </div>
+
+    <div class="topic-card">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>CARACTERÍSTICA</th>
+            <th>SWITCH ✅</th>
+            <th>HUB ❌</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tabla de direcciones</td>
+            <td><span class="badge badge-green">Tabla MAC</span><br><small style="color:var(--muted)">Aprende y registra MACs de tramas <strong>entrantes</strong></small></td>
+            <td><span class="badge badge-red">No tiene</span><br><small style="color:var(--muted)">No distingue dispositivos</small></td>
+          </tr>
+          <tr>
+            <td>Envío de tramas</td>
+            <td>Conmuta hacia el puerto destino exacto usando la tabla MAC</td>
+            <td>Replica el frame a todos los puertos (broadcast de capa 1)</td>
+          </tr>
+          <tr>
+            <td>Colisiones</td>
+            <td><span class="badge badge-green">Aisladas por puerto</span><br><small style="color:var(--muted)">Cada puerto = dominio de colisión propio</small></td>
+            <td><span class="badge badge-red">Todo el dispositivo</span><br><small style="color:var(--muted)">Medio compartido: una colisión afecta a todos</small></td>
+          </tr>
+          <tr>
+            <td>Canal de transmisión</td>
+            <td>Full-duplex por puerto</td>
+            <td>Medio común compartido (half-duplex)</td>
+          </tr>
+          <tr>
+            <td>Dominio de broadcast</td>
+            <td>Un dominio por defecto (sin VLANs)</td>
+            <td>Un dominio compartido</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4 style="color:var(--cyan)">⚠️ Tramas ENTRANTES vs SALIENTES</h4>
+        <p>El switch registra la dirección MAC en su tabla a partir de las tramas <strong>ENTRANTES</strong> (no salientes). Aprende qué dispositivo está en qué puerto cuando recibe un frame.</p>
+      </div>
+      <div class="mini-card">
+        <h4 style="color:var(--yellow)">📌 Pregunta del test</h4>
+        <p>Las características de los <strong>switches</strong> son: usar tabla MAC para conmutar tramas y aislar colisiones por puerto. <em>Cuidado:</em> registran MACs de tramas entrantes, no salientes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== VLAN ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 02</span><div class="topic-sep-line"></div></div>
+  <section id="vlan" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Segmentación Lógica</div>
+      <h2 class="section-title"><span>VLAN</span> — Virtual LAN</h2>
+      <p class="section-desc">Las VLANs permiten segmentar lógicamente una red física en múltiples redes independientes, controlando el broadcast y mejorando la seguridad.</p>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-header">
+        <div class="card-icon icon-green">🗂️</div>
+        <div>
+          <div class="card-title">¿Qué hace una VLAN?</div>
+          <div style="font-size:13px;color:var(--muted)">Segmentación lógica sobre infraestructura física compartida</div>
+        </div>
+      </div>
+      <p style="font-size:14px;line-height:1.7;color:var(--muted);margin-bottom:16px;">
+        Con 12 computadoras divididas en 3 VLANs (VLAN 10, 20 y 30, con 4 equipos cada una): cada VLAN actúa como una red independiente. Un broadcast enviado desde VLAN 10 <strong>no llega</strong> a VLAN 20 ni VLAN 30, reduciendo el tráfico global.
+      </p>
+      <div class="grid-3">
+        <div style="background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-family:'Space Mono',monospace;color:var(--cyan);font-size:20px;font-weight:700;">VLAN 10</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">4 equipos</div>
+          <div style="margin-top:8px;font-size:12px;color:var(--text);">Broadcast confinado</div>
+        </div>
+        <div style="background:rgba(57,255,138,0.05);border:1px solid rgba(57,255,138,0.2);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-family:'Space Mono',monospace;color:var(--green);font-size:20px;font-weight:700;">VLAN 20</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">4 equipos</div>
+          <div style="margin-top:8px;font-size:12px;color:var(--text);">Red independiente</div>
+        </div>
+        <div style="background:rgba(255,225,86,0.05);border:1px solid rgba(255,225,86,0.2);border-radius:10px;padding:16px;text-align:center;">
+          <div style="font-family:'Space Mono',monospace;color:var(--yellow);font-size:20px;font-weight:700;">VLAN 30</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px;">4 equipos</div>
+          <div style="margin-top:8px;font-size:12px;color:var(--text);">Dominio aislado</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-header">
+        <div class="card-icon icon-cyan">📋</div>
+        <div class="card-title">Criterios para implementar VLANs</div>
+      </div>
+      <div class="concept-list">
+        <div class="concept-pill"><span class="dot" style="background:var(--cyan)"></span>Por <strong>tipo de dispositivo</strong> — impresoras, servidores, cámaras</div>
+        <div class="concept-pill"><span class="dot" style="background:var(--green)"></span>Por <strong>departamento</strong> — compras, marketing, RRHH</div>
+        <div class="concept-pill"><span class="dot" style="background:var(--yellow)"></span>Por <strong>agrupación de puertos</strong> — puertos 1-6 / 7-12</div>
+        <div class="concept-pill"><span class="dot" style="background:var(--purple)"></span>Por <strong>nivel jerárquico</strong> — empleados, supervisores, gerentes</div>
+        <div class="concept-pill"><span class="dot" style="background:var(--red)"></span>Por <strong>piso del edificio</strong> — switches por planta</div>
+      </div>
+      <div style="margin-top:16px;padding:12px 16px;background:rgba(255,225,86,0.05);border-left:3px solid var(--yellow);border-radius:0 8px 8px 0;font-size:13px;color:var(--muted);">
+        💡 Todos estos criterios permiten reducir el tráfico broadcast en los enlaces troncales.
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-header">
+        <div class="card-icon icon-yellow">✅</div>
+        <div class="card-title">Ventajas de usar VLANs con switches gestionables</div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="color:var(--green);font-size:18px;">◆</span>
+              <div><strong>Reducción de dominios de broadcast</strong><br><span style="font-size:13px;color:var(--muted);">Cada VLAN = un dominio broadcast propio</span></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="color:var(--cyan);font-size:18px;">◆</span>
+              <div><strong>Control del tráfico de red</strong><br><span style="font-size:13px;color:var(--muted);">Políticas por segmento lógico</span></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="color:var(--yellow);font-size:18px;">◆</span>
+              <div><strong>Reducción de colisiones</strong><br><span style="font-size:13px;color:var(--muted);">Menos equipos por dominio</span></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <span style="color:var(--purple);font-size:18px;">◆</span>
+              <div><strong>Facilita cambios en la red LAN</strong><br><span style="font-size:13px;color:var(--muted);">Reconfiguración sin mover cables</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="background:rgba(255,77,106,0.05);border:1px solid rgba(255,77,106,0.2);border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:var(--red);font-family:'Space Mono',monospace;letter-spacing:2px;margin-bottom:12px;">❌ NO ES UNA VENTAJA</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.5;">El <strong>aumento de velocidad de las interfaces</strong> NO es una ventaja de las VLANs. Las VLANs son una segmentación lógica y no modifican la velocidad física de los puertos.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-card">
+      <div class="card-header">
+        <div class="card-icon icon-purple">🔒</div>
+        <div class="card-title">VLANs para aislar visitantes</div>
+      </div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;">Mejor práctica para evitar que visitantes accedan a datos internos y reducir broadcast:</p>
+      <div style="background:rgba(57,255,138,0.08);border:1px solid rgba(57,255,138,0.3);border-radius:10px;padding:16px;margin-bottom:12px;">
+        <strong style="color:var(--green);">✅ CORRECTO:</strong> <span style="font-size:14px;"> Asignar a los dispositivos de visitantes una <strong>VLAN separada</strong> con acceso limitado a internet. Esto aísla el tráfico interno y reduce el broadcast general.</span>
+      </div>
+      <div style="background:rgba(255,77,106,0.06);border:1px solid rgba(255,77,106,0.2);border-radius:10px;padding:16px;">
+        <strong style="color:var(--red);">❌ INCORRECTO:</strong> <span style="font-size:14px;color:var(--muted);"> Filtros MAC (fácilmente vulnerables), misma VLAN con firewall (no aísla broadcast), solo red cableada, o una única VLAN con usuario/contraseña.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== PUERTOS TRUNK ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 03</span><div class="topic-sep-line"></div></div>
+  <section id="puertos" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Configuración de Puertos</div>
+      <h2 class="section-title">Puerto <span>Trunk</span> y Puerto de Acceso</h2>
+    </div>
+    <div class="grid-2">
+      <div class="topic-card">
+        <div class="card-header">
+          <div class="card-icon icon-cyan">🚀</div>
+          <div>
+            <div class="card-title">Puerto Trunk</div>
+            <span class="badge badge-cyan">MÚLTIPLES VLANS</span>
+          </div>
+        </div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.6;">Permite el <strong>tránsito de tramas con identificadores de múltiples VLANs</strong> entre switches. Las tramas viajan etiquetadas (tagged) con el ID de su VLAN según el estándar <strong>802.1Q</strong>.</p>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--bg2);border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);">
+          Switch A ←[TRUNK]→ Switch B<br>
+          <span style="color:var(--muted)">VLAN10 + VLAN20 + VLAN30 en un solo enlace</span>
+        </div>
+      </div>
+      <div class="topic-card">
+        <div class="card-header">
+          <div class="card-icon icon-green">🔗</div>
+          <div>
+            <div class="card-title">Puerto de Acceso</div>
+            <span class="badge badge-green">UNA VLAN</span>
+          </div>
+        </div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.6;">Se asigna a <strong>una sola VLAN</strong>. Conecta dispositivos finales (PC, impresoras). Las tramas van sin etiqueta (untagged). El dispositivo no sabe que está en una VLAN.</p>
+        <div style="margin-top:12px;padding:10px 14px;background:var(--bg2);border-radius:8px;font-family:'Space Mono',monospace;font-size:12px;color:var(--green);">
+          PC → Puerto de acceso (VLAN10)<br>
+          <span style="color:var(--muted)">Trama sin etiqueta 802.1Q</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(181,106,255,0.07);border:1px solid rgba(181,106,255,0.2);border-radius:10px;padding:16px;font-size:13px;color:var(--muted);line-height:1.6;">
+      📌 <strong style="color:var(--purple);">Para el test:</strong> Los puertos que permiten tránsito de tramas con identificadores de <em>múltiples VLANs</em> entre switches se llaman <strong style="color:var(--text);">puertos trunk</strong>. No confundir con FastEthernet (velocidad), puerto untagged (acceso) o GigabitEthernet (velocidad).
+    </div>
+  </section>
+
+  <!-- ======== WIRELESS 802.11 ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 04</span><div class="topic-sep-line"></div></div>
+  <section id="wireless" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Redes Inalámbricas</div>
+      <h2 class="section-title">Estándares <span>802.11</span></h2>
+      <p class="section-desc">Conoce las variantes del estándar Wi-Fi y cuándo usar cada una según el escenario.</p>
+    </div>
+    <div class="topic-card">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>ESTÁNDAR</th>
+            <th>BANDA</th>
+            <th>VELOCIDAD MÁX.</th>
+            <th>RECOMENDADO PARA</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="wifi-row-ac">
+            <td><span class="badge badge-green">802.11ac ★</span></td>
+            <td>5 GHz</td>
+            <td>~1.3 Gbps+</td>
+            <td><strong style="color:var(--green);">Alta densidad de usuarios</strong><br><small style="color:var(--muted);">Centro comercial, aeropuerto, estadio</small></td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-cyan">802.11n</span></td>
+            <td>2.4 / 5 GHz</td>
+            <td>~600 Mbps</td>
+            <td>Uso general, hogar/oficina</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">802.11g</span></td>
+            <td>2.4 GHz</td>
+            <td>~54 Mbps</td>
+            <td>Redes heredadas, baja carga</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">802.11b</span></td>
+            <td>2.4 GHz</td>
+            <td>~11 Mbps</td>
+            <td>Obsoleto, compatibilidad básica</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-red">802.11b/n</span></td>
+            <td>2.4 GHz</td>
+            <td>Mixto</td>
+            <td>Retrocompatibilidad</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:rgba(57,255,138,0.08);border:1px solid rgba(57,255,138,0.3);border-radius:10px;padding:16px;font-size:14px;line-height:1.6;">
+      🏬 <strong style="color:var(--green);">Caso del Centro Comercial:</strong> Con gran cantidad de público, se necesita el estándar con mayor capacidad y velocidad. La respuesta correcta es <strong>802.11ac</strong> — opera en 5 GHz (menos interferencias), soporta MU-MIMO para múltiples usuarios simultáneos y ofrece el mayor throughput de los estándares listados.
+    </div>
+  </section>
+
+  <!-- ======== MODOS AP ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 05</span><div class="topic-sep-line"></div></div>
+  <section id="ap-modes" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Punto de Acceso</div>
+      <h2 class="section-title">Modos de <span>AP</span></h2>
+      <p class="section-desc">Los Access Points pueden operar en distintos modos según el escenario de red.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <h3>🌐 Modo Access Point (AP)</h3>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;">Modo estándar. El AP se conecta por cable a la red cableada y crea una red inalámbrica para que los clientes se conecten. Es el modo más común en oficinas y hogares.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <h3>🔁 Modo Repetidor</h3>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;">Extiende el rango de una red Wi-Fi existente retransmitiendo la señal. El AP repetidor se conecta inalámbricamente al AP principal y retransmite la señal para ampliar cobertura dentro del mismo edificio.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <h3>📡 Modo Bridge — <span style="color:var(--green);">★ Caso del edificio vecino</span></h3>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:12px;">Conecta dos redes separadas físicamente en un enlace punto a punto inalámbrico. <strong style="color:var(--text);">Ideal para edificios vecinos con línea de visión directa (LOS).</strong></p>
+          <div style="background:rgba(57,255,138,0.08);border:1px solid rgba(57,255,138,0.3);border-radius:8px;padding:12px;font-size:13px;color:var(--text);">
+            🏢 Edificio principal ←[Bridge Wi-Fi]→ 🏢 Edificio vecino (4to piso)<br>
+            <span style="color:var(--muted);">Sin otras construcciones entre ellos = visibilidad directa = modo bridge</span>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <h3>💻 Modo Cliente</h3>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;">El AP actúa como un cliente inalámbrico que se conecta a otra red Wi-Fi. Se usa para dar conectividad Wi-Fi a dispositivos que solo tienen puerto Ethernet.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAcc(this)">
+          <h3>📶 Modo Amplificador</h3>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-body">
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;">Similar al repetidor, amplifica la señal Wi-Fi existente para extender la cobertura. A diferencia del bridge, no conecta redes separadas sino que expande una existente.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== UNICAST / MULTICAST ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 06</span><div class="topic-sep-line"></div></div>
+  <section id="transmision" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Métodos de Transmisión</div>
+      <h2 class="section-title">Unicast · Multicast · <span>Broadcast</span></h2>
+    </div>
+    <div class="grid-3">
+      <div class="topic-card" style="border-color:rgba(0,229,255,0.3);">
+        <div style="font-size:28px;margin-bottom:12px;">1️⃣</div>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:2px;margin-bottom:8px;">UNICAST</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.5;">Envía una trama a <strong style="color:var(--text);">un solo dispositivo específico</strong> de manera unívoca. Usa la dirección MAC exacta del destinatario.</p>
+        <div style="margin-top:12px;padding:8px;background:var(--bg2);border-radius:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--cyan);">A → B</div>
+      </div>
+      <div class="topic-card" style="border-color:rgba(57,255,138,0.3);">
+        <div style="font-size:28px;margin-bottom:12px;">👥</div>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--green);letter-spacing:2px;margin-bottom:8px;">MULTICAST ★</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.5;">Envía <strong style="color:var(--text);">una sola trama a un grupo de dispositivos</strong> que se han suscrito al grupo multicast. Eficiente para streaming, videoconferencias.</p>
+        <div style="margin-top:12px;padding:8px;background:var(--bg2);border-radius:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--green);">A → {B, C, D}</div>
+      </div>
+      <div class="topic-card" style="border-color:rgba(255,225,86,0.3);">
+        <div style="font-size:28px;margin-bottom:12px;">📢</div>
+        <div style="font-family:'Space Mono',monospace;font-size:12px;color:var(--yellow);letter-spacing:2px;margin-bottom:8px;">BROADCAST</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.5;">Envía una trama a <strong style="color:var(--text);">todos los dispositivos</strong> del dominio de broadcast. Dirección destino: FF:FF:FF:FF:FF:FF.</p>
+        <div style="margin-top:12px;padding:8px;background:var(--bg2);border-radius:6px;font-family:'Space Mono',monospace;font-size:11px;color:var(--yellow);">A → TODOS</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(57,255,138,0.06);border:1px solid rgba(57,255,138,0.25);border-radius:10px;padding:16px;font-size:14px;line-height:1.6;">
+      📌 <strong style="color:var(--green);">Ventaja del Multicast:</strong> Permite alcanzar un <em>grupo</em> de dispositivos enviando una <em>sola</em> trama. No necesita enviar una trama por cada destinatario (eso sería múltiples unicasts), ni llega a toda la red (eso es broadcast).
+    </div>
+  </section>
+
+  <!-- ======== FLOODING ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 07</span><div class="topic-sep-line"></div></div>
+  <section id="flooding" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Comportamiento del Switch</div>
+      <h2 class="section-title"><span>Flooding</span> — Inundación</h2>
+    </div>
+    <div class="topic-card">
+      <div class="card-header">
+        <div class="card-icon icon-yellow">🌊</div>
+        <div>
+          <div class="card-title">¿Qué es el Flooding?</div>
+          <span class="badge badge-yellow">TRAMAS NO-BROADCAST</span>
+        </div>
+      </div>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px;">
+        El <strong style="color:var(--text);">flooding</strong> ocurre cuando un switch recibe una trama cuya dirección MAC destino <strong>no está en su tabla MAC</strong>. En ese caso, el switch envía (inunda) la trama por <strong>todas sus interfaces</strong> excepto por la que llegó.
+      </p>
+      <div class="grid-2">
+        <div style="background:rgba(255,225,86,0.06);border:1px solid rgba(255,225,86,0.25);border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:var(--yellow);font-family:'Space Mono',monospace;margin-bottom:8px;">FLOODING</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.5;">Tramas unicast desconocidas enviadas por <em>todos los puertos</em>. No es broadcast, son tramas normales con destino desconocido.</p>
+        </div>
+        <div style="background:rgba(255,77,106,0.06);border:1px solid rgba(255,77,106,0.2);border-radius:10px;padding:16px;">
+          <div style="font-size:12px;color:var(--red);font-family:'Space Mono',monospace;margin-bottom:8px;">NO CONFUNDIR CON:</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.5;"><strong>Broadcast:</strong> trama dirigida a FF:FF:FF:FF:FF:FF<br><strong>Tormenta de broadcast:</strong> bucle de broadcasts sin fin<br><strong>Colisión:</strong> choque de tramas en el medio</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== POE ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">TEMA 08</span><div class="topic-sep-line"></div></div>
+  <section id="poe" class="topic-section section-anchor">
+    <div class="section-header">
+      <div class="section-tag">Alimentación por Ethernet</div>
+      <h2 class="section-title"><span>PoE</span> / PoE+ / PSE / PD</h2>
+    </div>
+    <div class="topic-card">
+      <div class="card-header">
+        <div class="card-icon icon-yellow">⚡</div>
+        <div class="card-title">Comparativa de estándares PoE</div>
+      </div>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>ESTÁNDAR</th>
+            <th>NORMA IEEE</th>
+            <th>POTENCIA MÁX.</th>
+            <th>USO TÍPICO</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-cyan">PoE</span></td>
+            <td>802.3af</td>
+            <td>15.4 W</td>
+            <td>Teléfonos VoIP, APs básicos, cámaras fijas simples</td>
+          </tr>
+          <tr style="background:rgba(57,255,138,0.04);">
+            <td><span class="badge badge-green">PoE+ ★</span></td>
+            <td>802.3at</td>
+            <td><strong>30 W</strong></td>
+            <td><strong>Cámaras PTZ motorizadas (22W), APs avanzados, terminales</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:16px;">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:12px;">Potencia de los dispositivos:</p>
+        <div style="margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;"><span>PoE máx.</span><span>15.4 W</span></div>
+          <div class="poe-bar" style="background:var(--border);"><div class="poe-fill" style="width:51%;background:var(--cyan);"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;margin-top:12px;"><span>Cámara motorizada</span><span style="color:var(--yellow);">22 W</span></div>
+          <div class="poe-bar" style="background:var(--border);"><div class="poe-fill" style="width:73%;background:var(--yellow);"></div></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px;margin-top:12px;"><span>PoE+ máx.</span><span>30 W</span></div>
+          <div class="poe-bar" style="background:var(--border);"><div class="poe-fill" style="width:100%;background:var(--green);"></div></div>
+        </div>
+        <div style="background:rgba(57,255,138,0.08);border:1px solid rgba(57,255,138,0.3);border-radius:8px;padding:12px;font-size:13px;">
+          ✅ Una cámara que consume <strong>22 W</strong> supera el límite de PoE (15.4W), por lo que requiere <strong style="color:var(--green);">PoE+</strong> (máx. 30W).
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4 style="color:var(--cyan);">PSE — Power Sourcing Equipment</h4>
+        <p>Dispositivo que <strong>suministra</strong> la energía eléctrica a través del cable Ethernet. Ejemplo: un switch con PoE+.</p>
+      </div>
+      <div class="mini-card">
+        <h4 style="color:var(--purple);">PD — Powered Device</h4>
+        <p>Dispositivo que <strong>consume</strong> la energía suministrada por el PSE. Ejemplo: la cámara motorizada conectada al switch.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FLASHCARDS ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">PRÁCTICA</span><div class="topic-sep-line"></div></div>
+  <section id="flashcards" class="section-anchor" style="margin-bottom:64px;">
+    <div class="section-header">
+      <div class="section-tag">Memorización</div>
+      <h2 class="section-title">Flash<span>cards</span></h2>
+      <p class="section-desc">Haz clic en cada tarjeta para revelar la respuesta.</p>
+    </div>
+    <div id="fc-container"></div>
+    <div class="fc-nav">
+      <button class="btn btn-secondary" onclick="fcNav(-1)">← Anterior</button>
+      <span id="fc-indicator" style="font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);align-self:center;"></span>
+      <button class="btn btn-secondary" onclick="fcNav(1)">Siguiente →</button>
+    </div>
+  </section>
+
+  <!-- ======== QUIZ ======== -->
+  <div class="topic-sep"><div class="topic-sep-line"></div><span class="topic-sep-text">EVALUACIÓN</span><div class="topic-sep-line"></div></div>
+  <section id="quiz" class="section-anchor">
+    <div class="quiz-header">
+      <div>
+        <div class="section-tag">Test de Práctica</div>
+        <h2 class="section-title" style="font-size:24px;">Quiz <span>Interactivo</span></h2>
+      </div>
+      <button class="btn btn-secondary" onclick="restartQuiz()">🔄 Reiniciar</button>
+    </div>
+    <div class="quiz-progress-bar">
+      <div class="quiz-progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div id="quiz-content"></div>
+    <div class="score-screen" id="score-screen">
+      <div class="score-circle" id="score-circle">
+        <div class="score-num" id="score-num">0</div>
+        <div class="score-label">/ <span id="score-total"></span></div>
+      </div>
+      <h3 style="font-size:22px;margin-bottom:8px;" id="score-msg"></h3>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:24px;" id="score-sub"></p>
+      <button class="btn btn-primary" onclick="restartQuiz()">🔄 Intentar de nuevo</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// ========================
+// ACCORDION
+// ========================
+function toggleAcc(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.accordion-icon');
+  body.classList.toggle('open');
+  icon.classList.toggle('open');
+}
+
+// ========================
+// FLASHCARDS DATA
+// ========================
+const flashcards = [
+  { q: "¿Cómo registra un switch las direcciones en su tabla MAC?", a: "A través de las tramas ENTRANTES. Cuando llega una trama, el switch registra la MAC de origen en el puerto por donde llegó." },
+  { q: "¿Qué es el 'flooding' en un switch?", a: "Cuando la dirección MAC destino NO está en la tabla MAC, el switch envía la trama por TODAS las interfaces (excepto por la que llegó)." },
+  { q: "¿Qué ventaja tiene el multicast sobre unicast?", a: "Con multicast se envía UNA SOLA trama a un grupo de dispositivos, en lugar de enviar una trama individual a cada uno." },
+  { q: "¿Cuál es el modo AP para conectar dos edificios con visión directa?", a: "MODO BRIDGE: crea un enlace punto a punto inalámbrico entre dos redes separadas físicamente, ideal cuando hay línea de visión directa (LOS)." },
+  { q: "¿Cuál es el estándar 802.11 para alta densidad de usuarios?", a: "802.11ac — opera en 5 GHz, soporta MU-MIMO, ofrece el mayor throughput. Ideal para centros comerciales, aeropuertos y estadios." },
+  { q: "Una cámara motorizada consume 22W. ¿Necesita PoE o PoE+?", a: "PoE+ (802.3at, máx 30W). PoE estándar solo entrega 15.4W, insuficiente para 22W. PoE+ soporta hasta 30W." },
+  { q: "¿Qué son PSE y PD en el contexto de PoE?", a: "PSE (Power Sourcing Equipment): dispositivo que SUMINISTRA energía (ej: switch PoE+). PD (Powered Device): dispositivo que CONSUME energía (ej: cámara IP)." },
+  { q: "¿Cómo se llaman los puertos que transportan múltiples VLANs entre switches?", a: "PUERTOS TRUNK — transportan tramas etiquetadas (tagged) con identificadores de múltiples VLANs según el estándar 802.1Q." },
+  { q: "¿Qué ocurre con un broadcast enviado desde VLAN 10 hacia VLAN 20?", a: "NO llega. Cada VLAN es un dominio de broadcast independiente. El broadcast queda confinado dentro de su propia VLAN." },
+  { q: "¿Cuál es la mejor práctica para aislar dispositivos de visitantes?", a: "Asignar a visitantes una VLAN SEPARADA con acceso limitado a internet. Aísla el tráfico interno y reduce broadcast." },
+  { q: "Diferencia entre Hub y Switch en cuanto a colisiones", a: "HUB: medio compartido, una colisión afecta a TODOS los puertos. SWITCH: cada puerto es un dominio de colisión independiente, las colisiones están aisladas." },
+  { q: "¿Qué NO es una ventaja de las VLANs?", a: "El AUMENTO DE VELOCIDAD de las interfaces. Las VLANs son segmentación lógica y no modifican la velocidad física de los puertos." },
+];
+
+let fcIndex = 0;
+
+function renderFlashcard(index) {
+  const fc = flashcards[index];
+  const container = document.getElementById('fc-container');
+  container.innerHTML = `
+    <div class="flashcard-container" id="fc-card" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-label">PREGUNTA — haz clic para revelar</div>
+          <div class="fc-text">${fc.q}</div>
+          <div class="fc-hint">🃏 clic para ver respuesta</div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-label">RESPUESTA</div>
+          <div class="fc-text" style="color:var(--text);font-size:14px;">${fc.a}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('fc-indicator').textContent = `${index + 1} / ${flashcards.length}`;
+}
+
+function fcNav(dir) {
+  fcIndex = (fcIndex + dir + flashcards.length) % flashcards.length;
+  renderFlashcard(fcIndex);
+}
+
+renderFlashcard(0);
+
+// ========================
+// QUIZ DATA
+// ========================
+const quizQuestions = [
+  {
+    q: "¿Cuáles características corresponden a los switches (NO a los hubs)?",
+    type: "single",
+    opts: [
+      "Las colisiones afectan a todos los puertos del dispositivo.",
+      "Utilizan las tramas salientes para registrar la dirección en la tabla MAC.",
+      "Utilizan una tabla de direcciones MAC para conmutar las tramas.",
+      "Tienen un medio común compartido como canal de transmisión.",
+    ],
+    correct: [2],
+    explanation: "Los switches usan una tabla MAC para conmutar tramas hacia el puerto correcto. Registran MACs de tramas ENTRANTES (no salientes). Las colisiones en hubs afectan a todos; en switches son por puerto.",
+  },
+  {
+    q: "¿Cuáles criterios pueden usarse para implementar VLANs y reducir broadcast en enlaces troncales?",
+    type: "multi",
+    opts: [
+      "Por tipo de dispositivo (impresoras, servidores, cámaras)",
+      "Por departamento (compras, marketing, RRHH)",
+      "Por agrupación de interfaces (puertos 1-6 / 7-12)",
+      "Por piso del edificio",
+      "Por nivel jerárquico (empleados, supervisores, gerentes)",
+    ],
+    correct: [0, 1, 2, 3, 4],
+    explanation: "Todos los criterios listados son válidos para implementar VLANs. La segmentación lógica por cualquier criterio coherente reduce el tráfico broadcast en los troncales.",
+  },
+  {
+    q: "Con 12 computadoras divididas en VLAN 10, 20 y 30 (4 equipos cada una), ¿qué afirmaciones son verdaderas?",
+    type: "multi",
+    opts: [
+      "Se reduce el tráfico broadcast global.",
+      "Las VLANs permiten compartir direcciones IP entre computadoras.",
+      "Un mensaje broadcast enviado desde VLAN 10 no llegará a VLAN 20.",
+      "Todos los dispositivos seguirán en el mismo dominio de broadcast.",
+      "Cada grupo actuará como si estuviera en una red independiente.",
+    ],
+    correct: [0, 2, 4],
+    explanation: "Las VLANs reducen el broadcast (verdadero), aíslan los dominios de broadcast por VLAN (el broadcast de VLAN 10 no llega a VLAN 20), y cada VLAN actúa como red independiente. Las VLANs NO comparten IPs y SÍ separan los dominios de broadcast.",
+  },
+  {
+    q: "Para un centro comercial con gran afluencia de público, ¿qué estándar 802.11 recomendarías?",
+    type: "single",
+    opts: [
+      "802.11ac",
+      "802.11g",
+      "802.11b/n",
+      "802.11b",
+      "802.11n",
+    ],
+    correct: [0],
+    explanation: "802.11ac opera en 5 GHz con menos interferencias, soporta MU-MIMO para múltiples usuarios simultáneos y ofrece el mayor throughput de los estándares listados. Ideal para alta densidad de usuarios.",
+  },
+  {
+    q: "Dos edificios vecinos con línea de visión directa. ¿Qué modo de AP se adapta para extender Wi-Fi entre ellos?",
+    type: "single",
+    opts: [
+      "Modo access point",
+      "Modo amplificador",
+      "Modo cliente",
+      "Modo repetidor",
+      "Modo bridge",
+    ],
+    correct: [4],
+    explanation: "El modo BRIDGE crea un enlace punto a punto inalámbrico entre dos redes separadas físicamente. Es el modo indicado cuando dos edificios tienen visibilidad directa (LOS — Line of Sight).",
+  },
+  {
+    q: "¿Qué ventaja proporciona el método multicast?",
+    type: "single",
+    opts: [
+      "Alcanzar a un solo dispositivo de manera unívoca.",
+      "Alcanzar todos los dispositivos de la red con una sola trama.",
+      "Alcanzar dispositivos de múltiples fabricantes con una sola trama.",
+      "Alcanzar un grupo de dispositivos enviando una sola trama.",
+      "Alcanzar varios dispositivos enviando una trama a cada uno.",
+    ],
+    correct: [3],
+    explanation: "Multicast envía UNA sola trama a un GRUPO de dispositivos suscritos. No es unicast (un destino), ni broadcast (todos), ni múltiples unicasts (una trama por cada uno).",
+  },
+  {
+    q: "¿Cómo se denominan los puertos que permiten tránsito de tramas con identificadores de múltiples VLANs entre switches?",
+    type: "single",
+    opts: [
+      "Puerto trunk",
+      "Puerto fastethernet",
+      "Puerto de acceso",
+      "Puerto gigabit ethernet",
+      "Puerto untagged",
+    ],
+    correct: [0],
+    explanation: "Puerto TRUNK (o enlace troncal): transporta tramas etiquetadas de múltiples VLANs entre switches usando el estándar 802.1Q. No confundir con FastEthernet/GigabitEthernet (velocidad) ni con puerto de acceso (una sola VLAN).",
+  },
+  {
+    q: "Un switch envía tramas que NO son broadcast por todas sus interfaces. ¿Cómo se llama esto?",
+    type: "single",
+    opts: [
+      "Multicast",
+      "Tormenta de broadcast",
+      "Colisiones",
+      "Flooding",
+      "Difusión",
+    ],
+    correct: [3],
+    explanation: "FLOODING: el switch reenvía tramas unicast cuya MAC destino NO está en su tabla MAC por todos los puertos (excepto el de entrada). No es broadcast (que es FF:FF:FF:FF:FF:FF), ni tormenta de broadcast (bucle).",
+  },
+  {
+    q: "Cámaras de seguridad motorizadas con consumo de 22 vatios. ¿Qué característica PoE necesitan?",
+    type: "single",
+    opts: [
+      "PSE",
+      "VLAN",
+      "PoE+",
+      "PoE",
+      "PD",
+    ],
+    correct: [2],
+    explanation: "PoE estándar (802.3af) entrega máximo 15.4W — insuficiente para 22W. PoE+ (802.3at) entrega hasta 30W, cubriendo los 22W de la cámara. PSE y PD son roles (fuente/consumidor), no estándares de potencia.",
+  },
+  {
+    q: "¿Qué ventajas tienen los switches gestionables con VLANs por departamentos?",
+    type: "multi",
+    opts: [
+      "Reducción de los dominios de broadcast",
+      "Controlar el tráfico de la red",
+      "Aumento de la velocidad de las interfaces",
+      "Reducción de colisiones",
+      "Facilita cambiar la configuración de la red LAN",
+    ],
+    correct: [0, 1, 3, 4],
+    explanation: "Las VLANs reducen dominios de broadcast, permiten controlar tráfico, reducen colisiones y facilitan cambios sin mover cables. El aumento de velocidad de interfaces NO es una ventaja de las VLANs — la velocidad es determinada por el hardware, no por la segmentación lógica.",
+  },
+];
+
+let currentQ = 0;
+let score = 0;
+let answered = false;
+let selectedOptions = new Set();
+
+function renderQuestion() {
+  const q = quizQuestions[currentQ];
+  const pct = (currentQ / quizQuestions.length) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  answered = false;
+  selectedOptions.clear();
+
+  const typeColor = q.type === 'multi' ? 'var(--purple)' : 'var(--cyan)';
+  const typeLabel = q.type === 'multi' ? '✦ RESPUESTA MÚLTIPLE' : '◆ OPCIÓN ÚNICA';
+  const letters = 'ABCDE';
+
+  let optionsHTML = q.opts.map((opt, i) => `
+    <div class="option" id="opt-${i}" onclick="selectOption(${i})">
+      <div class="option-letter">${letters[i]}</div>
+      <div>${opt}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('quiz-content').innerHTML = `
+    <div class="quiz-type-badge" style="background:rgba(0,0,0,0.2);border:1px solid ${typeColor};color:${typeColor};">${typeLabel}</div>
+    <div class="quiz-counter">Pregunta ${currentQ + 1} de ${quizQuestions.length}</div>
+    <div class="question-text">${q.q}</div>
+    <div class="options-list">${optionsHTML}</div>
+    <div class="feedback-box" id="feedback"></div>
+    <div class="quiz-actions">
+      <div style="font-size:13px;color:var(--muted);" id="hint-text">
+        ${q.type === 'multi' ? 'Selecciona todas las opciones correctas' : 'Selecciona una opción'}
+      </div>
+      <button class="btn btn-primary" id="confirm-btn" onclick="confirmAnswer()" disabled>Confirmar →</button>
+    </div>
+  `;
+  document.getElementById('score-screen').style.display = 'none';
+  document.getElementById('quiz-content').style.display = 'block';
+}
+
+function selectOption(i) {
+  if (answered) return;
+  const q = quizQuestions[currentQ];
+  const el = document.getElementById('opt-' + i);
+
+  if (q.type === 'single') {
+    document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    selectedOptions.clear();
+    selectedOptions.add(i);
+    el.classList.add('selected');
+  } else {
+    if (selectedOptions.has(i)) {
+      selectedOptions.delete(i);
+      el.classList.remove('selected');
+    } else {
+      selectedOptions.add(i);
+      el.classList.add('selected');
+    }
+  }
+  document.getElementById('confirm-btn').disabled = selectedOptions.size === 0;
+}
+
+function confirmAnswer() {
+  if (answered || selectedOptions.size === 0) return;
+  answered = true;
+  const q = quizQuestions[currentQ];
+  const correct = new Set(q.correct);
+  const selected = selectedOptions;
+
+  let isCorrect = true;
+  if (selected.size !== correct.size) {
+    isCorrect = false;
+  } else {
+    for (let v of selected) { if (!correct.has(v)) { isCorrect = false; break; } }
+  }
+
+  if (isCorrect) score++;
+
+  q.opts.forEach((_, i) => {
+    const el = document.getElementById('opt-' + i);
+    el.classList.add('disabled');
+    if (correct.has(i)) el.classList.add('correct');
+    else if (selected.has(i) && !correct.has(i)) el.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback-box show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML = `<strong>${isCorrect ? '✅ ¡Correcto!' : '❌ Incorrecto'}</strong> — ${q.explanation}`;
+
+  const btn = document.getElementById('confirm-btn');
+  if (currentQ < quizQuestions.length - 1) {
+    btn.textContent = 'Siguiente →';
+    btn.onclick = nextQuestion;
+    btn.disabled = false;
+  } else {
+    btn.textContent = 'Ver resultados 🏆';
+    btn.onclick = showScore;
+    btn.disabled = false;
+  }
+}
+
+function nextQuestion() {
+  currentQ++;
+  renderQuestion();
+}
+
+function showScore() {
+  document.getElementById('quiz-content').style.display = 'none';
+  document.getElementById('progress-fill').style.width = '100%';
+  const ss = document.getElementById('score-screen');
+  ss.style.display = 'block';
+  const pct = Math.round((score / quizQuestions.length) * 100);
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-total').textContent = quizQuestions.length;
+  document.getElementById('score-circle').style.setProperty('--pct', pct + '%');
+
+  let msg, sub;
+  if (pct >= 90) { msg = '¡Excelente! 🏆'; sub = 'Dominás todos los conceptos del módulo.'; }
+  else if (pct >= 70) { msg = '¡Muy bien! 💪'; sub = 'Buen manejo de los temas. Repasa los que fallaste.'; }
+  else if (pct >= 50) { msg = 'Bien encaminado 📖'; sub = 'Repasa los temas antes de la evaluación.'; }
+  else { msg = 'Sigue practicando 🔄'; sub = 'Revisá las secciones de estudio y vuelve a intentarlo.'; }
+
+  document.getElementById('score-msg').textContent = msg;
+  document.getElementById('score-sub').textContent = sub;
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  selectedOptions.clear();
+  document.getElementById('score-screen').style.display = 'none';
+  document.getElementById('quiz-content').style.display = 'block';
+  renderQuestion();
+}
+
+// INIT
+renderQuestion();
+
+// ACTIVE NAV
+const sections = document.querySelectorAll('.section-anchor');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 80) cur = s.id;
+  });
+  navItems.forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('href') === '#' + cur) n.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
