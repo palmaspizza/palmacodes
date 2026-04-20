@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Enviar módulos por WhatsApp</title>
+</head>
+<body>
+  <h2>Enviar información de módulos</h2>
+  <button onclick="enviarWhatsApp()">Enviar a WhatsApp</button>
+
+  <script>
+    function enviarWhatsApp() {
+      const numero = "56954998792";
+      const mensaje = 
+        "El sistema viene con 8 módulos incluidos:\n\n" +
+        "Módulo 1 — Carta Digital Interactiva\n" +
+        "Fotos de cada plato, descripción, precio y botón de pedido. Se ve profesional en celular y computador.\n\n" +
+        "Módulo 2 — Sistema de Carrito\n" +
+        "El cliente acumula productos, ve cantidades, puede eliminar ítems y ve el total en tiempo real.\n\n" +
+        "Módulo 3 — Pedidos por WhatsApp automáticos\n" +
+        "Al finalizar, el pedido llega directo a tu WhatsApp con nombre del cliente, productos, total y forma de pago. Sin errores de anotación.\n\n" +
+        "Módulo 4 — Control de Mesa\n" +
+        "El cliente selecciona su número de mesa (1 al 10) antes de pedir, así tú sabes exactamente a quién llevarle el pedido.\n\n" +
+        "Módulo 5 — Categorías navegables\n" +
+        "Menú superior con secciones: Platos Principales, Churrascos, Bebidas, Completos. El cliente llega rápido a lo que quiere.\n\n" +
+        "Módulo 6 — Personalizaciones del pedido\n" +
+        "Opciones como 'sin arroz', 'sin papas fritas', selección de bebida (Coca-Cola, Fanta, Sprite). Todo sin que tú tengas que preguntar.\n\n" +
+        "Módulo 7 — Diseño con tu marca\n" +
+        "Logo, colores, nombre del local. No parece una página genérica.\n\n" +
+        "Módulo 8 — Link personalizable por mesa\n" +
+        "Puedes crear un QR por mesa que abre la página con el número ya puesto automáticamente.";
+
+      const url = "https://wa.me/" + numero + "?text=" + encodeURIComponent(mensaje);
+      window.open(url, "_blank");
+    }
+  </script>
+</body>
+</html>
