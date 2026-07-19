@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acuerdo de Servicio Digital — Palma Codes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:       #0f1117;
+    --ink-mid:   #2a2d3a;
+    --ink-soft:  #4a4e63;
+    --line:      #dde0ea;
+    --line-soft: #eceef5;
+    --cream:     #fafbfd;
+    --white:     #ffffff;
+    --gold:      #b8860b;
+    --gold-light:#d4a017;
+    --gold-dim:  rgba(184,134,11,0.08);
+    --gold-border: rgba(184,134,11,0.25);
+    --danger:    #c0392b;
+    --success:   #1a7a4a;
+    --success-bg:#f0faf5;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .doc-header {
+    background: var(--ink);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .doc-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold));
+  }
+
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .doc-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .brand-shield {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .brand-shield::after {
+    content: 'P';
+    color: var(--ink);
+    font-weight: 900;
+    font-size: 1.1rem;
+    font-family: 'Playfair Display';
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display';
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  .brand-tagline {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .doc-title {
+    font-family: 'Playfair Display';
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: white;
+    margin-bottom: 0.75rem;
+  }
+
+  .doc-title span {
+    color: var(--gold-light);
+  }
+
+  .doc-subtitle {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .doc-meta {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .doc-num {
+    font-family: 'JetBrains Mono';
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-date {
+    font-family: 'JetBrains Mono';
+    font-size: 0.78rem;
+    color: var(--gold-light);
+  }
+
+  .doc-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.6);
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── PARTES ── */
+  .partes-bar {
+    background: var(--ink-mid);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .partes-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1.25rem 2rem;
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .parte {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .parte-label {
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'JetBrains Mono';
+  }
+
+  .parte-value {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.8);
+    font-weight: 600;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-nav {
+    background: white;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .progress-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .progress-inner::-webkit-scrollbar { display: none; }
+
+  .prog-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.2rem;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .prog-item:hover {
+    color: var(--gold);
+    border-bottom-color: rgba(184,134,11,0.3);
+  }
+
+  .prog-num {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--line-soft);
+    color: var(--ink-soft);
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono';
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .prog-item:hover .prog-num {
+    background: var(--gold-dim);
+    color: var(--gold);
+  }
+
+  /* ── CONTENIDO ── */
+  .doc-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 0;
+  }
+
+  /* AVISO LEGAL */
+  .aviso-legal {
+    background: linear-gradient(135deg, #fffbf0, #fff9e6);
+    border: 1px solid var(--gold-border);
+    border-left: 4px solid var(--gold);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 2.5rem;
+  }
+
+  .aviso-icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .aviso-text {
+    font-size: 0.88rem;
+    color: #5a4000;
+    line-height: 1.6;
+  }
+
+  .aviso-text strong {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* SECCIONES */
+  .section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--line);
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono';
+    font-size: 0.7rem;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display';
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .section-body {
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+    line-height: 1.8;
+  }
+
+  .section-body p {
+    margin-bottom: 1rem;
+  }
+
+  .section-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-body strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* CLAUSULAS */
+  .clausula {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+
+  .clausula:hover {
+    border-color: var(--gold-border);
+  }
+
+  .clausula-title {
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .clausula-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .clausula-text {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.75;
+  }
+
+  /* EXCLUSION BOX */
+  .exclusion-box {
+    background: #fef9f0;
+    border: 1.5px solid var(--gold-border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .exclusion-title {
+    font-family: 'Playfair Display';
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .exclusion-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .exclusion-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .exclusion-list li::before {
+    content: '—';
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* SERVICIOS TABLE */
+  .servicios-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    margin-top: 1rem;
+  }
+
+  .servicios-table th {
+    background: var(--ink);
+    color: white;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+  }
+
+  .servicios-table th:first-child { border-radius: 8px 0 0 0; }
+  .servicios-table th:last-child { border-radius: 0 8px 0 0; }
+
+  .servicios-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+
+  .servicios-table tr:last-child td { border-bottom: none; }
+  .servicios-table tr:nth-child(even) td { background: var(--line-soft); }
+
+  .check-ok {
+    color: var(--success);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  /* DIVISOR */
+  .doc-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line), transparent);
+    margin: 2.5rem 0;
+  }
+
+  /* ── FORMULARIO ── */
+  .form-section {
+    background: white;
+    border: 1.5px solid var(--line);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+  }
+
+  .form-header {
+    background: linear-gradient(135deg, var(--ink), var(--ink-mid));
+    padding: 2rem 2rem 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  .form-header-title {
+    font-family: 'Playfair Display';
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-header-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .form-body {
+    padding: 2rem;
+  }
+
+  /* CHECK GRANDE */
+  .check-container {
+    background: linear-gradient(135deg, #fffbf0, #fff8e6);
+    border: 2px solid var(--gold-border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .check-container:hover {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #fff8e6, #fff5d6);
+  }
+
+  .check-container.checked {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, #fff8e0, #fff3cc);
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.12);
+  }
+
+  .check-box {
+    width: 28px;
+    height: 28px;
+    border: 2.5px solid rgba(184,134,11,0.4);
+    border-radius: 6px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    margin-top: 2px;
+  }
+
+  .check-container.checked .check-box {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .check-mark {
+    display: none;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 900;
+  }
+
+  .check-container.checked .check-mark {
+    display: block;
+  }
+
+  .check-label {
+    flex: 1;
+  }
+
+  .check-label strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .check-label p {
+    font-size: 0.83rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* INPUTS */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group.full {
+    grid-column: 1 / -1;
+  }
+
+  .form-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .form-label span {
+    color: var(--danger);
+    margin-left: 2px;
+  }
+
+  .form-input {
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.93rem;
+    color: var(--ink);
+    background: var(--cream);
+    transition: all 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  .form-input:focus {
+    border-color: var(--gold);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(184,134,11,0.1);
+  }
+
+  .form-input::placeholder {
+    color: rgba(74,78,99,0.4);
+  }
+
+  .form-input.error {
+    border-color: var(--danger);
+    background: #fff8f8;
+  }
+
+  .form-hint {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    opacity: 0.7;
+  }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--ink);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s;
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 20px rgba(184,134,11,0.3);
+  }
+
+  .submit-btn:disabled {
+    background: linear-gradient(135deg, #ccc, #bbb);
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .submit-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(184,134,11,0.4);
+  }
+
+  .submit-btn:not(:disabled):active {
+    transform: translateY(0);
+  }
+
+  /* SEGURIDAD NOTE */
+  .security-note {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    opacity: 0.65;
+    margin-top: 0.75rem;
+    justify-content: center;
+  }
+
+  /* SUCCESS */
+  .success-overlay {
+    display: none;
+    background: var(--success-bg);
+    border: 2px solid #86efac;
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  .success-overlay.show {
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .success-title {
+    font-family: 'Playfair Display';
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--success);
+    margin-bottom: 0.5rem;
+  }
+
+  .success-desc {
+    font-size: 0.9rem;
+    color: #2d6a4f;
+    max-width: 440px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  .success-id {
+    display: inline-block;
+    font-family: 'JetBrains Mono';
+    font-size: 0.75rem;
+    background: rgba(26,122,74,0.1);
+    color: var(--success);
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+    border: 1px solid rgba(26,122,74,0.2);
+  }
+
+  /* ERROR */
+  .error-msg {
+    display: none;
+    background: #fff0f0;
+    border: 1px solid #fca5a5;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    font-size: 0.85rem;
+    color: var(--danger);
+    margin-top: 1rem;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .error-msg.show {
+    display: flex;
+  }
+
+  /* FOOTER */
+  .doc-footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.78rem;
+    line-height: 1.8;
+  }
+
+  .doc-footer strong {
+    color: var(--gold-light);
+  }
+
+  /* LOADING */
+  .spinner {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(15,17,23,0.2);
+    border-top-color: var(--ink);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .header-inner { grid-template-columns: 1fr; gap: 1rem; }
+    .doc-meta { text-align: left; }
+    .partes-inner { gap: 1.5rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .prog-item { padding: 0.9rem 0.75rem; font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="doc-header">
+  <div class="header-inner">
+    <div>
+      <div class="doc-brand">
+        <div class="brand-shield"></div>
+        <div>
+          <div class="brand-name">Palma Codes</div>
+          <div class="brand-tagline">Desarrollo de Software · Chile</div>
+        </div>
+      </div>
+      <h1 class="doc-title">Acuerdo de<br><span>Servicio Digital</span></h1>
+      <p class="doc-subtitle">Contrato de prestación de servicios de software entre el desarrollador y el cliente. Léalo detenidamente antes de aceptar.</p>
+    </div>
+    <div class="doc-meta">
+      <div class="doc-num">DOC-PC-2026-001</div>
+      <div class="doc-date" id="docDate"></div>
+      <div class="doc-status"><span class="status-dot"></span> Versión vigente</div>
+    </div>
+  </div>
+</header>
+
+<!-- PARTES -->
+<div class="partes-bar">
+  <div class="partes-inner">
+    <div class="parte">
+      <span class="parte-label">Desarrollador (Parte A)</span>
+      <span class="parte-value">Diego Francisco Palma Arriagada</span>
+    </div>
+    <div class="parte">
+      <span class="parte-label">RUT Desarrollador</span>
+      <span class="parte-value">22.141.143-9</span>
+    </div>
+    <div class="parte">
+      <span class="parte-label">Cliente (Parte B)</span>
+      <span class="parte-value">Según datos del formulario</span>
+    </div>
+    <div class="parte">
+      <span class="parte-label">Jurisdicción</span>
+      <span class="parte-value">República de Chile</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAVEGACIÓN -->
+<nav class="progress-nav">
+  <div class="progress-inner">
+    <a href="#s1" class="prog-item"><span class="prog-num">1</span> Objeto</a>
+    <a href="#s2" class="prog-item"><span class="prog-num">2</span> Servicios</a>
+    <a href="#s3" class="prog-item"><span class="prog-num">3</span> Precio</a>
+    <a href="#s4" class="prog-item"><span class="prog-num">4</span> Obligaciones</a>
+    <a href="#s5" class="prog-item"><span class="prog-num">5</span> Datos</a>
+    <a href="#s6" class="prog-item"><span class="prog-num">6</span> Vigencia</a>
+    <a href="#s7" class="prog-item"><span class="prog-num">7</span> Responsabilidad</a>
+    <a href="#s8" class="prog-item"><span class="prog-num">8</span> Firma</a>
+  </div>
+</nav>
+
+<!-- CUERPO -->
+<main class="doc-body">
+
+  <div class="aviso-legal">
+    <div class="aviso-icon">⚖️</div>
+    <div class="aviso-text">
+      <strong>Aviso legal importante:</strong> Este documento constituye un contrato legalmente vinculante conforme a la legislación chilena. Al completar el formulario al final de esta página, usted manifiesta haber leído, comprendido y aceptado íntegramente todas las cláusulas aquí contenidas. Su aceptación quedará registrada con sus datos personales, fecha, hora y dirección IP.
+    </div>
+  </div>
+
+  <!-- S1 -->
+  <section class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num">ART. 1</span>
+      <h2 class="section-title">Objeto del Contrato</h2>
+    </div>
+    <div class="section-body">
+      <p>El presente instrumento regula la relación contractual entre <strong>Diego Francisco Palma Arriagada</strong> (en adelante, "el Desarrollador") y el cliente que suscribe este documento (en adelante, "el Cliente"), con motivo de la contratación de un <strong>sistema digital de gestión de reservas en línea</strong>, denominado comercialmente como sistema Palma Codes.</p>
+      <p>El sistema está compuesto por una aplicación web de frontend desarrollada en HTML, CSS y JavaScript, integrada con servicios de terceros para el almacenamiento de datos y las notificaciones, detallados en las cláusulas siguientes.</p>
+      <p>Este contrato se rige por la <strong>Ley N° 19.496</strong> sobre Protección de los Derechos de los Consumidores, la <strong>Ley N° 19.628</strong> sobre Protección de la Vida Privada, y las disposiciones del <strong>Código Civil de Chile</strong> que resulten aplicables.</p>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S2 -->
+  <section class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num">ART. 2</span>
+      <h2 class="section-title">Descripción del Servicio</h2>
+    </div>
+    <div class="section-body">
+      <p>El sistema entregado por el Desarrollador comprende los siguientes componentes, todos alojados en infraestructura de terceros especificada en el Artículo 7:</p>
+
+      <table class="servicios-table">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Descripción</th>
+            <th>Incluido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Página de reservas</strong></td>
+            <td>Interfaz para que los clientes finales seleccionen día, servicio, barbero y hora disponible.</td>
+            <td class="check-ok">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Panel de administración</strong></td>
+            <td>Acceso mediante PIN de 4 dígitos. Permite gestionar reservas, horarios, días bloqueados y configuraciones del sistema.</td>
+            <td class="check-ok">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Gestión de horarios</strong></td>
+            <td>Configuración de horarios de lunes a sábado, domingos y horarios especiales por fecha específica.</td>
+            <td class="check-ok">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Notificaciones</strong></td>
+            <td>Alertas automáticas al administrador vía ntfy.sh cada vez que se registra una nueva reserva o cancelación.</td>
+            <td class="check-ok">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Personalización de marca</strong></td>
+            <td>Logo, colores, nombre del negocio, servicios y precios propios del cliente.</td>
+            <td class="check-ok">✓</td>
+          </tr>
+          <tr>
+            <td><strong>Política de privacidad</strong></td>
+            <td>Documentos legales (Términos y Condiciones, Política de Privacidad) adaptados al negocio del cliente.</td>
+            <td class="check-ok">✓</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="clausula" style="margin-top:1.25rem">
+        <div class="clausula-title">
+          <div class="clausula-icon">⚠️</div>
+          Lo que NO incluye el servicio
+        </div>
+        <div class="clausula-text">
+          El presente servicio <strong>no incluye</strong>: alojamiento web propio con dominio personalizado (.cl), integración con sistemas de pago en línea, servicios de correo electrónico, aplicaciones móviles nativas, ni ningún componente no descrito expresamente en la tabla anterior. Cualquier funcionalidad adicional deberá ser acordada y cotizada por separado.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S3 -->
+  <section class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num">ART. 3</span>
+      <h2 class="section-title">Precio y Forma de Pago</h2>
+    </div>
+    <div class="section-body">
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">💰</div> Tarifa base del sistema</div>
+        <div class="clausula-text">
+          El precio base del sistema, que incluye la página de reservas, el panel de administración y la configuración inicial para un (1) barbero o administrador principal, corresponde a <strong>$25.000 CLP (veinticinco mil pesos chilenos)</strong>, con pago único.
+        </div>
+      </div>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">👤</div> Barberos o administradores adicionales</div>
+        <div class="clausula-text">
+          Cada barbero o administrador adicional con acceso propio al panel (con PIN independiente y vista exclusiva de sus reservas) tiene un costo de <strong>$5.000 CLP adicionales</strong> sobre el precio base, por cada uno. Ejemplos: 2 barberos = $30.000 · 3 barberos = $35.000 · 4 barberos = $40.000.
+        </div>
+      </div>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">📅</div> Mantención mensual (opcional)</div>
+        <div class="clausula-text">
+          El servicio de mantención mensual, que incluye soporte técnico directo, actualización de precios y servicios, y cambios menores al sistema, tiene un valor de <strong>$12.000 CLP mensuales</strong>. Este servicio es estrictamente opcional. El sistema funciona sin él, pero el Desarrollador no estará obligado a realizar cambios ni prestar soporte técnico si no existe mantención mensual vigente.
+        </div>
+      </div>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">⚡</div> Condiciones de pago</div>
+        <div class="clausula-text">
+          El pago deberá realizarse mediante transferencia bancaria o los medios acordados entre las partes. El Desarrollador iniciará el desarrollo una vez recibido el pago acordado o la primera cuota en caso de financiamiento parcial. El incumplimiento del pago faculta al Desarrollador a suspender el acceso al sistema sin responsabilidad alguna.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S4 -->
+  <section class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num">ART. 4</span>
+      <h2 class="section-title">Obligaciones de las Partes</h2>
+    </div>
+    <div class="section-body">
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">👨‍💻</div> Obligaciones del Desarrollador</div>
+        <div class="clausula-text">
+          El Desarrollador se compromete a: (a) entregar el sistema funcional dentro del plazo acordado; (b) configurar el sistema con la información entregada por el Cliente; (c) prestar soporte técnico básico durante la primera semana tras la entrega; (d) mantener la confidencialidad de los datos del Cliente y sus clientes finales.
+        </div>
+      </div>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">🏪</div> Obligaciones del Cliente</div>
+        <div class="clausula-text">
+          El Cliente se compromete a: (a) entregar oportunamente la información necesaria para la configuración (logo, servicios, precios, horarios); (b) realizar los pagos en las condiciones acordadas; (c) utilizar el sistema exclusivamente para los fines lícitos de su negocio; (d) no intentar acceder, modificar o replicar el código fuente del sistema; (e) informar al Desarrollador de cualquier falla o mal funcionamiento dentro de un plazo razonable.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S5 -->
+  <section class="section" id="s5">
+    <div class="section-header">
+      <span class="section-num">ART. 5</span>
+      <h2 class="section-title">Protección de Datos Personales</h2>
+    </div>
+    <div class="section-body">
+      <p>En conformidad con la <strong>Ley N° 19.628</strong> sobre Protección de la Vida Privada, el Desarrollador informa lo siguiente respecto al tratamiento de datos:</p>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">🔒</div> Datos recopilados de clientes finales</div>
+        <div class="clausula-text">
+          El sistema almacena en Firebase (Google LLC) los datos ingresados por los clientes finales del negocio: nombre, fecha y hora de reserva, servicios seleccionados, total y número de teléfono (si el cliente lo proporciona voluntariamente). Estos datos son de propiedad del Cliente (el negocio) y el Desarrollador accede a ellos únicamente para prestar el servicio técnico.
+        </div>
+      </div>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">📧</div> Datos del presente contrato</div>
+        <div class="clausula-text">
+          Los datos personales ingresados en el formulario de este contrato (nombre, RUT, correo electrónico) son recopilados exclusivamente para acreditar la aceptación del presente acuerdo, y serán conservados por el Desarrollador con fines de respaldo legal. No serán cedidos a terceros bajo ninguna circunstancia.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S6 -->
+  <section class="section" id="s6">
+    <div class="section-header">
+      <span class="section-num">ART. 6</span>
+      <h2 class="section-title">Vigencia y Terminación</h2>
+    </div>
+    <div class="section-body">
+      <p>El presente contrato entra en vigencia desde la fecha de aceptación electrónica por parte del Cliente, y se mantendrá indefinidamente mientras exista una relación de servicio activa entre las partes.</p>
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">🚫</div> Causales de término</div>
+        <div class="clausula-text">
+          El contrato podrá darse por terminado por: (a) mutuo acuerdo entre las partes; (b) incumplimiento grave de las obligaciones de cualquiera de las partes; (c) uso del sistema para fines ilícitos por parte del Cliente; (d) falta de pago de la mantención mensual, en caso de estar contratada. La terminación no genera derecho a reembolso del pago único ya efectuado.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S7 -->
+  <section class="section" id="s7">
+    <div class="section-header">
+      <span class="section-num">ART. 7</span>
+      <h2 class="section-title">Límite de Responsabilidad y Riesgos Tecnológicos</h2>
+    </div>
+    <div class="section-body">
+      <p>El Cliente reconoce y acepta expresamente que el sistema opera sobre infraestructura de servicios externos sobre los cuales el Desarrollador no tiene control directo. La disponibilidad continua e ininterrumpida del sistema no puede ser garantizada en términos absolutos. A continuación se detallan los riesgos asumidos por el Cliente:</p>
+
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">🔥</div> 7.1 — Fallas en Firebase (Google LLC)</div>
+        <div class="clausula-text">El sistema utiliza Firebase Realtime Database y Firebase Authentication, servicios administrados por Google LLC. El Desarrollador no será responsable por interrupciones, caídas del servidor, pérdida temporal de conexión, lentitud en la carga de datos, pérdida de información almacenada, ni cualquier inconveniente derivado de fallas en la infraestructura de Google. Estas situaciones quedan sujetas a los términos de servicio de Google LLC disponibles en <strong>firebase.google.com/terms</strong>.</div>
+      </div>
+
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">☁️</div> 7.2 — Fallas en Netlify (Netlify Inc.)</div>
+        <div class="clausula-text">La interfaz web del sistema se encuentra alojada en Netlify. El Desarrollador no será responsable por interrupciones del hosting, errores de acceso (HTTP 404, 500 u otros), caídas del servicio de distribución de contenido, ni cualquier período de inaccesibilidad derivado de fallas o mantenimientos de Netlify Inc. Estas situaciones quedan sujetas a los términos disponibles en <strong>netlify.com/legal</strong>.</div>
+      </div>
+
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">🔔</div> 7.3 — Fallas en ntfy.sh (Servicio de notificaciones)</div>
+        <div class="clausula-text">El sistema utiliza ntfy.sh para el envío de notificaciones push al administrador. El Desarrollador no será responsable por la no recepción de notificaciones, retrasos en la entrega, ni interrupciones del servicio. Se recomienda revisar periódicamente el panel de administración como método alternativo de control de reservas.</div>
+      </div>
+
+      <div class="clausula">
+        <div class="clausula-title"><div class="clausula-icon">🌐</div> 7.4 — Fuerza mayor y conectividad</div>
+        <div class="clausula-text">El Desarrollador no será responsable por interrupciones causadas por cortes de internet del Cliente o sus usuarios finales, problemas de compatibilidad con navegadores desactualizados, fallas en dispositivos del Cliente, actualizaciones de mantenimiento del sistema, ni por eventos de fuerza mayor ajenos a su voluntad, incluyendo fallas eléctricas, desastres naturales o decisiones regulatorias.</div>
+      </div>
+
+      <div class="exclusion-box">
+        <div class="exclusion-title">⚖️ Exclusión de indemnización — Cláusula de responsabilidad máxima</div>
+        <ul class="exclusion-list">
+          <li>En ningún caso el Desarrollador será responsable de indemnizar al Cliente por lucro cesante, pérdida de reservas, pérdida de clientes, daño emergente, ni por cualquier perjuicio económico directo o indirecto derivado de las situaciones descritas en este artículo.</li>
+          <li>La responsabilidad máxima del Desarrollador, bajo cualquier circunstancia, quedará limitada al monto efectivamente pagado por el Cliente en concepto del servicio contratado.</li>
+          <li>Al aceptar este contrato, el Cliente manifiesta comprender y asumir los riesgos tecnológicos inherentes al uso de software basado en servicios de terceros, conforme a lo establecido en la Ley N° 19.496.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- S8 — FORMULARIO -->
+  <section class="section" id="s8">
+    <div class="section-header">
+      <span class="section-num">ART. 8</span>
+      <h2 class="section-title">Aceptación y Firma Electrónica</h2>
+    </div>
+    <div class="section-body" style="margin-bottom:1.5rem">
+      <p>Para formalizar su aceptación de este contrato, complete el formulario a continuación. Al enviarlo, usted declara haber leído íntegramente el presente documento y aceptar todas sus cláusulas sin reservas. Se registrará automáticamente la fecha, hora y su dirección IP como constancia de la firma electrónica.</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-header">
+        <div class="form-header-title">Formulario de Aceptación</div>
+        <div class="form-header-desc">Complete todos los campos obligatorios. Recibirá una copia del contrato firmado en su correo electrónico.</div>
+      </div>
+
+      <div class="form-body">
+        <!-- CHECKBOX GRANDE -->
+        <div class="check-container" id="checkContainer" onclick="toggleCheck()">
+          <div class="check-box">
+            <span class="check-mark">✓</span>
+          </div>
+          <div class="check-label">
+            <strong>He leído y acepto íntegramente el presente Acuerdo de Servicio Digital</strong>
+            <p>Declaro haber leído todas las cláusulas de este contrato, incluyendo el artículo 7 sobre límite de responsabilidad y riesgos tecnológicos. Entiendo y acepto los términos sin reservas ni condiciones adicionales.</p>
+          </div>
+        </div>
+
+        <!-- FORMULARIO -->
+        <form id="contratoForm" novalidate>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label class="form-label" for="nombreCompleto">Nombre completo <span>*</span></label>
+              <input type="text" id="nombreCompleto" name="nombreCompleto" class="form-input" placeholder="Ej: Juan Carlos Pérez González" autocomplete="name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="rutCliente">RUT <span>*</span></label>
+              <input type="text" id="rutCliente" name="rutCliente" class="form-input" placeholder="Ej: 12.345.678-9" maxlength="12">
+              <span class="form-hint">Con puntos y guión</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="correoCliente">Correo electrónico <span>*</span></label>
+              <input type="email" id="correoCliente" name="correoCliente" class="form-input" placeholder="correo@ejemplo.com" autocomplete="email">
+            </div>
+            <div class="form-group full">
+              <label class="form-label" for="negocioCliente">Nombre del negocio <span>*</span></label>
+              <input type="text" id="negocioCliente" name="negocioCliente" class="form-input" placeholder="Ej: Barbería El Estilo">
+            </div>
+          </div>
+
+          <button type="button" class="submit-btn" id="submitBtn" disabled onclick="enviarContrato()">
+            <span id="btnText">✍️ Firmar y enviar contrato</span>
+            <div class="spinner" id="btnSpinner"></div>
+          </button>
+
+          <div class="security-note">
+            🔒 Conexión segura · Sus datos se transmiten de forma cifrada · No se comparten con terceros
+          </div>
+        </form>
+
+        <!-- SUCCESS -->
+        <div class="success-overlay" id="successOverlay">
+          <div class="success-icon">✅</div>
+          <div class="success-title">Contrato firmado exitosamente</div>
+          <div class="success-desc">
+            Su aceptación ha sido registrada y el contrato completo ha sido enviado al correo del desarrollador. Guarde este número de referencia para futuros reclamos o consultas.
+          </div>
+          <div class="success-id" id="successId"></div>
+        </div>
+
+        <!-- ERROR -->
+        <div class="error-msg" id="errorMsg">
+          <span>⚠️</span>
+          <span id="errorText">Ocurrió un error al enviar. Intente nuevamente o contáctenos directamente.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="doc-footer">
+  <strong>Palma Codes</strong> · Desarrollo de Software · Chile · 2026<br>
+  Contrato generado electrónicamente · Válido conforme a la Ley N° 19.496 y Ley N° 19.628<br>
+  Contacto: <strong>diegofranciscopalmaarriagada@gmail.com</strong>
+</footer>
+
+<script>
+// ── EMAILJS INIT ──
+// ⚠️ IMPORTANTE: Debes reemplazar estos valores con los tuyos de EmailJS
+// 1. Crea cuenta en emailjs.com
+// 2. Conecta tu Gmail
+// 3. Crea una plantilla y copia los IDs aquí
+const EMAILJS_PUBLIC_KEY  = 'gCBMbilxGYaLH-r22';    // ← Reemplaza
+const EMAILJS_SERVICE_ID  = 'service_dk5u3cv';   // ← Reemplaza
+const EMAILJS_TEMPLATE_ID = 'template_zv2x5pk';  // ← Reemplaza
+
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+// ── FECHA DEL DOCUMENTO ──
+const ahora = new Date();
+const opciones = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Santiago' };
+document.getElementById('docDate').textContent = ahora.toLocaleDateString('es-CL', opciones);
+
+// ── CHECKBOX ──
+let aceptado = false;
+
+function toggleCheck() {
+  aceptado = !aceptado;
+  const container = document.getElementById('checkContainer');
+  const btn = document.getElementById('submitBtn');
+  container.classList.toggle('checked', aceptado);
+  btn.disabled = !aceptado;
+}
+
+// ── VALIDACIÓN RUT ──
+function validarRut(rut) {
+  const limpio = rut.replace(/[^0-9kK]/g, '');
+  if (limpio.length < 8) return false;
+  const cuerpo = limpio.slice(0, -1);
+  const dv = limpio.slice(-1).toUpperCase();
+  let suma = 0, multiplo = 2;
+  for (let i = cuerpo.length - 1; i >= 0; i--) {
+    suma += parseInt(cuerpo[i]) * multiplo;
+    multiplo = multiplo < 7 ? multiplo + 1 : 2;
+  }
+  const dvCalc = 11 - (suma % 11);
+  const dvReal = dvCalc === 11 ? '0' : dvCalc === 10 ? 'K' : String(dvCalc);
+  return dv === dvReal;
+}
+
+// ── GENERAR ID ÚNICO ──
+function generarId() {
+  const ts = Date.now().toString(36).toUpperCase();
+  const rand = Math.random().toString(36).substr(2, 4).toUpperCase();
+  return `PC-${ts}-${rand}`;
+}
+
+// ── ENVIAR CONTRATO ──
+async function enviarContrato() {
+  const nombre  = document.getElementById('nombreCompleto').value.trim();
+  const rut     = document.getElementById('rutCliente').value.trim();
+  const correo  = document.getElementById('correoCliente').value.trim();
+  const negocio = document.getElementById('negocioCliente').value.trim();
+
+  // Limpiar errores previos
+  ['nombreCompleto','rutCliente','correoCliente','negocioCliente'].forEach(id => {
+    document.getElementById(id).classList.remove('error');
+  });
+  document.getElementById('errorMsg').classList.remove('show');
+
+  // Validaciones
+  let hayError = false;
+
+  if (!nombre || nombre.split(' ').length < 2) {
+    document.getElementById('nombreCompleto').classList.add('error');
+    hayError = true;
+  }
+
+  if (!validarRut(rut)) {
+    document.getElementById('rutCliente').classList.add('error');
+    hayError = true;
+  }
+
+  if (!correo || !correo.includes('@') || !correo.includes('.')) {
+    document.getElementById('correoCliente').classList.add('error');
+    hayError = true;
+  }
+
+  if (!negocio) {
+    document.getElementById('negocioCliente').classList.add('error');
+    hayError = true;
+  }
+
+  if (!aceptado) {
+    document.getElementById('errorText').textContent = 'Debe marcar la casilla de aceptación antes de continuar.';
+    document.getElementById('errorMsg').classList.add('show');
+    return;
+  }
+
+  if (hayError) {
+    document.getElementById('errorText').textContent = 'Por favor corrija los campos marcados en rojo.';
+    document.getElementById('errorMsg').classList.add('show');
+    return;
+  }
+
+  // Loading
+  const btn = document.getElementById('submitBtn');
+  document.getElementById('btnText').style.display = 'none';
+  document.getElementById('btnSpinner').style.display = 'block';
+  btn.disabled = true;
+
+  const contratoId = generarId();
+  const fechaFirma = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
+
+  const params = {
+    to_email:      'diegofranciscopalmaarriagada@gmail.com',
+    contrato_id:   contratoId,
+    fecha_firma:   fechaFirma,
+    nombre_cliente: nombre,
+    rut_cliente:   rut,
+    correo_cliente: correo,
+    negocio:       negocio,
+    mensaje: `
+=== CONTRATO FIRMADO — PALMA CODES ===
+
+ID de referencia: ${contratoId}
+Fecha y hora: ${fechaFirma}
+
+DATOS DEL CLIENTE:
+- Nombre: ${nombre}
+- RUT: ${rut}
+- Correo: ${correo}
+- Negocio: ${negocio}
+
+DECLARACIÓN:
+El cliente ha leído y aceptado íntegramente el Acuerdo de Servicio Digital de Palma Codes, incluyendo:
+✓ Artículo 1: Objeto del contrato
+✓ Artículo 2: Descripción del servicio
+✓ Artículo 3: Precio y forma de pago
+✓ Artículo 4: Obligaciones de las partes
+✓ Artículo 5: Protección de datos personales
+✓ Artículo 6: Vigencia y terminación
+✓ Artículo 7: Límite de responsabilidad y riesgos tecnológicos (Firebase, Netlify, ntfy.sh, fuerza mayor)
+✓ Artículo 8: Aceptación y firma electrónica
+
+Servicios aceptados: Firebase Realtime Database, Firebase Authentication, Netlify hosting, ntfy.sh para notificaciones.
+
+Este registro constituye constancia legal de la aceptación del contrato.
+Desarrollador: Diego Francisco Palma Arriagada
+    `
+  };
+
+  try {
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+
+    // Éxito
+    document.getElementById('contratoForm').style.display = 'none';
+    document.getElementById('checkContainer').style.display = 'none';
+    document.getElementById('successId').textContent = `N° de referencia: ${contratoId}`;
+    document.getElementById('successOverlay').classList.add('show');
+
+  } catch (error) {
+    console.error('Error EmailJS:', error);
+    document.getElementById('btnText').style.display = 'inline';
+    document.getElementById('btnSpinner').style.display = 'none';
+    btn.disabled = false;
+    document.getElementById('errorText').textContent = 'Error al enviar el contrato. Verifique su conexión e intente nuevamente.';
+    document.getElementById('errorMsg').classList.add('show');
+  }
+}
+
+// ── FORMATO RUT AUTOMÁTICO ──
+document.getElementById('rutCliente').addEventListener('input', function() {
+  let val = this.value.replace(/[^0-9kK]/g, '');
+  if (val.length > 1) {
+    const dv = val.slice(-1);
+    const cuerpo = val.slice(0, -1).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    this.value = cuerpo + '-' + dv;
+  }
+});
+</script>
+
+</body>
+</html>
