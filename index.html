@@ -1509,7 +1509,13 @@
         </div>
     </div>
 </div>
-
+<style>
+    #demoVideo::-webkit-media-controls-panel {
+        background-color: rgba(0, 0, 0, 0.7);
+    width: auto;
+    height: auto;
+    }
+</style>
 <!-- ===== VIDEO MODAL ===== -->
 <div class="modal-overlay" id="videoModal" onclick="handleOverlayClick(event)">
     <div class="modal-box">
@@ -1524,13 +1530,61 @@
         </div>
         <div class="modal-footer">
             <p>¿Te convenció? Escríbele a Diego ahora mismo y ten tu sistema. Respuesta: en 24–48 horas.</p>
+            
+            <!-- Botón Pantalla Completa -->
+            <button type="button" class="btn-fullscreen" onclick="openFullscreen()">
+                <i class="fas fa-expand"></i> Ver en pantalla completa
+            </button>
+
+            <!-- Botón WhatsApp -->
             <a href="https://wa.me/56954998792?text=Hola%20Diego,%20vi%20el%20video%20y%20quiero%20el%20sistema%20para%20mi%20barbería" class="btn-wa" target="_blank">
                 <i class="fab fa-whatsapp"></i> Contactar a Diego por WhatsApp
             </a>
         </div>
     </div>
+    
 </div>
+<script>
+    function openFullscreen() {
+    const video = document.getElementById("demoVideo");
 
+    if (video.requestFullscreen) {
+        video.requestFullscreen();
+    } else if (video.webkitRequestFullscreen) { /* Safari / iOS */
+        video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) { /* IE11 */
+        video.msRequestFullscreen();
+    } else if (video.webkitEnterFullscreen) { /* iOS alternativo */
+        video.webkitEnterFullscreen();
+    }
+}
+</script><style>
+    .btn-fullscreen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-fullscreen:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-fullscreen:active {
+    transform: scale(0.98);
+}
+</style>
 <script>
     // ── Navbar scroll
     window.addEventListener('scroll', () => {
