@@ -842,7 +842,7 @@
         <a href="#capturas" class="palma-nav-link">Capturas</a>
         <a href="#precios" class="palma-nav-link">Precio</a>
         <a href="#faq" class="palma-nav-link">FAQ</a>
-        <button hidden class="palma-nav-cta" onclick="openVideoModal()">
+        <button class="palma-nav-cta" onclick="openVideoModal()">
             <i class="fas fa-play"></i> Ver demo
         </button>
     </div>
@@ -890,7 +890,15 @@
         <p class="hero-subtitle">
             Deja de gestionar horas por WhatsApp. Tus clientes reservan, el sistema los organiza y tú solo cortas pelo.
         </p>
-   
+   <div class="hero-cta">
+            <button class="video-trigger-btn" onclick="openVideoModal()">
+                <div class="play-icon"><i class="fas fa-play" style="font-size:0.8rem; margin-left:2px;"></i></div>
+                Ver cómo funciona — demo real
+            </button>
+            <a onclick="openTermsModal()"  class="btn btn-outline">
+                <i class="fab fa-whatsapp"></i> Escribir a Diego
+            </a>
+        </div>
     </div>
 
     <div class="demo-phone">
@@ -1510,7 +1518,7 @@
         </button>
         <div class="modal-video-wrap">
             <video id="demoVideo" controls playsinline preload="metadata">
-                <source src="demo.mp4" type="video/mp4">
+                <source src="videodemo.mp4" type="video/mp4">
                 <p style="color:white; text-align:center; padding:2rem;">Tu navegador no soporta video HTML5.</p>
             </video>
         </div>
