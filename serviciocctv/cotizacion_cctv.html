@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Servicios de Seguridad & CCTV — Palma Codes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --ink:        #0d1117;
+      --ink-soft:   #3a4252;
+      --ink-muted:  #6b7589;
+      --surface:    #f7f8fa;
+      --white:      #ffffff;
+      --border:     #e2e6ed;
+      --accent:     #1a56db;
+      --accent-dk:  #1344b8;
+      --gold:       #c89a2e;
+      --gold-light: #f5e4a8;
+      --danger:     #dc2626;
+      --success:    #16a34a;
+      --radius-sm:  6px;
+      --radius-md:  12px;
+      --radius-lg:  20px;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.05);
+      --shadow-md:  0 4px 16px rgba(0,0,0,.10), 0 2px 6px rgba(0,0,0,.06);
+      --shadow-lg:  0 12px 40px rgba(0,0,0,.14), 0 4px 12px rgba(0,0,0,.07);
+      --font-ui:    'Inter', sans-serif;
+      --font-disp:  'Barlow Condensed', sans-serif;
+      --transition: 220ms cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-ui);
+      background: var(--surface);
+      color: var(--ink);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; }
+
+    /* ─── TOP BAR ────────────────────────────────────────────── */
+    .topbar {
+      background: var(--ink);
+      color: #a8b3c8;
+      font-size: .78rem;
+      letter-spacing: .02em;
+      text-align: center;
+      padding: 8px 16px;
+    }
+    .topbar strong { color: var(--gold); }
+
+    /* ─── HEADER ─────────────────────────────────────────────── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: var(--ink);
+      border-radius: var(--radius-sm);
+      display: grid;
+      place-items: center;
+    }
+    .logo-icon svg { width: 22px; height: 22px; }
+    .logo-text { line-height: 1.15; }
+    .logo-text strong {
+      display: block;
+      font-family: var(--font-disp);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: .04em;
+      color: var(--ink);
+    }
+    .logo-text span {
+      font-size: .7rem;
+      color: var(--ink-muted);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .header-spacer { flex: 1; }
+    .badge-support {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--gold-light);
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: .75rem;
+      font-weight: 600;
+      color: #7a5c00;
+    }
+    .badge-support svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .cart-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 9px 18px;
+      font-size: .85rem;
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .cart-btn:hover { background: var(--accent-dk); transform: translateY(-1px); }
+    .cart-btn svg { width: 18px; height: 18px; }
+    .cart-count {
+      position: absolute;
+      top: -8px; right: -8px;
+      background: var(--danger);
+      color: white;
+      font-size: .68rem;
+      font-weight: 700;
+      min-width: 20px; height: 20px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      padding: 0 4px;
+      border: 2px solid white;
+      transition: transform 300ms cubic-bezier(.34,1.56,.64,1);
+    }
+    .cart-count.bump { transform: scale(1.4); }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      background: var(--ink);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 80% at 80% 50%, rgba(26,86,219,.25) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(200,154,46,.12) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px 72px;
+      position: relative;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      color: #93c5fd;
+      margin-bottom: 24px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: #93c5fd;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.75); }
+    }
+    .hero h1 {
+      font-family: var(--font-disp);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      max-width: 520px;
+      margin-bottom: 36px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .hero-stat { }
+    .hero-stat .num {
+      font-family: var(--font-disp);
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      line-height: 1;
+    }
+    .hero-stat .label {
+      font-size: .78rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .hero-cotizacion {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-md);
+      padding: 22px 26px;
+      min-width: 240px;
+      backdrop-filter: blur(10px);
+    }
+    .hero-cotizacion .cot-label {
+      font-size: .7rem;
+      color: #64748b;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .hero-cotizacion .cot-num {
+      font-family: var(--font-disp);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .hero-cotizacion .cot-client {
+      font-size: .82rem;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+    .hero-cotizacion .cot-total {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 12px;
+      font-size: .78rem;
+      color: #64748b;
+    }
+    .hero-cotizacion .cot-total strong {
+      display: block;
+      font-family: var(--font-disp);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+    @media (max-width: 860px) {
+      .hero-cotizacion { display: none; }
+    }
+
+    /* ─── SECTION ────────────────────────────────────────────── */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px;
+    }
+    .section-header {
+      margin-bottom: 36px;
+    }
+    .section-header h2 {
+      font-family: var(--font-disp);
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: var(--ink);
+    }
+    .section-header p {
+      font-size: .92rem;
+      color: var(--ink-muted);
+      margin-top: 6px;
+    }
+
+    /* ─── PRODUCT GRID ───────────────────────────────────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+    }
+    .product-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+      border-color: rgba(26,86,219,.2);
+    }
+    .product-image-wrap {
+      position: relative;
+      background: var(--surface);
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-image-wrap img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      padding: 20px;
+      transition: transform 400ms ease;
+    }
+    .product-card:hover .product-image-wrap img {
+      transform: scale(1.06);
+    }
+    .product-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: var(--accent);
+      color: white;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .product-badge.gold {
+      background: var(--gold);
+      color: #3a2800;
+    }
+    .product-qty-badge {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: rgba(0,0,0,.7);
+      color: white;
+      font-size: .72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+      backdrop-filter: blur(4px);
+    }
+    .product-body {
+      padding: 20px 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .product-brand {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .product-specs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .product-specs li {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .8rem;
+      color: var(--ink-soft);
+    }
+    .product-specs li::before {
+      content: '';
+      width: 5px; height: 5px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px 20px;
+      border-top: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .price-block {}
+    .price-label {
+      font-size: .7rem;
+      color: var(--ink-muted);
+    }
+    .price-value {
+      font-family: var(--font-disp);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+    .price-clp {
+      font-size: .72rem;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .qty-btn {
+      width: 34px; height: 34px;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: background var(--transition);
+      border: none;
+      cursor: pointer;
+    }
+    .qty-btn:hover { background: var(--border); }
+    .qty-val {
+      width: 38px;
+      text-align: center;
+      font-weight: 600;
+      font-size: .9rem;
+      border: none;
+      background: white;
+      color: var(--ink);
+      outline: none;
+      -moz-appearance: textfield;
+    }
+    .qty-val::-webkit-inner-spin-button { display: none; }
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--accent);
+      color: white;
+      border-radius: var(--radius-sm);
+      padding: 9px 18px;
+      font-size: .84rem;
+      font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+      flex: 1;
+      justify-content: center;
+    }
+    .add-btn:hover { background: var(--accent-dk); transform: translateY(-1px); }
+    .add-btn svg { width: 16px; height: 16px; }
+    .add-btn.added {
+      background: var(--success);
+    }
+    .view-link {
+      display: none !important;
+      align-items: center;
+      gap: 5px;
+      font-size: .78rem;
+      color: var(--accent);
+      font-weight: 500;
+      padding: 9px 0;
+      transition: opacity var(--transition);
+    }
+    .view-link:hover { opacity: .75; }
+    .view-link svg { width: 14px; height: 14px; }
+
+    /* ─── RESUMEN COTIZACIÓN ─────────────────────────────────── */
+    .quote-section {
+      background: var(--ink);
+      color: white;
+    }
+    .quote-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .quote-inner { grid-template-columns: 1fr; }
+    }
+    .quote-title {
+      font-family: var(--font-disp);
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .quote-sub { font-size: .88rem; color: #64748b; margin-bottom: 28px; }
+    .quote-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .quote-table th {
+      text-align: left;
+      font-size: .72rem;
+      color: #475569;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 0 0 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .quote-table td {
+      padding: 14px 0;
+      font-size: .88rem;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      vertical-align: middle;
+    }
+    .quote-table tr:last-child td { border-bottom: none; }
+    .q-name { color: #e2e8f0; font-weight: 500; }
+    .q-qty  { color: #94a3b8; text-align: center; }
+    .q-unit { color: #94a3b8; text-align: right; }
+    .q-sub  { color: white; font-weight: 600; text-align: right; font-family: var(--font-disp); font-size: 1rem; }
+    .quote-panel {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      min-width: 260px;
+    }
+    .qp-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: .85rem;
+      color: #94a3b8;
+      margin-bottom: 10px;
+    }
+    .qp-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,.1);
+      margin: 16px 0;
+    }
+    .qp-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .qp-total .label {
+      font-size: .78rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .qp-total .amount {
+      font-family: var(--font-disp);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    .qp-note {
+      margin-top: 14px;
+      background: rgba(200,154,46,.12);
+      border: 1px solid rgba(200,154,46,.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: .75rem;
+      color: #fbbf24;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .qp-note svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+    .qp-cta {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--accent);
+      color: white;
+      border-radius: var(--radius-sm);
+      padding: 13px;
+      font-weight: 600;
+      font-size: .9rem;
+      transition: background var(--transition);
+      cursor: pointer;
+      border: none;
+      font-family: var(--font-ui);
+    }
+    .btn-primary:hover { background: var(--accent-dk); }
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      color: #94a3b8;
+      border-radius: var(--radius-sm);
+      padding: 11px;
+      font-weight: 500;
+      font-size: .85rem;
+      transition: color var(--transition), background var(--transition);
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,.12);
+      font-family: var(--font-ui);
+    }
+    .btn-secondary:hover { color: white; background: rgba(255,255,255,.06); }
+
+    /* ─── CART SIDEBAR ───────────────────────────────────────── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(2px);
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+    .cart-sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      bottom: 0;
+      width: 420px;
+      max-width: 100vw;
+      background: var(--white);
+      z-index: 950;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 300ms cubic-bezier(.4,0,.2,1);
+      box-shadow: var(--shadow-lg);
+    }
+    .cart-sidebar.open { transform: translateX(0); }
+    .cart-head {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cart-head h3 {
+      font-family: var(--font-disp);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .cart-close {
+      width: 36px; height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .cart-close:hover { background: var(--border); }
+    .cart-close svg { width: 18px; height: 18px; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .cart-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-muted);
+      font-size: .9rem;
+      gap: 14px;
+    }
+    .cart-empty svg { width: 48px; height: 48px; opacity: .3; }
+    .cart-item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 14px;
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      animation: slideInRight 250ms ease both;
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .ci-img {
+      width: 52px; height: 52px;
+      background: white;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      object-fit: contain;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+    .ci-info { flex: 1; min-width: 0; }
+    .ci-name {
+      font-size: .83rem;
+      font-weight: 600;
+      color: var(--ink);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ci-price { font-size: .78rem; color: var(--ink-muted); }
+    .ci-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ci-qty-btn {
+      width: 26px; height: 26px;
+      border-radius: 4px;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      font-size: .95rem;
+      display: grid;
+      place-items: center;
+      transition: background var(--transition);
+    }
+    .ci-qty-btn:hover { background: #c5cad5; }
+    .ci-qty-num {
+      font-size: .85rem;
+      font-weight: 600;
+      min-width: 20px;
+      text-align: center;
+    }
+    .ci-remove {
+      margin-left: 4px;
+      width: 26px; height: 26px;
+      border-radius: 4px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: #9ca3af;
+      transition: color var(--transition), background var(--transition);
+    }
+    .ci-remove:hover { color: var(--danger); background: #fee2e2; }
+    .ci-remove svg { width: 15px; height: 15px; }
+    .cart-foot {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+    }
+    .cart-foot-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: .88rem;
+      margin-bottom: 8px;
+    }
+    .cart-foot-row.total {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    .cart-foot-row.total span:last-child {
+      font-family: var(--font-disp);
+      font-size: 1.4rem;
+      color: var(--accent);
+    }
+    .cart-foot .btn-primary { width: 100%; }
+
+    /* ─── TOAST ──────────────────────────────────────────────── */
+    .toast-area {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--ink);
+      color: white;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      font-size: .85rem;
+      font-weight: 500;
+      animation: toastIn 350ms cubic-bezier(.34,1.56,.64,1) both;
+      max-width: 320px;
+      border-left: 3px solid var(--success);
+    }
+    .toast svg { width: 18px; height: 18px; color: #4ade80; flex-shrink: 0; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(16px) scale(.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .toast.hide {
+      animation: toastOut 300ms ease forwards;
+    }
+    @keyframes toastOut {
+      to { opacity: 0; transform: translateY(8px) scale(.95); }
+    }
+
+    /* ─── MODAL CONFIRMACIÓN ─────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+      max-width: 480px;
+      width: 100%;
+      transform: scale(.95);
+      transition: transform var(--transition);
+      position: relative;
+    }
+    .modal-overlay.open .modal { transform: scale(1); }
+    .modal-icon {
+      width: 56px; height: 56px;
+      background: #dcfce7;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+    }
+    .modal-icon svg { width: 28px; height: 28px; color: var(--success); }
+    .modal h3 {
+      font-family: var(--font-disp);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .modal p { font-size: .88rem; color: var(--ink-muted); margin-bottom: 24px; }
+    .modal-items { margin-bottom: 20px; }
+    .modal-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-size: .85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-item:last-child { border-bottom: none; }
+    .modal-item .mi-name { color: var(--ink-soft); }
+    .modal-item .mi-val  { font-weight: 600; }
+    .modal-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-bottom: 24px;
+    }
+    .modal-total .mt-label { font-size: .78rem; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .06em; }
+    .modal-total .mt-val {
+      font-family: var(--font-disp);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .modal-btns { display: flex; gap: 12px; }
+    .modal-btns button { flex: 1; }
+    .btn-outline {
+      padding: 11px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      background: transparent;
+      font-family: var(--font-ui);
+      font-size: .88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .btn-outline:hover { background: var(--surface); border-color: var(--ink-muted); }
+    .modal-close-x {
+      position: absolute;
+      top: 20px; right: 20px;
+      width: 34px; height: 34px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .modal-close-x:hover { background: var(--border); }
+    .modal-close-x svg { width: 16px; height: 16px; }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      background: #080c13;
+      color: #475569;
+      text-align: center;
+      padding: 28px 24px;
+      font-size: .78rem;
+    }
+    footer a { color: #94a3b8; }
+
+    /* ─── UTILITIES ──────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    @media (max-width: 600px) {
+      .hero-inner { padding: 52px 20px 48px; }
+      .hero-stats { gap: 28px; }
+      .products-grid { grid-template-columns: 1fr; }
+      .cart-sidebar { width: 100vw; }
+    }
+
+        :root {
+   
+            /* Palma brand */
+            --palma-blue: #0066CC;
+            --palma-blue-dark: #004499;
+            --palma-orange: #FF6B35;
+            --palma-orange-light: #FF8C5A;
+        }
+            .palma-navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(10,10,10,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(228,166,79,0.12);
+            z-index: 9999;
+            padding: 0.7rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--t);
+        }
+        .palma-navbar.scrolled {
+            box-shadow: 0 4px 40px rgba(0,0,0,0.6);
+            border-bottom-color: rgba(228,166,79,0.22);
+        }
+
+        /* LOGO — mismo que catálogo inteligente con animaciones */
+        .palma-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        .palma-logo:hover { transform: scale(1.02); }
+
+        .palma-logo-icon {
+            width: 42px; height: 42px;
+            position: relative;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .palma-shield {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--palma-blue) 0%, var(--palma-blue-dark) 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(0,102,204,0.4);
+            animation: shieldPulse 3s ease-in-out infinite;
+        }
+        @keyframes shieldPulse {
+            0%,100% { box-shadow: 0 0 20px rgba(0,102,204,0.4); }
+            50% { box-shadow: 0 0 32px rgba(0,102,204,0.7); }
+        }
+        .palma-code-brackets {
+            color: white;
+            font-family: 'Poppins', 'Consolas', monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+        }
+        .palma-code-brackets::before {
+            content: '<';
+            color: var(--palma-orange);
+            margin-right: 2px;
+            animation: bracketBlink 2s ease-in-out infinite;
+        }
+        .palma-code-brackets::after {
+            content: '/';
+            color: var(--palma-orange);
+            margin-right: 1px;
+        }
+        .palma-code-brackets span::after {
+            content: '>';
+            color: var(--palma-orange);
+            margin-left: 1px;
+            animation: bracketBlink 2s ease-in-out infinite 0.5s;
+        }
+        @keyframes bracketBlink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .palma-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+        .palma-logo-palma { font-size: 1.3rem; font-weight: 800; color: var(--palma-blue); letter-spacing: 1px; text-transform: uppercase; font-family: 'Poppins', 'Poppins'; }
+        .palma-logo-codes { font-size: 0.88rem; font-weight: 700; color: var(--palma-orange); letter-spacing: 3px; text-transform: uppercase; }
+
+        .palma-nav-links { display: flex; align-items: center; gap: 1.5rem; }
+        .palma-nav-link {
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            font-size: 0.9rem; font-weight: 500;
+            transition: var(--t);
+            position: relative;
+            white-space: nowrap;
+        }
+        .palma-nav-link::after {
+            content: ''; position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+        .palma-nav-link:hover { color: white; }
+        .palma-nav-link:hover::after { width: 100%; }
+        .palma-nav-cta {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #111; padding: 0.55rem 1.1rem;
+            border-radius: 8px; font-weight: 700; font-size: 0.88rem;
+            text-decoration: none; transition: var(--t);
+            box-shadow: 0 4px 16px var(--gold-glow);
+            border: none; cursor: pointer;
+            white-space: nowrap;
+        }
+        .palma-nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--gold-glow); }
+
+  </style>
+  
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  Cotización <strong>N° 00005</strong> — Cliente: <strong>José Urbano</strong> — Incluye <strong>1 año gratis</strong> de soporte técnico · Fecha: <strong>11-09-2026</strong>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+  
+      <div class="logo-text">
+        <strong style="color: orangered;">Seguridad & CCTV</strong>
+        <span>Videovigilancia  <br><span style="color: orangered; font-weight: 1000;"> Palma</strong> </span> <span style="color: var(--palma-blue); font-weight: 1000;">Codes</span></span>
+
+
+      </div> <div class="palma-logo-icon">
+            <div class="palma-shield">
+                <div class="palma-code-brackets"><span></span></div>
+            </div>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="badge-support">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14z"/>
+      </svg>
+      1 año soporte gratis
+    </div>
+    <button class="cart-btn" id="openCart" aria-label="Abrir carrito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.9-1.34l2.7-8.66H6"/>
+      </svg>
+      Carrito
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Sistema CCTV completo · Cotización 2026-001</div>
+    <h1>Protege tu espacio con<br><em>tecnología real.</em></h1>
+    <p>Kit completo de videovigilancia con DVR Dahua, cámaras Full HD, disco duro y mano de obra. Todo incluido en un solo paquete.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">4</div>
+        <div class="label">Cámaras incluidas</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">1TB</div>
+        <div class="label">Almacenamiento</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">1080p</div>
+        <div class="label">Full HD</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">IR</div>
+        <div class="label">Visión nocturna</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-cotizacion">
+    <div class="cot-label">Cotización</div>
+    <div class="cot-num">N° 00005 · 2026-001</div>
+    <div class="cot-client">Cliente: José Urbano</div>
+    <div class="cot-total">
+      Total estimado
+      <strong>$339.229 CLP</strong>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<div class="section">
+  <div class="section-header">
+    <h2>Equipos incluidos en la cotización</h2>
+    <p>Selecciona los equipos y ajusta cantidades antes de confirmar el pedido.</p>
+  </div>
+
+  <div class="products-grid" id="productsGrid">
+    <!-- injected by JS -->
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- RESUMEN COTIZACIÓN -->
+<div class="quote-section">
+  <div class="quote-inner">
+    <div>
+      <div class="quote-title">Resumen de cotización</div>
+      <div class="quote-sub">Cotización N° 00005 — José Urbano — 11-09-2026</div>
+      <table class="quote-table">
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th class="text-center">Cant.</th>
+            <th class="text-right">P. Unit.</th>
+            <th class="text-right">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="quoteTableBody">
+          <!-- injected -->
+        </tbody>
+      </table>
+    </div>
+    <div class="quote-panel">
+      <div class="qp-row"><span>Subtotal equipos</span><span id="qpSubtotal">$0</span></div>
+      <div class="qp-row"><span>Mano de obra</span><span>$100.000</span></div>
+      <hr class="qp-divider"/>
+      <div class="qp-total">
+        <span class="label">Total a pagar</span>
+        <span class="amount" id="qpTotal">$0</span>
+      </div>
+      <div class="qp-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Incluye 1 año gratis de soporte técnico.
+      </div>
+      <div class="qp-cta">
+        <button class="btn-primary" id="confirmBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Confirmar cotización
+        </button>
+        <button class="btn-secondary" id="resetBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px">
+            <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
+          </svg>
+          Restablecer cantidades
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Servicios de Seguridad &amp; CCTV — Instalación y Mantenimiento de Sistemas de Videovigilancia</p>
+  <p style="margin-top:6px">Cotización válida por 30 días · Soporte: <a href="mailto:info@cctv.cl">info@cctv.cl</a></p>
+</footer>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-head">
+    <h3>🛒 Tu carrito</h3>
+    <button class="cart-close" id="closeCart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot" id="cartFoot">
+    <div class="cart-foot-row"><span>Subtotal</span><span id="cfSubtotal">$0</span></div>
+    <div class="cart-foot-row"><span>Mano de obra</span><span>$100.000</span></div>
+    <hr class="divider" style="margin:10px 0"/>
+    <div class="cart-foot-row total"><span>Total</span><span id="cfTotal">$0</span></div>
+    <button class="btn-primary" id="cartConfirmBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      Confirmar pedido
+    </button>
+  </div>
+</aside>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close-x" id="modalCloseX">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+    </div>
+    <h3>¡Cotización confirmada!</h3>
+    <p>Tu pedido ha sido registrado. Nos pondremos en contacto a la brevedad para coordinar la instalación.</p>
+    <div class="modal-items" id="modalItems"></div>
+    <div class="modal-total">
+      <span class="mt-label">Total a pagar</span>
+      <span class="mt-val" id="modalTotal">$0</span>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-outline" id="modalClose">Cerrar</button>
+      <button class="btn-primary" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px">
+          <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/>
+          <rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Imprimir
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST AREA -->
+<div class="toast-area" id="toastArea"></div>
+
+<!-- ─── JAVASCRIPT ─────────────────────────────────────────────────── -->
+<script>
+  /* ── PRODUCT DATA ─────────────────────────────────────── */
+  const MANO_DE_OBRA = 100000;
+
+  const PRODUCTS = [
+    {
+      id: 'dvr',
+      brand: 'Dahua',
+      name: 'DVR XVR Dahua 8 Canales Híbrido 1080p',
+      model: 'XVR1B08-I/T',
+      badge: 'Recomendado',
+      badgeType: 'gold',
+      price: 57239,
+      defaultQty: 1,
+      specs: ['8 canales híbrido AHD/TVI/CVI', 'Resolución 1080P Lite', 'H.265+ compresión', 'Acceso remoto por app', 'Puerto SATA para HDD'],
+      image: 'dvrimgdahua.webp',
+      link: 'https://www.mercadolibre.cl/grabador-dvr-xvr-dahua-8-canales-hibrido-1080p-xvr1b08it/up/MLCU13606039'
+    },
+    {
+      id: 'cam',
+      brand: 'HiVision',
+      name: 'Cámara Domo Full HD 1080p Infrarroja',
+      model: 'DS-2CE76D0T-EXIPF',
+      badge: 'x4 unidades',
+      badgeType: 'default',
+      price: 15500,
+      defaultQty: 4,
+      specs: ['Full HD 1080p', 'Lente fijo 2.8mm', 'Infrarrojo 20m', 'IP67 exterior/interior', 'Analógica HDTVI/CVI'],
+      image: 'camaraimg.webp',
+      link: 'https://www.mercadolibre.cl/camara-de-seguridad-hivision-cctv-full-hd-1080p-domo-infrarroja-ds-2ce76d0t-exipf-analoga-lente-28mm/p/MLC21088264'
+    },
+    {
+      id: 'hdd',
+      brand: 'Western Digital',
+      name: 'Disco Duro WD Purple 1TB para Videovigilancia',
+      model: 'WD11PURZ',
+      badge: 'Vigilancia 24/7',
+      badgeType: 'default',
+      price: 119990,
+      defaultQty: 1,
+      specs: ['1 TB capacidad', 'Optimizado para DVR/NVR', 'Hasta 64 cámaras soportadas', 'Escritura continua 24/7', 'AllFrame™ tecnología'],
+      image: 'discoduroimg.webp',
+      link: 'https://www.mercadolibre.cl/original-wd11purz-disco-duro-interno-western-digital-wd-purple-1tb-para-video-vigilancia/p/MLC28538604'
+    }
+  ];
+
+  /* ── STATE ────────────────────────────────────────────── */
+  const state = {
+    quantities: Object.fromEntries(PRODUCTS.map(p => [p.id, p.defaultQty])),
+    cart: {}
+  };
+
+  /* ── FORMAT ───────────────────────────────────────────── */
+  function fmt(n) {
+    return '$' + Math.round(n).toLocaleString('es-CL');
+  }
+
+  /* ── RENDER PRODUCT CARDS ─────────────────────────────── */
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    grid.innerHTML = PRODUCTS.map(p => `
+      <div class="product-card" id="card-${p.id}">
+        <div class="product-image-wrap">
+          <img src="${p.image}" alt="${p.name}" loading="lazy"
+               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23f1f5f9%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 font-size=%2212%22 fill=%22%2394a3b8%22>${p.brand}</text></svg>'"/>
+          <span class="product-badge ${p.badgeType === 'gold' ? 'gold' : ''}">${p.badge}</span>
+          <span class="product-qty-badge">${p.defaultQty > 1 ? 'Kit ×' + p.defaultQty : 'Unidad'}</span>
+        </div>
+        <div class="product-body">
+          <div class="product-brand">${p.brand} · ${p.model}</div>
+          <div class="product-name">${p.name}</div>
+          <ul class="product-specs">
+            ${p.specs.map(s => `<li>${s}</li>`).join('')}
+          </ul>
+        </div>
+        <div class="product-footer">
+          <div class="price-block">
+            <div class="price-label">Precio unitario</div>
+            <div class="price-value">${fmt(p.price)} <span class="price-clp">CLP</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty('${p.id}',-1)">−</button>
+              <input type="number" class="qty-val" id="qty-${p.id}" value="${state.quantities[p.id]}" min="1" max="99"
+                     onchange="setQty('${p.id}', this.value)"/>
+              <button class="qty-btn" onclick="changeQty('${p.id}',1)">+</button>
+            </div>
+            <button class="add-btn" id="addbtn-${p.id}" onclick="addToCart('${p.id}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.9-1.34l2.7-8.66H6"/>
+              </svg>
+              Agregar
+            </button>
+          </div>
+        </div>
+        <div style="padding:0 22px 16px">
+          <a class="view-link" href="${p.link}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+              <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            Ver en MercadoLibre
+          </a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ── QTY CONTROL ──────────────────────────────────────── */
+  function changeQty(id, delta) {
+    const current = state.quantities[id];
+    const next = Math.max(1, current + delta);
+    state.quantities[id] = next;
+    const input = document.getElementById('qty-' + id);
+    if (input) input.value = next;
+    updateQuote();
+  }
+
+  function setQty(id, val) {
+    const v = Math.max(1, parseInt(val) || 1);
+    state.quantities[id] = v;
+    const input = document.getElementById('qty-' + id);
+    if (input) input.value = v;
+    updateQuote();
+  }
+
+  /* ── CART ─────────────────────────────────────────────── */
+  function addToCart(id) {
+    const p = PRODUCTS.find(x => x.id === id);
+    const qty = state.quantities[id];
+
+    if (state.cart[id]) {
+      state.cart[id].qty += qty;
+    } else {
+      state.cart[id] = { ...p, qty };
+    }
+
+    updateCartUI();
+    bumpCartCount();
+    showToast(`${p.name.substring(0, 32)}… agregado ×${qty}`);
+    flashAddBtn(id);
+  }
+
+  function flashAddBtn(id) {
+    const btn = document.getElementById('addbtn-' + id);
+    if (!btn) return;
+    btn.textContent = '✓ Agregado';
+    btn.classList.add('added');
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.9-1.34l2.7-8.66H6"/></svg> Agregar`;
+      btn.classList.remove('added');
+    }, 1800);
+  }
+
+  function removeFromCart(id) {
+    delete state.cart[id];
+    updateCartUI();
+  }
+
+  function changeCartQty(id, delta) {
+    if (!state.cart[id]) return;
+    const next = Math.max(1, state.cart[id].qty + delta);
+    state.cart[id].qty = next;
+    updateCartUI();
+  }
+
+  function updateCartUI() {
+    const items = Object.values(state.cart);
+    const el = document.getElementById('cartItems');
+    const foot = document.getElementById('cartFoot');
+
+    if (items.length === 0) {
+      el.innerHTML = `
+        <div class="cart-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 001.9-1.34l2.7-8.66H6"/>
+          </svg>
+          <span>Tu carrito está vacío</span>
+        </div>`;
+      foot.style.display = 'none';
+    } else {
+      el.innerHTML = items.map(item => `
+        <div class="cart-item" id="ci-${item.id}">
+          <img class="ci-img" src="${item.image}" alt="${item.name}"
+               onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 50 50%22><rect fill=%22%23f1f5f9%22 width=%2250%22 height=%2250%22/></svg>'"/>
+          <div class="ci-info">
+            <div class="ci-name">${item.name}</div>
+            <div class="ci-price">${fmt(item.price)} × ${item.qty} = <strong>${fmt(item.price * item.qty)}</strong></div>
+          </div>
+          <div class="ci-controls">
+            <button class="ci-qty-btn" onclick="changeCartQty('${item.id}',-1)">−</button>
+            <span class="ci-qty-num">${item.qty}</span>
+            <button class="ci-qty-btn" onclick="changeCartQty('${item.id}',1)">+</button>
+            <button class="ci-remove" onclick="removeFromCart('${item.id}')" title="Eliminar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+                <path d="M10 11v6"/><path d="M14 11v6"/>
+                <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      foot.style.display = '';
+
+      const sub = items.reduce((a, i) => a + i.price * i.qty, 0);
+      document.getElementById('cfSubtotal').textContent = fmt(sub);
+      document.getElementById('cfTotal').textContent = fmt(sub + MANO_DE_OBRA);
+    }
+
+    const totalItems = items.reduce((a, i) => a + i.qty, 0);
+    const cc = document.getElementById('cartCount');
+    cc.textContent = totalItems;
+  }
+
+  function bumpCartCount() {
+    const cc = document.getElementById('cartCount');
+    cc.classList.remove('bump');
+    void cc.offsetWidth;
+    cc.classList.add('bump');
+    setTimeout(() => cc.classList.remove('bump'), 350);
+  }
+
+  /* ── QUOTE TABLE ──────────────────────────────────────── */
+  function updateQuote() {
+    const tbody = document.getElementById('quoteTableBody');
+    let sub = 0;
+
+    const rows = PRODUCTS.map(p => {
+      const qty = state.quantities[p.id];
+      const total = p.price * qty;
+      sub += total;
+      return `
+        <tr>
+          <td class="q-name">${p.name}</td>
+          <td class="q-qty">${qty}</td>
+          <td class="q-unit">${fmt(p.price)}</td>
+          <td class="q-sub">${fmt(total)}</td>
+        </tr>
+      `;
+    });
+
+    rows.push(`
+      <tr>
+        <td class="q-name" style="color:#94a3b8">Mano de Obra (Instalación)</td>
+        <td class="q-qty" style="color:#94a3b8">1</td>
+        <td class="q-unit" style="color:#94a3b8">${fmt(MANO_DE_OBRA)}</td>
+        <td class="q-sub">${fmt(MANO_DE_OBRA)}</td>
+      </tr>
+    `);
+
+    tbody.innerHTML = rows.join('');
+    document.getElementById('qpSubtotal').textContent = fmt(sub);
+    document.getElementById('qpTotal').textContent = fmt(sub + MANO_DE_OBRA);
+  }
+
+  /* ── TOAST ────────────────────────────────────────────── */
+  function showToast(msg) {
+    const area = document.getElementById('toastArea');
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      ${msg}`;
+    area.appendChild(t);
+    setTimeout(() => {
+      t.classList.add('hide');
+      setTimeout(() => t.remove(), 350);
+    }, 2800);
+  }
+
+  /* ── MODAL ────────────────────────────────────────────── */
+  function openModal() {
+    const items = Object.values(state.cart).length > 0
+      ? Object.values(state.cart)
+      : PRODUCTS.map(p => ({ ...p, qty: state.quantities[p.id] }));
+
+    const sub = items.reduce((a, i) => a + i.price * i.qty, 0);
+    const total = sub + MANO_DE_OBRA;
+
+    document.getElementById('modalItems').innerHTML = items.map(i => `
+      <div class="modal-item">
+        <span class="mi-name">${i.name.substring(0, 38)}… ×${i.qty}</span>
+        <span class="mi-val">${fmt(i.price * i.qty)}</span>
+      </div>
+    `).join('') + `
+      <div class="modal-item">
+        <span class="mi-name">Mano de Obra</span>
+        <span class="mi-val">${fmt(MANO_DE_OBRA)}</span>
+      </div>`;
+
+    document.getElementById('modalTotal').textContent = fmt(total);
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+
+  /* ── CART SIDEBAR ─────────────────────────────────────── */
+  function openCart() {
+    document.getElementById('cartSidebar').classList.add('open');
+    document.getElementById('cartOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    document.getElementById('cartSidebar').classList.remove('open');
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── RESET ────────────────────────────────────────────── */
+  function resetQuantities() {
+    PRODUCTS.forEach(p => {
+      state.quantities[p.id] = p.defaultQty;
+      const input = document.getElementById('qty-' + p.id);
+      if (input) input.value = p.defaultQty;
+    });
+    updateQuote();
+    showToast('Cantidades restablecidas a valores originales.');
+  }
+
+  /* ── INIT ─────────────────────────────────────────────── */
+  renderProducts();
+  updateQuote();
+  updateCartUI();
+
+  /* ── EVENT LISTENERS ──────────────────────────────────── */
+  document.getElementById('openCart').addEventListener('click', openCart);
+  document.getElementById('closeCart').addEventListener('click', closeCart);
+  document.getElementById('cartOverlay').addEventListener('click', closeCart);
+  document.getElementById('confirmBtn').addEventListener('click', openModal);
+  document.getElementById('cartConfirmBtn').addEventListener('click', () => { closeCart(); openModal(); });
+  document.getElementById('resetBtn').addEventListener('click', resetQuantities);
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalCloseX').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+
+  /* close cart on ESC */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeCart(); closeModal(); }
+  });
+</script>
+</body>
+</html>
