@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servidor Minecraft INACAP 24/7 — Estado en vivo</title>
+
+<!-- Open Graph -->
+<meta property="og:title" content="Servidor Minecraft INACAP 24/7 — Estado en vivo">
+<meta property="og:description" content="Revisa si el servidor de Minecraft de INACAP está encendido ahora mismo, y enciéndelo si hace falta.">
+<meta property="og:image" content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-1OPuzRb_MxF_NvqnHzU_WthxFY0r01d9-ZbS2KkIA&s=10">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0d1710">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-deep: #0d1710;
+    --bg-panel: #16241a;
+    --bg-panel-2: #1c2e21;
+    --stone: #4a4a44;
+    --stone-light: #6b6b60;
+    --grass-top: #5fa831;
+    --grass-dark: #3f7a1f;
+    --inacap-red: #e8491d;
+    --inacap-red-dim: #b8391a;
+    --online: #5fd858;
+    --offline: #ef5b4d;
+    --cream: #eef0e6;
+    --cream-dim: #b7bdae;
+    --pixel-font: 'Press Start 2P', monospace;
+    --body-font: 'Rubik', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg-deep);
+    color: var(--cream);
+    font-family: var(--body-font);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ---------- Fondo animado de bloques flotantes ---------- */
+  .block-field {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .floating-block {
+    position: absolute;
+    bottom: -60px;
+    width: 34px;
+    height: 34px;
+    border-radius: 3px;
+    opacity: 0.16;
+    animation: drift linear infinite;
+  }
+
+  .floating-block.dirt {
+    background: linear-gradient(180deg, #6a4a2f 0%, #4a3320 100%);
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,0.25), inset 3px 3px 0 rgba(255,255,255,0.08);
+  }
+  .floating-block.grass {
+    background: linear-gradient(180deg, var(--grass-top) 0%, var(--grass-dark) 40%, #6a4a2f 40%, #4a3320 100%);
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,0.25), inset 3px 3px 0 rgba(255,255,255,0.08);
+  }
+  .floating-block.stone {
+    background: linear-gradient(180deg, var(--stone-light) 0%, var(--stone) 100%);
+    box-shadow: inset -4px -4px 0 rgba(0,0,0,0.25), inset 3px 3px 0 rgba(255,255,255,0.08);
+  }
+
+  @keyframes drift {
+    0%   { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-120vh) rotate(8deg); }
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--inacap-red);
+    letter-spacing: 0.03em;
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: var(--pixel-font);
+    font-size: clamp(20px, 4vw, 30px);
+    line-height: 1.6;
+    margin: 0 0 14px;
+    color: var(--cream);
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: var(--cream-dim);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ---------- Tarjeta de estado ---------- */
+  .status-card {
+    background: var(--bg-panel);
+    border: 3px solid #000;
+    border-radius: 8px;
+    padding: 40px 32px;
+    text-align: center;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.35), 0 20px 40px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .status-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--stone-light) 0 10px, var(--stone) 10px 20px);
+  }
+
+  .status-light {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+    box-shadow: 0 0 0 4px rgba(255,255,255,0.05);
+  }
+
+  .status-light.online {
+    background: var(--online);
+    box-shadow: 0 0 18px 4px rgba(95,216,88,0.6);
+    animation: pulse-online 1.8s ease-in-out infinite;
+  }
+  .status-light.offline {
+    background: var(--offline);
+    box-shadow: 0 0 18px 4px rgba(239,91,77,0.5);
+  }
+  .status-light.loading {
+    background: var(--stone-light);
+  }
+
+  @keyframes pulse-online {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+  }
+
+  .status-label {
+    font-family: var(--pixel-font);
+    font-size: clamp(22px, 5vw, 34px);
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 8px;
+  }
+
+  .status-label.online-text { color: var(--online); }
+  .status-label.offline-text { color: var(--offline); }
+  .status-label.loading-text { color: var(--cream-dim); }
+
+  .status-meta {
+    font-size: 13px;
+    color: var(--cream-dim);
+    margin-bottom: 28px;
+  }
+
+  .ip-box {
+    background: #0a120b;
+    border: 2px solid #000;
+    border-radius: 6px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .ip-value {
+    font-family: 'Courier New', monospace;
+    font-size: clamp(14px, 3.4vw, 18px);
+    font-weight: 700;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+    word-break: break-all;
+    text-align: left;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    background: var(--stone);
+    color: var(--cream);
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 9px 14px;
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 3px 0 #000;
+    transition: transform 0.08s ease;
+  }
+  .copy-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #000;
+  }
+  .copy-btn:hover { background: var(--stone-light); }
+
+  .port-note {
+    font-size: 12.5px;
+    color: var(--cream-dim);
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+
+  /* ---------- Panel de encendido (solo visible offline) ---------- */
+  .power-panel {
+    background: var(--bg-panel-2);
+    border: 3px solid #000;
+    border-radius: 8px;
+    padding: 28px 26px;
+    margin-bottom: 28px;
+    display: none;
+  }
+
+  .power-panel.show { display: block; }
+
+  .power-panel h2 {
+    font-family: var(--pixel-font);
+    font-size: 14px;
+    color: var(--inacap-red);
+    margin: 0 0 16px;
+    line-height: 1.7;
+  }
+
+  .cred-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0a120b;
+    border: 2px solid #000;
+    border-radius: 5px;
+    padding: 11px 14px;
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+  }
+
+  .cred-row span:first-child {
+    color: var(--cream-dim);
+    font-size: 12px;
+    font-family: var(--body-font);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .cred-row span:last-child {
+    color: var(--cream);
+    font-weight: 700;
+  }
+
+  .power-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 18px;
+    background: rgb(0, 170, 255);
+    color: #fff;
+    font-family: var(--body-font);
+    font-weight: 700;
+    font-size: 15px;
+    padding: 16px;
+    border-radius: 6px;
+    border: 2px solid #000;
+    box-shadow: 0 4px 0 rgb(0, 170, 255);
+    transition: transform 0.08s ease;
+  }
+  .power-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--inacap-red-dim);
+  }
+  .power-btn:hover { filter: brightness(1.08); }
+
+  .power-hint {
+    font-size: 12.5px;
+    color: var(--cream-dim);
+    margin: 12px 0 0;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--cream-dim);
+    opacity: 0.6;
+    margin-top: 8px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-panel-2);
+    border: 2px solid #000;
+    color: var(--cream);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 10;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .floating-block { animation: none; display: none; }
+    .status-light.online { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="block-field" id="blockField"></div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="eyebrow">INACAP · Servidor comunitario</span>
+    <h1>Minecraft<br><img  style="width: 30%; background-color: white;" src="https://saba.cl/wp-content/uploads/2021/04/logos-inacap.png" alt=""></h1>
+  </div>
+
+  <div class="status-card">
+    <div id="statusLabel" class="status-label loading-text">
+      <span id="statusLight" class="status-light loading"></span>
+      <span id="statusText">CONSULTANDO…</span>
+    </div>
+    <p class="status-meta" id="statusMeta">Conectando con la base de datos…</p>
+
+    <div class="ip-box">
+      <span class="ip-value" id="ipValue">inacap-server.aternos.me</span>
+      <button class="copy-btn" id="copyIpBtn">Copiar</button>
+    </div>
+    <p hidden class="port-note">⚠️ El puerto de Aternos cambia cada vez que el servidor se reinicia. Si esta dirección no conecta, revisa el puerto actual en el panel de Aternos y avisa a un admin para actualizarlo aquí.</p>
+  </div>
+
+  <div class="power-panel" id="powerPanel">
+    <h2>El servidor está apagado.<br>Puedes encenderlo tú mismo:</h2>
+
+ <div>
+    <img src="cuentaserverinacap.png" style="border: 5px solid rgb(0, 170, 255); width: 100%;" alt="Cuenta del servidor INACAP">
+ </div>
+    <a class="power-btn" href="https://aternos.org/server/" target="_blank" rel="noopener">Ir a Aternos y encender el servidor</a>
+    <p class="power-hint">Inicia sesión con esos datos, busca el servidor y presiona "Start". Tarda 1-2 minutos en quedar listo.</p>
+  </div>
+
+  <footer>Estado sincronizado automáticamente · Firebase Realtime Database</footer>
+
+</div>
+
+<div class="toast" id="toast">Copiado ✓</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script>
+  // ==================== CONFIGURACIÓN ====================
+  const firebaseConfig = {
+    apiKey: "AIzaSyDgsdb0dO0oedOMw3HZLzOpzar5Z76Zq74",
+    authDomain: "zazahousestudios-8b7ca.firebaseapp.com",
+    databaseURL: "https://zazahousestudios-8b7ca-default-rtdb.firebaseio.com",
+    projectId: "zazahousestudios-8b7ca",
+    storageBucket: "zazahousestudios-8b7ca.firebasestorage.app",
+    messagingSenderId: "560815486667",
+    appId: "1:560815486667:web:f521727dd900f255f28d4e",
+    measurementId: "G-X9MBQ5L5X4"
+  };
+
+  // Dirección que se muestra en pantalla. Actualiza el puerto si Aternos lo cambia.
+  const SERVER_ADDRESS = "inacap-server.aternos.me";
+
+  // Ruta en Realtime Database que el bot/script del VPS debe actualizar.
+  // Estructura esperada: { online: true|false, lastUpdated: <timestamp ms> }
+  const DB_PATH = "serverStatus";
+  // =========================================================
+
+  document.getElementById('ipValue').textContent = SERVER_ADDRESS;
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  const statusLabel = document.getElementById('statusLabel');
+  const statusLight = document.getElementById('statusLight');
+  const statusText = document.getElementById('statusText');
+  const statusMeta = document.getElementById('statusMeta');
+  const powerPanel = document.getElementById('powerPanel');
+
+  function formatRelativeTime(ms) {
+    if (!ms) return '';
+    const diffSec = Math.floor((Date.now() - ms) / 1000);
+    if (diffSec < 10) return 'hace unos segundos';
+    if (diffSec < 60) return `hace ${diffSec}s`;
+    const diffMin = Math.floor(diffSec / 60);
+    if (diffMin < 60) return `hace ${diffMin} min`;
+    const diffHr = Math.floor(diffMin / 60);
+    return `hace ${diffHr}h`;
+  }
+
+  function render(data) {
+    if (!data) {
+      statusLabel.className = 'status-label loading-text';
+      statusLight.className = 'status-light loading';
+      statusText.textContent = 'SIN DATOS';
+      statusMeta.textContent = 'No se encontró información de estado en la base de datos.';
+      powerPanel.classList.add('show');
+      return;
+    }
+
+    const isOnline = !!data.online;
+
+    if (isOnline) {
+      statusLabel.className = 'status-label online-text';
+      statusLight.className = 'status-light online';
+      statusText.textContent = 'ENCENDIDO';
+      powerPanel.classList.remove('show');
+    } else {
+      statusLabel.className = 'status-label offline-text';
+      statusLight.className = 'status-light offline';
+      statusText.textContent = 'APAGADO';
+      powerPanel.classList.add('show');
+    }
+
+    statusMeta.textContent = data.lastUpdated
+      ? `Última actualización: ${formatRelativeTime(data.lastUpdated)}`
+      : '';
+  }
+
+  db.ref(DB_PATH).on('value', (snapshot) => {
+    render(snapshot.val());
+  }, (error) => {
+    statusLabel.className = 'status-label offline-text';
+    statusLight.className = 'status-light offline';
+    statusText.textContent = 'ERROR';
+    statusMeta.textContent = 'No se pudo conectar a la base de datos.';
+    powerPanel.classList.add('show');
+    console.error('Firebase error:', error);
+  });
+
+  // Refresca los tiempos relativos cada 20s sin esperar nuevos datos
+  setInterval(() => {
+    db.ref(DB_PATH).once('value').then((snap) => render(snap.val()));
+  }, 20000);
+
+  // ---------- Copiar IP ----------
+  document.getElementById('copyIpBtn').addEventListener('click', () => {
+    navigator.clipboard.writeText(SERVER_ADDRESS).then(() => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1600);
+    });
+  });
+
+  // ---------- Fondo animado de bloques ----------
+  const field = document.getElementById('blockField');
+  const types = ['dirt', 'grass', 'stone'];
+  const blockCount = window.innerWidth < 600 ? 10 : 18;
+
+  for (let i = 0; i < blockCount; i++) {
+    const el = document.createElement('div');
+    const type = types[Math.floor(Math.random() * types.length)];
+    el.className = `floating-block ${type}`;
+    el.style.left = `${Math.random() * 100}%`;
+    el.style.width = el.style.height = `${22 + Math.random() * 26}px`;
+    el.style.animationDuration = `${18 + Math.random() * 22}s`;
+    el.style.animationDelay = `-${Math.random() * 30}s`;
+    field.appendChild(el);
+  }
+</script>
+
+</body>
+</html>
