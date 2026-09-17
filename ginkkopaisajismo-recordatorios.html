@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Sistema de Reservas & App — Palma Codes</title>
+
+<meta name="description" content="Propuesta de Palma Codes: sitio de reservas online, panel de administración en tiempo real y app móvil con recordatorios automáticos para tu servicio de paisajismo.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sistema de Reservas & App — Palma Codes">
+<meta property="og:description" content="Agenda online, panel en tiempo real y una app que te avisa antes de cada visita. Propuesta hecha a medida por Palma Codes.">
+<meta property="og:image" content="https://i.ibb.co/20Lby0P0/logopalmacodesredondo.png">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Sistema de Reservas & App — Palma Codes">
+<meta name="twitter:description" content="Agenda online, panel en tiempo real y una app que te avisa antes de cada visita. Propuesta hecha a medida por Palma Codes.">
+<meta name="twitter:image" content="https://i.ibb.co/20Lby0P0/logopalmacodesredondo.png">
+
+<link rel="icon" type="image/png" href="https://i.ibb.co/20Lby0P0/logopalmacodesredondo.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/20Lby0P0/logopalmacodesredondo.png">
+
+<style>
+  :root{
+    color-scheme: light;
+    --bg: #F5F7FC;
+    --surface: #FFFFFF;
+    --ink: #0F172A;
+    --ink-soft: #475569;
+    --line: #DCE3F0;
+    --forest: #1E3A8A;
+    --forest-deep: #14265E;
+    --sage: #2563EB;
+    --sage-soft: #E8EFFE;
+    --sky: #93C5FD;
+    --red-dot: #E11D48;
+    --green-dot: #16A34A;
+    --blue-dot: #2563EB;
+    --radius: 14px;
+    --maxw: 460px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 48px;
+  }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 22px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: linear-gradient(155deg, var(--forest) 0%, var(--forest-deep) 65%, #0B1739 100%);
+    color: #F3F6FF;
+    padding: 40px 22px 36px;
+    border-bottom-left-radius: 28px;
+    border-bottom-right-radius: 28px;
+    box-shadow: 0 18px 40px -20px rgba(30,58,138,0.55);
+  }
+  .hero-inner{
+    max-width: var(--maxw);
+    margin: 0 auto;
+  }
+  .logo-row{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .logo-row img{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display:block;
+  }
+  .logo-row span{
+    font-size: 14px;
+    font-weight: 650;
+    color: #EAF0FF;
+  }
+  .eyebrow{
+    font-size: 13px;
+    color: var(--sky);
+    margin: 0 0 10px;
+    letter-spacing: 0.01em;
+    font-weight: 650;
+  }
+  h1.title{
+    font-size: 28px;
+    line-height: 1.18;
+    margin: 0 0 14px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .hero p{
+    font-size: 15px;
+    color: #C6D6F5;
+    margin: 0;
+    max-width: 38ch;
+  }
+
+  /* ---------- SECTION ---------- */
+  section{
+    padding: 34px 0 6px;
+  }
+  section + section{
+    border-top: 1px solid var(--line);
+  }
+  .num{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--sage-soft);
+    color: var(--forest);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  h2.heading{
+    font-size: 20px;
+    line-height: 1.3;
+    margin: 0 0 4px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .subheading{
+    font-size: 13.5px;
+    color: var(--sage);
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+
+  ul.feature-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul.feature-list li{
+    position: relative;
+    padding: 9px 0 9px 22px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+  }
+  ul.feature-list li:last-child{ border-bottom: none; }
+  ul.feature-list li::before{
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 18px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+  }
+
+  .status-row{
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 14.5px;
+    color: var(--ink-soft);
+  }
+  .dot{
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-top: 5px;
+  }
+  .dot.red{ background: var(--red-dot); }
+  .dot.green{ background: var(--green-dot); }
+  .dot.blue{ background: var(--blue-dot); }
+
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-top: 14px;
+  }
+  .card p{ margin:0; font-size: 14.5px; color: var(--ink-soft); }
+  .card strong{ color: var(--ink); }
+
+  .link-btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 6px;
+    margin-top: 14px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 650;
+    color: var(--sage);
+    cursor: pointer;
+  }
+
+  /* ---------- NOTIFICATION PREVIEW ---------- */
+  .notif-card{
+    display:flex;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-top: 12px;
+    box-shadow: 0 8px 20px -14px rgba(15,23,42,0.3);
+  }
+  .notif-icon{
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--sage-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 18px;
+  }
+  .notif-body .notif-title{
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .notif-body .notif-time{
+    font-size: 11.5px;
+    color: var(--sage);
+    font-weight: 650;
+    float: right;
+  }
+  .notif-body .notif-text{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- PRICING ---------- */
+  .price-block{
+    text-align: left;
+    margin: 4px 0 20px;
+  }
+  .price-highlight{
+    background: linear-gradient(135deg, var(--forest) 0%, var(--forest-deep) 100%);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+  }
+  .price{
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+  }
+  .price-highlight .price-label{
+    color: var(--sky);
+  }
+  .price-label{
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+
+  .installment{
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-top: 12px;
+  }
+  .installment .row{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .installment .row .label{
+    font-size: 15px;
+    font-weight: 650;
+  }
+  .installment .row .amount{
+    font-size: 15px;
+    font-weight: 650;
+    color: var(--forest);
+    white-space: nowrap;
+  }
+  .installment .desc{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+  .installment + .installment{ margin-top: 10px; }
+
+  .option{
+    display:flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px dashed var(--line);
+  }
+  .option:first-of-type{ border-top: none; padding-top: 4px; }
+  .option .tag{
+    flex: 0 0 auto;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--forest);
+    background: var(--sage-soft);
+    padding: 3px 8px;
+    border-radius: 20px;
+    height: fit-content;
+    white-space: nowrap;
+  }
+  .option .text{
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .option .text b{ color: var(--ink); }
+
+  /* ---------- CTA SECTION ---------- */
+  .cta-section{
+    text-align: center;
+    padding: 40px 0 8px;
+  }
+  .cta-section h2{
+    font-size: 21px;
+    margin: 0 0 8px;
+    font-weight: 650;
+  }
+  .cta-section p{
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 22px;
+  }
+
+  .btn{
+    display:block;
+    width: 100%;
+    text-align:center;
+    padding: 15px 18px;
+    border-radius: 12px;
+    font-size: 15.5px;
+    font-weight: 650;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: inherit;
+  }
+  .btn-primary{
+    background: var(--forest);
+    color: #F3F6FF;
+  }
+  .btn-secondary{
+    background: transparent;
+    color: var(--forest);
+    border: 1.5px solid var(--forest);
+    margin-top: 12px;
+  }
+
+  .signature{
+    text-align: center;
+    padding: 30px 0 4px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .signature b{ color: var(--ink); }
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.5);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+    padding: 0;
+  }
+  .overlay.open{ display:flex; }
+  .modal{
+    background: var(--surface);
+    width: 100%;
+    max-width: var(--maxw);
+    border-radius: 20px 20px 0 0;
+    padding: 22px 22px calc(22px + env(safe-area-inset-bottom));
+    animation: slideUp 0.22s ease-out;
+  }
+  @keyframes slideUp{
+    from{ transform: translateY(16px); opacity: 0; }
+    to{ transform: translateY(0); opacity: 1; }
+  }
+  .modal h3{
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 650;
+  }
+  .modal p.hint{
+    margin: 0 0 14px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .modal textarea{
+    width: 100%;
+    min-height: 96px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 15px;
+    padding: 12px;
+    resize: vertical;
+  }
+  .modal textarea:focus{
+    outline: 2px solid var(--sage);
+    outline-offset: 1px;
+  }
+  .modal-actions{
+    display:flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .modal-actions .btn{ margin-top: 0; }
+  .btn-ghost{
+    background: var(--sage-soft);
+    color: var(--forest);
+    flex: 0 0 auto;
+    width: auto;
+    padding: 15px 20px;
+  }
+  .modal-actions .btn-primary{ flex: 1 1 auto; }
+
+  .modal .notif-card{ margin-top: 14px; }
+  .modal .notif-card:first-of-type{ margin-top: 4px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .modal{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="logo-row">
+        <img src="https://i.ibb.co/20Lby0P0/logopalmacodesredondo.png" alt="Palma Codes">
+        <span>Palma Codes</span>
+      </div>
+      <p class="eyebrow">Una propuesta hecha para ti</p>
+      <h1 class="title">Sistema Integral de Reservas &amp; App</h1>
+      <p>Para ordenar tus visitas, decirle adiós a los olvidos y que tu servicio de paisajismo se vea todavía más profesional.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <section>
+      <span class="num">1</span>
+      <h2 class="heading">Sitio público — "Agenda tu hora"</h2>
+      <p class="subheading">La experiencia para tus clientes</p>
+      <ul class="feature-list">
+        <li>Nueva sección integrada en el menú principal de tu sitio web.</li>
+        <li>Calendario simple y directo, se ve igual de bien desde el celular o el computador.</li>
+        <li>Horario protegido de 9:00 a 18:00 hrs, domingos cerrados.</li>
+        <li>Las horas ya tomadas se bloquean al tiro, sin dobles reservas.</li>
+        <li>Formulario rápido: nombre, apellido, WhatsApp y un mensaje opcional.</li>
+      </ul>
+    </section>
+
+    <section>
+      <span class="num">2</span>
+      <h2 class="heading">Panel de administración</h2>
+      <p class="subheading">Todo bajo control, en vivo</p>
+      <p style="font-size:14.5px; color:var(--ink-soft); margin: 0 0 12px;">
+        Una pestaña "Reservas" que se actualiza sola cada vez que alguien agenda, sin recargar la página.
+      </p>
+      <div class="status-row"><span class="dot red"></span> Pendiente — recién agendada.</div>
+      <div class="status-row"><span class="dot green"></span> Realizada — visita ya hecha.</div>
+      <div class="status-row"><span class="dot blue"></span> Ausente — se cambia con 1 clic.</div>
+      <div class="card">
+        <p><strong>Contacto directo:</strong> un botón "Contactar" abre WhatsApp con el cliente y un mensaje ya escrito, listo para enviar.</p>
+      </div>
+    </section>
+
+    <section>
+      <span class="num">3</span>
+      <h2 class="heading">Aplicación móvil (APK)</h2>
+      <p class="subheading">Para que nunca más se te olvide</p>
+      <ul class="feature-list">
+        <li>App nativa y liviana, instalada directo en tu celular.</li>
+        <li>Conectada en tiempo real con la base de datos.</li>
+        <li>Pensada solo para recibir tus reservas y recordatorios.</li>
+        <li>Se acabaron los recados perdidos o las notas en papel.</li>
+        <li>Tu agenda operativa, siempre a mano.</li>
+        <li>Recordatorios automáticos 24 y 4 horas antes de cada visita.</li>
+      </ul>
+      <button class="link-btn" id="openNotif">🔔 Ver cómo se ve el recordatorio</button>
+    </section>
+
+    <section>
+      <span class="num">4</span>
+      <h2 class="heading">Inversión</h2>
+      <p class="subheading">Clara y en dos cuotas</p>
+
+      <div class="price-block price-highlight">
+        <div class="price">$70.000</div>
+        <div class="price-label">Pago único total del proyecto</div>
+      </div>
+
+      <div class="installment">
+        <div class="row">
+          <span class="label">Cuota 1</span>
+          <span class="amount">$35.000</span>
+        </div>
+        <div class="desc">Se paga al confirmar e iniciar el proyecto.</div>
+      </div>
+
+      <div class="installment">
+        <div class="row">
+          <span class="label">Cuota 2</span>
+          <span class="amount">$35.000</span>
+        </div>
+        <div class="desc" style="margin-bottom: 10px;">Tú eliges cuándo, entre estas dos fechas:</div>
+
+        <div class="option">
+          <span class="tag">Opción A</span>
+          <span class="text"><b>A la semana</b> — se paga 7 días después del inicio.</span>
+        </div>
+        <div class="option">
+          <span class="tag">Opción B</span>
+          <span class="text"><b>A las 2 semanas</b> — se paga junto con la próxima mensualidad, en 13 días.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2>¿Tienes dudas?</h2>
+      <p>Aquí estoy para ayudarte a llevar tu negocio de paisajismo al siguiente nivel.</p>
+
+      <button class="btn btn-primary" id="openConsulta">Consultar con Diego · Palma Codes</button>
+      <button class="btn btn-secondary" id="btnConfirmar">Confirmar proyecto</button>
+    </section>
+
+    <div class="signature">
+      <b>Palma Codes</b> · Desarrollo de software a medida
+    </div>
+
+  </div>
+
+  <!-- Modal de consulta -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h3>Escribe tu consulta</h3>
+      <p class="hint">Te respondo directo por WhatsApp.</p>
+      <textarea id="consultaText" placeholder="Ej: Tengo una duda sobre los plazos de la app..."></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="closeConsulta">Cancelar</button>
+        <button class="btn btn-primary" id="sendConsulta">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de vista previa de notificaciones -->
+  <div class="overlay" id="overlayNotif">
+    <div class="modal">
+      <h3>Así te avisa la app</h3>
+      <p class="hint">Dos recordatorios automáticos por cada visita agendada, sin que tengas que hacer nada.</p>
+
+      <div class="notif-card">
+        <div class="notif-icon">🔔</div>
+        <div class="notif-body">
+          <span class="notif-time">24 h antes</span>
+          <div class="notif-title">Recordatorio de visita</div>
+          <div class="notif-text">Mañana tienes una visita agendada a las 10:00 hrs. ¡Prepara todo con tiempo!</div>
+        </div>
+      </div>
+
+      <div class="notif-card">
+        <div class="notif-icon">⏰</div>
+        <div class="notif-body">
+          <span class="notif-time">4 h antes</span>
+          <div class="notif-title">Tu visita se acerca</div>
+          <div class="notif-text">En 4 horas tienes una visita agendada. No se te vaya a pasar.</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="closeNotif" style="flex:1;">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const WHATSAPP_NUMBER = "56954998792";
+
+  const overlay = document.getElementById('overlay');
+  const openBtn = document.getElementById('openConsulta');
+  const closeBtn = document.getElementById('closeConsulta');
+  const sendBtn = document.getElementById('sendConsulta');
+  const textarea = document.getElementById('consultaText');
+  const confirmarBtn = document.getElementById('btnConfirmar');
+
+  const overlayNotif = document.getElementById('overlayNotif');
+  const openNotifBtn = document.getElementById('openNotif');
+  const closeNotifBtn = document.getElementById('closeNotif');
+
+  function openModal(el){ el.classList.add('open'); }
+  function closeModal(el){ el.classList.remove('open'); }
+
+  openBtn.addEventListener('click', () => {
+    openModal(overlay);
+    setTimeout(() => textarea.focus(), 50);
+  });
+  closeBtn.addEventListener('click', () => closeModal(overlay));
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal(overlay);
+  });
+
+  openNotifBtn.addEventListener('click', () => openModal(overlayNotif));
+  closeNotifBtn.addEventListener('click', () => closeModal(overlayNotif));
+  overlayNotif.addEventListener('click', (e) => {
+    if (e.target === overlayNotif) closeModal(overlayNotif);
+  });
+
+  sendBtn.addEventListener('click', () => {
+    const msg = textarea.value.trim();
+    const texto = msg
+      ? `Hola Diego, tengo una consulta sobre el Sistema de Reservas & App:\n\n${msg}`
+      : `Hola Diego, tengo una consulta sobre el Sistema de Reservas & App.`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
+    closeModal(overlay);
+    textarea.value = '';
+  });
+
+  confirmarBtn.addEventListener('click', () => {
+    const texto = `Hola Diego, quiero confirmar el proyecto "Sistema de Reservas & App".\n\n` +
+      `Total: $70.000\n` +
+      `• Cuota 1: $35.000 al iniciar el proyecto\n` +
+      `• Cuota 2: $35.000 (a los 7 o 13 días, la que prefiera)\n\n` +
+      `Quedo atento a los siguientes pasos para partir.`;
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
+  });
+</script>
+
+</body>
+</html>
