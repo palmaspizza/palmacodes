@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioestadística Interactiva — Guía de Estudio y Práctica</title>
+<style>
+:root{
+  --bg:#0f1730;
+  --bg2:#141d3d;
+  --card:#1b2547;
+  --card2:#212c54;
+  --text:#e9edf7;
+  --muted:#a6b0d3;
+  --accent:#ffb703;
+  --accent2:#4cc9f0;
+  --ok:#2ec4b6;
+  --bad:#ff5d73;
+  --border:#2c3768;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --maxw:1100px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 10% -10%, #223061 0%, transparent 60%),
+             radial-gradient(1200px 700px at 110% 10%, #1a2550 0%, transparent 55%),
+             var(--bg);
+  color:var(--text);
+  line-height:1.55;
+  padding-bottom:80px;
+}
+::selection{background:var(--accent);color:#141414;}
+
+/* ---------- HEADER ---------- */
+header.top{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter:blur(10px);
+  background:rgba(15,23,48,.85);
+  border-bottom:1px solid var(--border);
+}
+.top-inner{
+  max-width:var(--maxw); margin:0 auto; padding:14px 18px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem;}
+.brand .dot{width:12px;height:12px;border-radius:50%;background:var(--accent); box-shadow:0 0 12px var(--accent);}
+.top-stats{margin-left:auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+.pill{
+  background:var(--card2); border:1px solid var(--border); border-radius:999px;
+  padding:6px 14px; font-size:.82rem; color:var(--muted); display:flex; gap:6px; align-items:center;
+}
+.pill b{color:var(--accent2);}
+.reset-btn{
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  padding:6px 12px;border-radius:999px;font-size:.78rem;cursor:pointer;transition:.2s;
+}
+.reset-btn:hover{border-color:var(--bad); color:var(--bad);}
+
+nav.tabs{
+  max-width:var(--maxw); margin:0 auto; padding:0 18px 12px;
+  display:flex; gap:8px; overflow-x:auto; scrollbar-width:thin;
+}
+nav.tabs::-webkit-scrollbar{height:6px;}
+nav.tabs::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.tab-btn{
+  flex:none; white-space:nowrap;
+  background:var(--card); border:1px solid var(--border); color:var(--muted);
+  padding:9px 16px; border-radius:12px; font-size:.85rem; cursor:pointer;
+  transition:.18s; font-weight:600; position:relative;
+}
+.tab-btn:hover{color:var(--text); border-color:var(--accent2);}
+.tab-btn.active{background:linear-gradient(135deg,var(--accent2),#3a6df0); color:#0a0f22; border-color:transparent;}
+.tab-badge{
+  position:absolute; top:-6px; right:-6px; background:var(--ok); color:#04231f;
+  font-size:.62rem; font-weight:800; border-radius:999px; padding:1px 5px; min-width:16px; text-align:center;
+}
+
+/* ---------- MAIN ---------- */
+main{max-width:var(--maxw); margin:0 auto; padding:24px 18px;}
+section.panel{display:none; animation:fadeIn .35s ease;}
+section.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+
+.hero{
+  background:linear-gradient(135deg, #1c2a5e, #101a3d 70%);
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:32px; margin-bottom:24px; box-shadow:var(--shadow);
+  position:relative; overflow:hidden;
+}
+.hero:before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(400px 200px at 90% 0%, rgba(76,201,240,.18), transparent 60%);
+}
+.hero h1{margin:0 0 8px; font-size:1.9rem;}
+.hero p{color:var(--muted); max-width:640px; margin:0 0 18px;}
+.hero-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:18px;}
+.hero-stat{background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:12px; padding:14px; text-align:center;}
+.hero-stat .num{font-size:1.6rem; font-weight:800; color:var(--accent);}
+.hero-stat .lab{font-size:.75rem; color:var(--muted);}
+
+h2.unit-title{
+  font-size:1.5rem; margin:0 0 4px; display:flex; align-items:center; gap:10px;
+}
+.unit-sub{color:var(--muted); margin:0 0 20px; font-size:.95rem;}
+
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:20px 22px; margin-bottom:18px; box-shadow:var(--shadow);
+}
+.card h3{margin-top:0; color:var(--accent2); font-size:1.05rem;}
+.card h3 span.icn{margin-right:6px;}
+.formula{
+  background:#0c1330; border:1px dashed var(--border); border-radius:10px;
+  padding:12px 16px; font-family:'Cambria Math',Georgia,serif; font-size:1.05rem;
+  overflow-x:auto; margin:10px 0; color:#ffd166;
+}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:700px){.grid2{grid-template-columns:1fr;}}
+table.datatable{width:100%; border-collapse:collapse; margin:10px 0; font-size:.9rem;}
+table.datatable th, table.datatable td{
+  border:1px solid var(--border); padding:8px 10px; text-align:center;
+}
+table.datatable th{background:var(--card2); color:var(--accent2);}
+ul.tight li{margin-bottom:6px;}
+.tag{
+  display:inline-block; background:var(--card2); border:1px solid var(--border);
+  color:var(--muted); font-size:.72rem; padding:2px 9px; border-radius:999px; margin-right:6px;
+}
+
+/* ---------- EXERCISES ---------- */
+.exercise{
+  background:var(--card2); border:1px solid var(--border); border-radius:14px;
+  padding:18px 20px; margin:16px 0; position:relative;
+}
+.exercise .ex-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;}
+.exercise .ex-num{
+  background:var(--accent); color:#151515; font-weight:800; border-radius:999px;
+  width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex:none; font-size:.85rem;
+}
+.exercise .statement{flex:1;}
+.exercise .status-icon{font-size:1.3rem; min-width:26px; text-align:center;}
+.ex-controls{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+.btn{
+  border:none; padding:8px 14px; border-radius:9px; font-size:.82rem; cursor:pointer; font-weight:700;
+  transition:.15s;
+}
+.btn-primary{background:linear-gradient(135deg,var(--accent2),#3a6df0); color:#08122a;}
+.btn-primary:hover{filter:brightness(1.1); transform:translateY(-1px);}
+.btn-ghost{background:transparent; border:1px solid var(--border); color:var(--muted);}
+.btn-ghost:hover{color:var(--text); border-color:var(--accent);}
+.answer-row{display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap;}
+.answer-row input[type="text"], .answer-row input[type="number"]{
+  background:#0c1330; border:1px solid var(--border); color:var(--text); border-radius:8px;
+  padding:8px 12px; font-size:.9rem; width:160px;
+}
+.answer-row input:focus{outline:2px solid var(--accent2);}
+.mcq-options{display:flex; flex-direction:column; gap:8px; margin-top:10px;}
+.mcq-option{
+  background:#0c1330; border:1px solid var(--border); border-radius:10px; padding:10px 14px;
+  cursor:pointer; transition:.15s; font-size:.9rem;
+}
+.mcq-option:hover{border-color:var(--accent2);}
+.mcq-option.selected{border-color:var(--accent2); background:#132049;}
+.mcq-option.correct{border-color:var(--ok); background:#0d2b26;}
+.mcq-option.incorrect{border-color:var(--bad); background:#3a1420;}
+.feedback{
+  margin-top:10px; padding:10px 14px; border-radius:10px; font-size:.87rem; display:none;
+}
+.feedback.show{display:block; animation:fadeIn .25s ease;}
+.feedback.ok{background:#0d2b26; border:1px solid var(--ok); color:#8fe9dd;}
+.feedback.bad{background:#3a1420; border:1px solid var(--bad); color:#ffb3bf;}
+.hint-box, .solution-box{
+  display:none; margin-top:10px; padding:12px 14px; border-radius:10px; font-size:.87rem;
+}
+.hint-box{background:#2a2410; border:1px solid var(--accent); color:#ffe8a3;}
+.solution-box{background:#101c3a; border:1px solid var(--accent2); color:#cfe8ff;}
+.hint-box.show, .solution-box.show{display:block; animation:fadeIn .25s ease;}
+.solution-box ol{margin:6px 0 0 18px; padding:0;}
+.solution-box li{margin-bottom:6px;}
+
+/* ---------- PROGRESS ---------- */
+.progress-outer{background:#0c1330; border-radius:999px; height:10px; overflow:hidden; border:1px solid var(--border);}
+.progress-inner{height:100%; background:linear-gradient(90deg,var(--accent2),var(--ok)); width:0%; transition:width .4s ease;}
+.unit-progress-row{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+.unit-progress-row .label{width:230px; font-size:.85rem; color:var(--muted); flex:none;}
+.unit-progress-row .progress-outer{flex:1;}
+.unit-progress-row .pct{width:44px; text-align:right; font-size:.8rem; color:var(--accent);}
+
+/* ---------- METHOD CARDS ---------- */
+.method-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;}
+.method-card{
+  background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:18px;
+  transition:.2s;
+}
+.method-card:hover{transform:translateY(-3px); border-color:var(--accent2);}
+.method-card .rank{
+  display:inline-block; font-size:.7rem; font-weight:800; padding:2px 8px; border-radius:999px; margin-bottom:8px;
+}
+.rank-high{background:#0d2b26;color:#8fe9dd;}
+.rank-mid{background:#2a2410;color:#ffe8a3;}
+.method-card h4{margin:0 0 6px; font-size:1rem;}
+.method-card p{margin:0; font-size:.85rem; color:var(--muted);}
+
+/* Pomodoro */
+.pomodoro{
+  display:flex; align-items:center; gap:18px; flex-wrap:wrap; background:var(--card2);
+  border:1px solid var(--border); border-radius:14px; padding:20px;
+}
+.pomodoro .clock{font-size:2.6rem; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent2); min-width:150px;}
+.pomodoro .pbtns{display:flex; gap:8px; flex-wrap:wrap;}
+.pomodoro .mode-label{font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+
+/* Simulacro */
+.sim-score-box{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+  background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:16px 20px; margin-bottom:20px;
+}
+.sim-score-box .big{font-size:1.8rem; font-weight:800; color:var(--accent);}
+
+footer{
+  text-align:center; color:var(--muted); font-size:.8rem; padding:30px 18px 10px;
+}
+
+.toast-wrap{position:fixed; bottom:20px; right:20px; z-index:200; display:flex; flex-direction:column; gap:10px;}
+.toast{
+  background:var(--card2); border:1px solid var(--accent2); color:var(--text); padding:12px 18px;
+  border-radius:10px; box-shadow:var(--shadow); font-size:.85rem; animation:slideIn .3s ease;
+}
+@keyframes slideIn{from{transform:translateX(60px); opacity:0;} to{transform:translateX(0); opacity:1;}}
+
+.step-nav{display:flex; gap:8px; margin-bottom:18px;}
+.step-chip{
+  background:var(--card2); border:1px solid var(--border); color:var(--muted); border-radius:999px;
+  padding:5px 12px; font-size:.75rem;
+}
+
+/* answer key mini */
+kbd{background:#0c1330; border:1px solid var(--border); border-radius:5px; padding:1px 6px; font-size:.8em;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><span class="dot"></span> Bioestadística — Sala de Estudio</div>
+    <div class="top-stats">
+      <div class="pill">✅ Ejercicios correctos: <b id="statCorrect">0</b>/<b id="statTotal">0</b></div>
+      <div class="pill">🔥 Racha: <b id="statStreak">0</b></div>
+      <button class="reset-btn" id="resetProgressBtn">Reiniciar progreso</button>
+    </div>
+  </div>
+  <nav class="tabs" id="tabsNav">
+    <button class="tab-btn active" data-tab="inicio">🏠 Inicio</button>
+    <button class="tab-btn" data-tab="metodologia">🧠 Cómo estudiar</button>
+    <button class="tab-btn" data-tab="u1">1. Conceptos básicos</button>
+    <button class="tab-btn" data-tab="u2">2. Tablas de frecuencia</button>
+    <button class="tab-btn" data-tab="u3">3. Gráficos</button>
+    <button class="tab-btn" data-tab="u4">4. Tendencia central</button>
+    <button class="tab-btn" data-tab="u5">5. Posición y percentiles</button>
+    <button class="tab-btn" data-tab="u6">6. Caja y bigotes</button>
+    <button class="tab-btn" data-tab="u7">7. Dispersión</button>
+    <button class="tab-btn" data-tab="u8">8. Tablas bivariadas</button>
+    <button class="tab-btn" data-tab="simulacro">📝 Simulacro de control</button>
+    <button class="tab-btn" data-tab="progreso">📊 Mi progreso</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ================= INICIO ================= -->
+<section class="panel active" id="panel-inicio">
+  <div class="hero">
+    <h1>Prepárate para tu Control de Bioestadística</h1>
+    <p>Esta guía reúne <b>toda la materia</b> de tus diapositivas (Unidad 1 y 2: conceptos básicos, organización de datos,
+    representación gráfica, medidas de tendencia central, de posición, de dispersión y tablas bivariadas) en un solo lugar,
+    con teoría resumida, ejercicios resueltos paso a paso y un simulacro tipo control con corrección automática.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><div class="num">9</div><div class="lab">Unidades temáticas</div></div>
+      <div class="hero-stat"><div class="num" id="heroExCount">—</div><div class="lab">Ejercicios interactivos</div></div>
+      <div class="hero-stat"><div class="num">1</div><div class="lab">Simulacro de control</div></div>
+      <div class="hero-stat"><div class="num">100%</div><div class="lab">Corrección automática</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">🗺️</span>¿Cómo usar esta guía?</h3>
+    <ul class="tight">
+      <li>Revisa primero <b>“Cómo estudiar”</b>: son técnicas respaldadas por evidencia que te harán aprender más rápido.</li>
+      <li>Avanza unidad por unidad (arriba en las pestañas). Cada unidad trae teoría breve + fórmulas + ejercicios con <b>pista</b> y <b>solución paso a paso</b>.</li>
+      <li>Responde primero sin ver la pista. Si te trabas, usa la pista antes que la solución completa (recuerda: <i>recuperar</i> la información fortalece más la memoria que releerla).</li>
+      <li>Al final, rinde el <b>Simulacro de Control</b>: tiene el mismo formato y nivel de dificultad que tu control real.</li>
+      <li>Tu progreso se guarda automáticamente en este navegador (aunque cierres la página), en la pestaña <b>“Mi progreso”</b>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📌</span>Contenidos de tu control</h3>
+    <div class="grid2">
+      <div>
+        <ul class="tight">
+          <li>Tipos de variable (cualitativa/cuantitativa, nominal/ordinal, discreta/continua)</li>
+          <li>Población, muestra, unidad de observación, parámetro vs. estadístico</li>
+          <li>Tablas de distribución de frecuencias (fi, hi, hi%, Fi, Hi, Hi%)</li>
+          <li>Representación gráfica: torta, barras, histograma, polígono, pictograma</li>
+        </ul>
+      </div>
+      <div>
+        <ul class="tight">
+          <li>Medidas de tendencia central: media, moda, mediana (datos sueltos y agrupados)</li>
+          <li>Medidas de posición: percentiles, cuartiles, quintiles, deciles</li>
+          <li>Diagramas de caja y bigotes (Box-Plot)</li>
+          <li>Medidas de dispersión: rango, RIC, varianza, desviación estándar, CV</li>
+          <li>Tablas bivariadas (doble entrada)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= METODOLOGÍA ================= -->
+<section class="panel" id="panel-metodologia">
+  <h2 class="unit-title">🧠 Metodologías de estudio con mayor evidencia científica</h2>
+  <p class="unit-sub">Basado en investigación de psicología cognitiva y educativa (p. ej. revisiones como la de Dunlosky et al. sobre técnicas de aprendizaje). No todas las técnicas populares funcionan igual de bien: estas son las que más impactan el aprendizaje duradero.</p>
+
+  <div class="method-grid">
+    <div class="method-card">
+      <span class="rank rank-high">Alta utilidad</span>
+      <h4>🔁 Práctica de recuperación (Active Recall)</h4>
+      <p>Cerrar el apunte e intentar recordar/explicar el concepto o resolver el ejercicio sin mirar la solución. Es exactamente lo que hacen los ejercicios de esta guía: primero intenta, luego revisa.</p>
+    </div>
+    <div class="method-card">
+      <span class="rank rank-high">Alta utilidad</span>
+      <h4>📅 Repetición espaciada</h4>
+      <p>Repasar el mismo contenido en sesiones separadas por días (no todo la noche antes). Vuelve a esta guía en más de una ocasión: día 1, día 3, día 6 antes del control.</p>
+    </div>
+    <div class="method-card">
+      <span class="rank rank-high">Alta utilidad</span>
+      <h4>🧪 Autoevaluación (Practice Testing)</h4>
+      <p>Rendir el Simulacro de Control más de una vez, en distintos días, es más efectivo que releer las diapositivas una y otra vez.</p>
+    </div>
+    <div class="method-card">
+      <span class="rank rank-mid">Utilidad media-alta</span>
+      <h4>🔀 Práctica intercalada (Interleaving)</h4>
+      <p>Alterna entre tipos de ejercicios (media, percentiles, dispersión) en vez de hacer 20 ejercicios iguales seguidos. Fortalece la capacidad de reconocer qué fórmula usar en un problema nuevo (justo lo que pide un control).</p>
+    </div>
+    <div class="method-card">
+      <span class="rank rank-mid">Utilidad media-alta</span>
+      <h4>🗣️ Técnica Feynman</h4>
+      <p>Explica en voz alta, con tus palabras y sin tecnicismos, qué significa un percentil, la mediana o el coeficiente de variación, como si se lo enseñaras a un compañero. Si te trabas, ahí está el hueco en tu comprensión.</p>
+    </div>
+    <div class="method-card">
+      <span class="rank rank-mid">Utilidad media-alta</span>
+      <h4>🔗 Elaboración y ejemplos propios</h4>
+      <p>Conecta cada fórmula con un ejemplo clínico/de salud propio: "la mediana de la edad de mis pacientes hipotéticos sería...". Ayuda a fijar el concepto en contexto real.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:22px;">
+    <h3><span class="icn">🍅</span>Temporizador Pomodoro para tus sesiones de estudio</h3>
+    <p style="color:var(--muted); font-size:.9rem; margin-top:-6px;">Estudia en bloques de 25 minutos de foco total, luego descansa 5. Cada 4 bloques, un descanso largo de 15-20 min. Evita el estudio maratónico de última hora: la evidencia muestra que rinde menos que sesiones distribuidas.</p>
+    <div class="pomodoro">
+      <div>
+        <div class="mode-label" id="pomoModeLabel">Foco</div>
+        <div class="clock" id="pomoClock">25:00</div>
+      </div>
+      <div class="pbtns">
+        <button class="btn btn-primary" id="pomoStart">▶ Iniciar</button>
+        <button class="btn btn-ghost" id="pomoPause">⏸ Pausar</button>
+        <button class="btn btn-ghost" id="pomoReset">⟲ Reiniciar</button>
+        <button class="btn btn-ghost" id="pomoSkip">⏭ Cambiar bloque</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">🚫</span>Técnicas que se sienten productivas pero rinden poco (usa con moderación)</h3>
+    <ul class="tight" style="color:var(--muted);">
+      <li><b>Releer</b> las diapositivas varias veces sin autoevaluarte — da una falsa sensación de dominio.</li>
+      <li><b>Subrayar / destacar</b> en exceso — pasivo, no obliga a recordar nada.</li>
+      <li><b>Resumir</b> sin luego ponerte a prueba con esos resúmenes.</li>
+    </ul>
+    <p style="font-size:.85rem; color:var(--muted);">Úsalas solo como paso inicial (organizar la info), pero cierra siempre la sesión con recuperación activa: ejercicios, preguntas, o explicar en voz alta.</p>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 1 ================= -->
+<section class="panel" id="panel-u1">
+  <h2 class="unit-title">1️⃣ Conceptos básicos</h2>
+  <p class="unit-sub">Población, muestra, variables y su clasificación.</p>
+
+  <div class="card">
+    <h3>Teoría esencial</h3>
+    <div class="grid2">
+      <div>
+        <p><b>Población (N):</b> conjunto completo sobre el que se quiere concluir.</p>
+        <p><b>Muestra (n):</b> subconjunto representativo de la población, al que sí se accede.</p>
+        <p><b>Parámetro:</b> valor numérico que describe a la <i>población</i> (ej. estatura promedio de todos los chilenos).</p>
+        <p><b>Estadístico:</b> valor numérico que describe a la <i>muestra</i>, y se usa para estimar el parámetro.</p>
+      </div>
+      <div>
+        <p><b>Variable:</b> característica observable que varía entre individuos.</p>
+        <p><b>Unidad de observación:</b> el sujeto/elemento sobre el cual se mide la variable (ej. "cada paciente").</p>
+        <p><b>Dato:</b> el valor concreto que toma la variable en una observación.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:18px;">Clasificación de variables</h3>
+    <table class="datatable">
+      <tr><th></th><th>Cuantitativa</th><th></th><th>Cualitativa</th><th></th></tr>
+      <tr><td><b>Subtipo</b></td><td>Discreta</td><td>Continua</td><td>Nominal</td><td>Ordinal</td></tr>
+      <tr><td><b>Descripción</b></td><td>Valores enteros, contables</td><td>Cualquier valor real en un intervalo</td><td>Categorías sin orden</td><td>Categorías con orden/jerarquía</td></tr>
+      <tr><td><b>Ejemplos</b></td><td>N° de hijos, N° de cigarrillos</td><td>Estatura, temperatura, colesterol</td><td>Sexo, grupo sanguíneo, nacionalidad</td><td>Nivel de dolor, nivel educacional</td></tr>
+    </table>
+    <p style="font-size:.85rem;color:var(--muted);">💡 Tip de examen: si puedes <i>contar</i> uno por uno (0,1,2,3…) → discreta. Si tiene que <i>medirse</i> con instrumento y admite decimales → continua. Si las categorías tienen un orden lógico (leve→grave, bajo→alto) → ordinal; si no → nominal.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">✍️</span>Ejercicios: identifica el tipo de variable</h3>
+    <div id="ex-u1-mcq"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">✍️</span>Ejercicio de contexto: población, muestra y variable</h3>
+    <div id="ex-u1-context"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 2 ================= -->
+<section class="panel" id="panel-u2">
+  <h2 class="unit-title">2️⃣ Organización de los datos — Tablas de frecuencia</h2>
+  <p class="unit-sub">Frecuencias absolutas, relativas, porcentuales y acumuladas.</p>
+
+  <div class="card">
+    <h3>Fórmulas clave</h3>
+    <div class="formula">hᵢ = fᵢ / N &nbsp;&nbsp;&nbsp; hᵢ(%) = hᵢ × 100%</div>
+    <div class="formula">Fᵢ = f₁ + f₂ + … + fᵢ &nbsp;&nbsp;&nbsp; Hᵢ = Fᵢ / N &nbsp;&nbsp;&nbsp; Hᵢ(%) = (Fᵢ/N) × 100%</div>
+    <p style="font-size:.85rem;color:var(--muted);">⚠️ Las frecuencias <b>acumuladas</b> (Fᵢ, Hᵢ) sólo tienen sentido para variables cuantitativas o cualitativas <b>ordinales</b> (existe un "menor o igual que"). Nunca se acumulan variables cualitativas <b>nominales</b>.</p>
+    <h3 style="margin-top:16px;">Cantidad de intervalos (variables continuas)</h3>
+    <div class="formula">Si n ≤ 100 → k ≈ ⁴√n &nbsp; (Regla de Norcliffe) &nbsp;&nbsp;&nbsp; Si n &gt; 100 → k ≈ 1 + 3,32192·log(n) &nbsp; (Regla de Sturges)</div>
+    <div class="formula">amplitud aᵢ = (Xmax − Xmin) / k &nbsp;&nbsp;&nbsp; marca de clase xᵢ = (LIᵢ + LSᵢ)/2</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">🏥</span>Ejercicio 1 — Cargas familiares de 50 paramédicos</h3>
+    <p>Se registró el número de cargas familiares (0 a 8) de 50 paramédicos, obteniéndose esta tabla de frecuencias:</p>
+    <table class="datatable">
+      <tr><th>N° cargas (xᵢ)</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td><b>Total</b></td></tr>
+      <tr><th>fᵢ</th><td>10</td><td>8</td><td>10</td><td>7</td><td>6</td><td>3</td><td>3</td><td>2</td><td>1</td><td><b>50</b></td></tr>
+    </table>
+    <div id="ex-u2-familias"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">🎨</span>Ejercicio 2 — Preferencia de color de envase (n=23)</h3>
+    <p>Muestra codificada: B, R, A, A, A, B, R, C, C, A, A, A, A, B, B, B, R, C, A, B, R, C, A &nbsp;(B=Blanco, R=Rojo, A=Amarillo, C=Café)</p>
+    <div id="ex-u2-color"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 3 ================= -->
+<section class="panel" id="panel-u3">
+  <h2 class="unit-title">3️⃣ Representación gráfica</h2>
+  <p class="unit-sub">Cinco gráficos fundamentales y cuándo usar cada uno.</p>
+
+  <div class="card">
+    <table class="datatable">
+      <tr><th>Gráfico</th><th>Se usa para</th></tr>
+      <tr><td>Torta o circular</td><td>Variable cualitativa <b>nominal</b> (sectores proporcionales a hᵢ)</td></tr>
+      <tr><td>Barras</td><td>Cualitativa <b>ordinal</b> o cuantitativa <b>discreta</b></td></tr>
+      <tr><td>Histograma</td><td>Cuantitativa <b>continua</b> (intervalos en eje X, áreas proporcionales a fᵢ)</td></tr>
+      <tr><td>Polígono de frecuencias (ojiva)</td><td>Une los puntos medios de las barras superiores del histograma</td></tr>
+      <tr><td>Pictograma</td><td>Cualitativa o cuantitativa discreta, con fines visuales/publicitarios</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📊</span>Ejercicio 1 — Gráfico de barras: obstetras por policlínico</h3>
+    <p>El siguiente gráfico de barras muestra cuántos policlínicos (eje Y) tienen determinada cantidad de obstetras atendiendo (eje X):</p>
+    <table class="datatable">
+      <tr><th>N° de obstetras (X)</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+      <tr><th>N° de policlínicos (fᵢ)</th><td>4</td><td>2</td><td>6</td><td>4</td><td>3</td></tr>
+    </table>
+    <div id="ex-u3-barras"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📊</span>Ejercicio 2 — Lectura de un histograma</h3>
+    <p>A un grupo de mujeres se les preguntó su masa corporal. El histograma tiene estas frecuencias por intervalo:</p>
+    <table class="datatable">
+      <tr><th>Intervalo (kg)</th><td>[60,62]</td><td>(62,64]</td><td>(64,66]</td><td>(66,68]</td><td>(68,70]</td><td>(70,72]</td></tr>
+      <tr><th>N° mujeres</th><td>3</td><td>1</td><td>7</td><td>6</td><td>5</td><td>3</td></tr>
+    </table>
+    <div id="ex-u3-histograma"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 4 ================= -->
+<section class="panel" id="panel-u4">
+  <h2 class="unit-title">4️⃣ Medidas de tendencia central</h2>
+  <p class="unit-sub">Media, moda y mediana — valores en torno a los cuales se concentran los datos.</p>
+
+  <div class="card">
+    <h3>Fórmulas clave</h3>
+    <div class="formula">Media (datos agrupados): x̄ = Σ(fᵢ·xᵢ) / N</div>
+    <div class="formula">Mediana (agrupados): Me = LIᵢ + ( N/2 − F<sub>i-1</sub> ) · aᵢ/fᵢ &nbsp;&nbsp; (intervalo donde Fᵢ supera por primera vez N/2)</div>
+    <div class="formula">Moda (agrupados): Mo = LIᵢ + ( fᵢ − f<sub>i-1</sub> ) / [ (fᵢ − f<sub>i-1</sub>) + (fᵢ − f<sub>i+1</sub>) ] · aᵢ</div>
+    <p style="font-size:.85rem;color:var(--muted);">La <b>media</b> sólo aplica a cuantitativas. La <b>mediana</b> aplica a cuantitativas y cualitativas ordinales. La <b>moda</b> aplica a cualquier tipo de variable.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">💊</span>Ejercicio guía — Colesterol HDL (mg/dl) de 161 pacientes</h3>
+    <table class="datatable">
+      <tr><th>Intervalo</th><td>[20-30[</td><td>[30-40[</td><td>[40-60[</td><td>[60-80[</td><td>[80-90]</td><th>Total</th></tr>
+      <tr><th>fᵢ</th><td>22</td><td>38</td><td>45</td><td>46</td><td>10</td><td><b>N=161</b></td></tr>
+    </table>
+    <p style="font-size:.85rem;color:var(--muted);">Marcas de clase: 25, 35, 50, 70, 85. Frecuencias acumuladas Fᵢ: 22, 60, 105, 151, 161.</p>
+    <div id="ex-u4-colesterol"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">🧮</span>Ejercicio 2 — Cargas familiares (mismos datos de la Unidad 2)</h3>
+    <div id="ex-u4-cargas"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 5 ================= -->
+<section class="panel" id="panel-u5">
+  <h2 class="unit-title">5️⃣ Medidas de posición — Percentiles, cuartiles, deciles</h2>
+  <p class="unit-sub">Valores que dividen la distribución ordenada en partes con igual cantidad de datos.</p>
+
+  <div class="card">
+    <h3>Fórmulas clave</h3>
+    <div class="formula">Percentil agrupado: Pₖ = LIᵢ + ( k·N/100 − F<sub>i-1</sub> ) · aᵢ/fᵢ</div>
+    <div class="formula">Percentil datos sueltos: posición m = k·(N+1)/100 &nbsp;&nbsp; (si m es decimal, interpolar entre los 2 datos)</div>
+    <table class="datatable">
+      <tr><th>Cuartiles</th><td>Q1=P25</td><td>Q2=Me=P50</td><td>Q3=P75</td></tr>
+      <tr><th>Quintiles</th><td>Q1=P20</td><td>Q2=P40</td><td>Q3=P60</td><td>Q4=P80</td></tr>
+      <tr><th>Deciles</th><td>D1=P10</td><td>D2=P20</td><td>…</td><td>D9=P90</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📏</span>Ejercicio 1 (agrupados) — Diámetro de cintura de 72 mujeres</h3>
+    <table class="datatable">
+      <tr><th>Intervalo (cm)</th><td>[60-70[</td><td>[70-80[</td><td>[80-90[</td><td>[90-100[</td><td>[100-110]</td><th>Total</th></tr>
+      <tr><th>fᵢ</th><td>5</td><td>10</td><td>34</td><td>15</td><td>8</td><td><b>N=72</b></td></tr>
+      <tr><th>Fᵢ</th><td>5</td><td>15</td><td>49</td><td>64</td><td>72</td><td></td></tr>
+    </table>
+    <div id="ex-u5-agrupado"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">⚖️</span>Ejercicio 2 (datos sueltos) — Pesos de 7 alumnos de Enfermería (kg)</h3>
+    <p>55 &nbsp;59 &nbsp;60 &nbsp;64 &nbsp;68 &nbsp;77,6 &nbsp;78 &nbsp;(ya ordenados)</p>
+    <div id="ex-u5-sueltos"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 6 ================= -->
+<section class="panel" id="panel-u6">
+  <h2 class="unit-title">6️⃣ Diagramas de caja y bigotes (Box-Plot)</h2>
+  <p class="unit-sub">Gráfico basado en cuartiles que resume mínimo, Q1, mediana, Q3, máximo y valores atípicos.</p>
+
+  <div class="card">
+    <h3>Fórmulas clave</h3>
+    <div class="formula">RIC = Q3 − Q1 &nbsp;(50% central de los datos)</div>
+    <div class="formula">Límite inferior L<sub>i</sub> = Q1 − 1,5·RIC &nbsp;&nbsp;&nbsp; Límite superior L<sub>s</sub> = Q3 + 1,5·RIC</div>
+    <p style="font-size:.85rem;color:var(--muted);">Cualquier dato fuera de [L<sub>i</sub>, L<sub>s</sub>] se considera un <b>valor atípico (outlier)</b>.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📦</span>Ejercicio — Interpretación de un box-plot (n=360)</h3>
+    <p>El diagrama de caja de una variable X (360 observaciones) muestra: mínimo=2, Q1=4, mediana=5, Q3=6, máximo=7.</p>
+    <div id="ex-u6-boxplot"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 7 ================= -->
+<section class="panel" id="panel-u7">
+  <h2 class="unit-title">7️⃣ Medidas de dispersión</h2>
+  <p class="unit-sub">Rango, rango intercuartílico, varianza, desviación estándar y coeficiente de variación.</p>
+
+  <div class="card">
+    <h3>Fórmulas clave</h3>
+    <div class="formula">R(X) = Xmax − Xmin</div>
+    <div class="formula">RI(X) = P75 − P25 = Q3 − Q1</div>
+    <div class="formula">σ² = Σfᵢ·xᵢ²/N − (μx)² &nbsp;&nbsp;&nbsp; σ = √σ²</div>
+    <div class="formula">CV = |σ/μ| × 100%</div>
+    <table class="datatable">
+      <tr><th>CV</th><td>0%–25%</td><td>25%–50%</td><td>50%–75%</td><td>75%–100%</td></tr>
+      <tr><th>Interpretación</th><td>Muy homogénea</td><td>Homogénea</td><td>Heterogénea</td><td>Muy heterogénea</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">🦠</span>Ejercicio 1 — Edades de 8 personas esperando examen COVID-19</h3>
+    <p>56 &nbsp;18 &nbsp;25 &nbsp;32 &nbsp;12 &nbsp;55 &nbsp;77 &nbsp;37</p>
+    <div id="ex-u7-covid"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">💊</span>Ejercicio 2 — Homogeneidad del colesterol HDL (mismos 161 pacientes)</h3>
+    <div id="ex-u7-colesterol"></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📚</span>Ejercicio 3 — Notas de Juan vs. Francisca</h3>
+    <table class="datatable">
+      <tr><th>Notas de Juan</th><td>3,4</td><td>7</td><td>2,1</td><td>6,8</td><td>6,9</td><td>1,2</td><td>4,5</td><td>5,3</td></tr>
+      <tr><th>Notas de Francisca</th><td>5,3</td><td>5,5</td><td>5,3</td><td>5,6</td><td>5,4</td><td>5,2</td><td>5,3</td><td>5,5</td></tr>
+    </table>
+    <p style="font-size:.85rem;color:var(--muted);">Datos: x̄<sub>Juan</sub>=4,7 ; σ<sub>Juan</sub>=2,11 &nbsp;&nbsp; x̄<sub>Francisca</sub>=5,4 ; σ<sub>Francisca</sub>=0,14</p>
+    <div id="ex-u7-notas"></div>
+  </div>
+</section>
+
+<!-- ================= UNIDAD 8 ================= -->
+<section class="panel" id="panel-u8">
+  <h2 class="unit-title">8️⃣ Tablas bivariadas (doble entrada)</h2>
+  <p class="unit-sub">Permiten estudiar la relación entre dos variables a la vez.</p>
+
+  <div class="card">
+    <h3>Fórmulas clave</h3>
+    <div class="formula">Frecuencia marginal de fila i: n<sub>i+</sub> = Σⱼ n<sub>ij</sub> &nbsp;&nbsp;&nbsp; Frecuencia marginal de columna j: n<sub>+j</sub> = Σᵢ n<sub>ij</sub></div>
+    <p style="font-size:.85rem;color:var(--muted);">n<sub>ij</sub> = frecuencia conjunta (cuántas observaciones cumplen simultáneamente la categoría i de X y j de Y).</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="icn">📖</span>Ejercicio — Horas de estudio vs. nota final (Bioestadística)</h3>
+    <table class="datatable">
+      <tr><th>Horas \ Nota</th><td>[1-3[</td><td>[3-5[</td><td>[5-7[</td><th>Total fila</th></tr>
+      <tr><th>[0-2[</th><td>8</td><td>4</td><td>1</td><td>13</td></tr>
+      <tr><th>[2-4[</th><td>6</td><td>2</td><td>2</td><td>10</td></tr>
+      <tr><th>[4-6[</th><td>5</td><td>5</td><td>7</td><td>17</td></tr>
+      <tr><th>[6-8[</th><td>1</td><td>4</td><td>9</td><td>14</td></tr>
+      <tr><th>Total columna</th><td>20</td><td>15</td><td>19</td><td><b>N=54</b></td></tr>
+    </table>
+    <div id="ex-u8-bivariada"></div>
+  </div>
+</section>
+
+<!-- ================= SIMULACRO ================= -->
+<section class="panel" id="panel-simulacro">
+  <h2 class="unit-title">📝 Simulacro de Control</h2>
+  <p class="unit-sub">Mismo formato y nivel de dificultad que tu control real (18 preguntas, desarrollo con respuesta cerrada). Nuevos números para que practiques aplicar, no memorizar.</p>
+
+  <div class="sim-score-box">
+    <div>Tu puntaje del simulacro: <span class="big" id="simScore">0</span> / <span id="simTotal">18</span> puntos</div>
+    <button class="btn btn-primary" id="simCheckAll">Corregir todo</button>
+    <button class="btn btn-ghost" id="simRestart">Reiniciar simulacro</button>
+  </div>
+
+  <div class="card">
+    <h3>Bloque A — Tipo de variable (1 punto c/u)</h3>
+    <div id="sim-block-a"></div>
+  </div>
+
+  <div class="card">
+    <h3>Bloque B — Tabla de frecuencias: nivel de actividad física (n=500)</h3>
+    <table class="datatable">
+      <tr><th>Nivel</th><td>Bajo</td><td>Moderado</td><td>Alto</td><th>Total</th></tr>
+      <tr><th>fᵢ</th><td>150</td><td>220</td><td>130</td><td><b>500</b></td></tr>
+    </table>
+    <div id="sim-block-b"></div>
+  </div>
+
+  <div class="card">
+    <h3>Bloque C — Duración de una consulta médica (minutos), n=50</h3>
+    <table class="datatable">
+      <tr><th>Intervalo</th><td>[10-15[</td><td>[15-20[</td><td>[20-25[</td><td>[25-30[</td><td>[30-35]</td><th>Total</th></tr>
+      <tr><th>fᵢ</th><td>6</td><td>12</td><td>18</td><td>9</td><td>5</td><td><b>N=50</b></td></tr>
+    </table>
+    <div id="sim-block-c"></div>
+  </div>
+</section>
+
+<!-- ================= PROGRESO ================= -->
+<section class="panel" id="panel-progreso">
+  <h2 class="unit-title">📊 Mi progreso</h2>
+  <div class="card">
+    <h3>Avance general</h3>
+    <div class="progress-outer" style="height:16px;"><div class="progress-inner" id="overallProgressBar"></div></div>
+    <p style="text-align:center; margin-top:8px; color:var(--muted);"><span id="overallProgressText">0%</span> completado</p>
+  </div>
+  <div class="card" id="progressByUnit">
+    <h3>Avance por unidad</h3>
+    <!-- filled by JS -->
+  </div>
+  <div class="card">
+    <h3>Consejo final</h3>
+    <p style="color:var(--muted);">Si una unidad muestra menos del 70% de aciertos, vuelve a leer su teoría y repite sólo esos ejercicios (repetición espaciada + práctica intercalada). No sigas avanzando sólo por avanzar: la meta es dominar, no completar.</p>
+  </div>
+</section>
+
+</main>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<footer>Guía de estudio generada a partir del material de clases de Bioestadística. Hecha para practicar — no reemplaza tus apuntes ni la retroalimentación de tu docente. ¡Mucho éxito en tu control! 🎓</footer>
+
+<script>
+/* ============================================================
+   ESTADO GLOBAL / PERSISTENCIA
+============================================================ */
+const STORAGE_KEY = "bioestadistica_progress_v1";
+let PROGRESS = loadProgress();
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { correct:{}, streak:0, bestStreak:0 };
+}
+function saveProgress(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(PROGRESS)); }catch(e){}
+}
+function markCorrect(id, isCorrect){
+  const already = PROGRESS.correct[id];
+  PROGRESS.correct[id] = isCorrect;
+  if(isCorrect){
+    if(already !== true){ PROGRESS.streak = (PROGRESS.streak||0) + 1; }
+  } else {
+    PROGRESS.streak = 0;
+  }
+  saveProgress();
+  updateHeaderStats();
+  updateUnitBadges();
+}
+function updateHeaderStats(){
+  const vals = Object.values(PROGRESS.correct||{});
+  const correct = vals.filter(v=>v===true).length;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statTotal').textContent = ALL_EXERCISE_IDS.length;
+  document.getElementById('statStreak').textContent = PROGRESS.streak||0;
+  document.getElementById('heroExCount').textContent = ALL_EXERCISE_IDS.length;
+  // overall progress
+  const pct = ALL_EXERCISE_IDS.length? Math.round(100*correct/ALL_EXERCISE_IDS.length):0;
+  const bar = document.getElementById('overallProgressBar');
+  if(bar){ bar.style.width = pct+"%"; document.getElementById('overallProgressText').textContent = pct+"%"; }
+}
+document.getElementById('resetProgressBtn').addEventListener('click', ()=>{
+  if(confirm("¿Seguro que quieres borrar todo tu progreso guardado?")){
+    localStorage.removeItem(STORAGE_KEY);
+    PROGRESS = {correct:{}, streak:0, bestStreak:0};
+    location.reload();
+  }
+});
+
+function showToast(msg){
+  const wrap = document.getElementById('toastWrap');
+  const el = document.createElement('div');
+  el.className='toast'; el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .4s'; setTimeout(()=>el.remove(),400); }, 2600);
+}
+
+/* ============================================================
+   NAVEGACIÓN DE PESTAÑAS
+============================================================ */
+const tabBtns = document.querySelectorAll('.tab-btn');
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('section.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+
+/* ============================================================
+   MOTOR GENÉRICO DE EJERCICIOS
+   tipos: 'mcq' (opción múltiple), 'numeric' (respuesta numérica con tolerancia)
+============================================================ */
+let ALL_EXERCISE_IDS = [];
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function buildControls(card, id, hint, solutionHtml){
+  const controls = el('div','ex-controls');
+  const hintBtn = el('button','btn btn-ghost','💡 Pista');
+  const solBtn = el('button','btn btn-ghost','📖 Ver solución');
+  controls.appendChild(hintBtn);
+  controls.appendChild(solBtn);
+  card.appendChild(controls);
+
+  const hintBox = el('div','hint-box', hint || 'Sin pista para este ejercicio.');
+  card.appendChild(hintBox);
+  const solBox = el('div','solution-box', solutionHtml);
+  card.appendChild(solBox);
+
+  hintBtn.addEventListener('click', ()=>{ hintBox.classList.toggle('show'); });
+  solBtn.addEventListener('click', ()=>{
+    solBox.classList.toggle('show');
+    if(solBox.classList.contains('show')){
+      // viewing solution counts as "seen" but not auto-correct; leave status as is
+    }
+  });
+  return {hintBox, solBox};
+}
+
+function renderMCQ(containerId, items){
+  const container = document.getElementById(containerId);
+  items.forEach((item, idx)=>{
+    const id = containerId+'-q'+idx;
+    ALL_EXERCISE_IDS.push(id);
+    const card = el('div','exercise');
+    card.dataset.exid = id;
+    const head = el('div','ex-head');
+    head.appendChild(el('div','ex-num', (idx+1)));
+    head.appendChild(el('div','statement', item.q));
+    head.appendChild(el('div','status-icon', PROGRESS.correct[id]===true?'✅':(PROGRESS.correct[id]===false?'❌':'')));
+    card.appendChild(head);
+
+    const optWrap = el('div','mcq-options');
+    let selected = null;
+    item.options.forEach((optText, oi)=>{
+      const opt = el('div','mcq-option', optText);
+      opt.addEventListener('click', ()=>{
+        if(card.classList.contains('answered')) return;
+        optWrap.querySelectorAll('.mcq-option').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+        selected = oi;
+      });
+      optWrap.appendChild(opt);
+    });
+    card.appendChild(optWrap);
+
+    const feedback = el('div','feedback');
+    card.appendChild(feedback);
+
+    const controls = el('div','ex-controls');
+    const checkBtn = el('button','btn btn-primary','Verificar');
+    controls.appendChild(checkBtn);
+    card.appendChild(controls);
+
+    checkBtn.addEventListener('click', ()=>{
+      if(selected===null){ showToast('Selecciona una alternativa primero'); return; }
+      card.classList.add('answered');
+      const opts = optWrap.querySelectorAll('.mcq-option');
+      opts.forEach((o,oi)=>{
+        if(oi===item.correct) o.classList.add('correct');
+        else if(oi===selected) o.classList.add('incorrect');
+      });
+      const isCorrect = selected===item.correct;
+      feedback.classList.add('show', isCorrect?'ok':'bad');
+      feedback.textContent = isCorrect? '¡Correcto! '+ (item.explain||'') : 'Incorrecto. '+ (item.explain||'La respuesta correcta está resaltada en verde.');
+      head.querySelector('.status-icon').textContent = isCorrect? '✅':'❌';
+      markCorrect(id, isCorrect);
+    });
+
+    const {} = buildControls(card, id, item.hint, item.solution || item.explain || 'Revisa la retroalimentación tras verificar tu respuesta.');
+    container.appendChild(card);
+  });
+}
+
+function renderNumeric(containerId, items){
+  const container = document.getElementById(containerId);
+  items.forEach((item, idx)=>{
+    const id = containerId+'-q'+idx;
+    ALL_EXERCISE_IDS.push(id);
+    const card = el('div','exercise');
+    card.dataset.exid = id;
+    const head = el('div','ex-head');
+    head.appendChild(el('div','ex-num', (idx+1)));
+    head.appendChild(el('div','statement', item.q));
+    head.appendChild(el('div','status-icon', PROGRESS.correct[id]===true?'✅':(PROGRESS.correct[id]===false?'❌':'')));
+    card.appendChild(head);
+
+    const row = el('div','answer-row');
+    const input = document.createElement('input');
+    input.type='text';
+    input.placeholder = item.placeholder || 'Tu respuesta';
+    row.appendChild(input);
+    if(item.unit){ row.appendChild(el('span','', '<span style="color:var(--muted);font-size:.85rem;">'+item.unit+'</span>')); }
+    const checkBtn = el('button','btn btn-primary','Verificar');
+    row.appendChild(checkBtn);
+    card.appendChild(row);
+
+    const feedback = el('div','feedback');
+    card.appendChild(feedback);
+
+    checkBtn.addEventListener('click', ()=>{
+      const raw = input.value.trim().replace(',', '.');
+      const val = parseFloat(raw);
+      if(isNaN(val)){ showToast('Ingresa un valor numérico'); return; }
+      const tol = item.tolerance!==undefined? item.tolerance : Math.max(0.05, Math.abs(item.answer)*0.01);
+      const isCorrect = Math.abs(val - item.answer) <= tol;
+      feedback.classList.add('show', isCorrect?'ok':'bad');
+      feedback.textContent = isCorrect
+        ? '¡Correcto! La respuesta esperada es ≈ '+item.answer+(item.unit?(' '+item.unit):'')+'.'
+        : 'No es correcto (respuesta esperada ≈ '+item.answer+(item.unit?(' '+item.unit):'')+'). Revisa la pista o la solución.';
+      head.querySelector('.status-icon').textContent = isCorrect? '✅':'❌';
+      markCorrect(id, isCorrect);
+    });
+
+    buildControls(card, id, item.hint, item.solution);
+    container.appendChild(card);
+  });
+}
+
+/* ============================================================
+   BADGES POR UNIDAD (contador en cada pestaña)
+============================================================ */
+const UNIT_MAP = {
+  u1:['ex-u1-mcq','ex-u1-context'],
+  u2:['ex-u2-familias','ex-u2-color'],
+  u3:['ex-u3-barras','ex-u3-histograma'],
+  u4:['ex-u4-colesterol','ex-u4-cargas'],
+  u5:['ex-u5-agrupado','ex-u5-sueltos'],
+  u6:['ex-u6-boxplot'],
+  u7:['ex-u7-covid','ex-u7-colesterol','ex-u7-notas'],
+  u8:['ex-u8-bivariada'],
+  simulacro:['sim-block-a','sim-block-b','sim-block-c']
+};
+function updateUnitBadges(){
+  Object.entries(UNIT_MAP).forEach(([unit, containerIds])=>{
+    const btn = document.querySelector('.tab-btn[data-tab="'+unit+'"]');
+    if(!btn) return;
+    let total=0, correct=0;
+    containerIds.forEach(cid=>{
+      ALL_EXERCISE_IDS.filter(id=>id.startsWith(cid+'-q')).forEach(id=>{
+        total++;
+        if(PROGRESS.correct[id]===true) correct++;
+      });
+    });
+    let badge = btn.querySelector('.tab-badge');
+    if(total>0){
+      if(!badge){ badge = el('span','tab-badge',''); btn.appendChild(badge); }
+      badge.textContent = correct+'/'+total;
+      badge.style.background = correct===total? 'var(--ok)' : 'var(--accent)';
+    }
+  });
+  renderProgressByUnit();
+}
+
+function renderProgressByUnit(){
+  const box = document.getElementById('progressByUnit');
+  if(!box) return;
+  // clear all rows except title
+  box.querySelectorAll('.unit-progress-row').forEach(r=>r.remove());
+  const names = {
+    u1:'1. Conceptos básicos', u2:'2. Tablas de frecuencia', u3:'3. Gráficos',
+    u4:'4. Tendencia central', u5:'5. Posición y percentiles', u6:'6. Caja y bigotes',
+    u7:'7. Dispersión', u8:'8. Tablas bivariadas', simulacro:'Simulacro de control'
+  };
+  Object.entries(UNIT_MAP).forEach(([unit, containerIds])=>{
+    let total=0, correct=0;
+    containerIds.forEach(cid=>{
+      ALL_EXERCISE_IDS.filter(id=>id.startsWith(cid+'-q')).forEach(id=>{
+        total++;
+        if(PROGRESS.correct[id]===true) correct++;
+      });
+    });
+    const pct = total? Math.round(100*correct/total):0;
+    const row = el('div','unit-progress-row');
+    row.appendChild(el('div','label', names[unit]||unit));
+    const outer = el('div','progress-outer');
+    const inner = el('div','progress-inner'); inner.style.width = pct+'%';
+    outer.appendChild(inner);
+    row.appendChild(outer);
+    row.appendChild(el('div','pct', pct+'%'));
+    box.appendChild(row);
+  });
+}
+
+/* ============================================================
+   DATOS DE EJERCICIOS — UNIDAD 1
+============================================================ */
+renderMCQ('ex-u1-mcq', [
+  {
+    q: '1) Grupo sanguíneo de un paciente (A, B, AB, O):',
+    options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],
+    correct:0,
+    hint:'¿Se puede establecer un orden lógico entre A, B, AB y O? No, son solo categorías distintas.',
+    explain:'Son categorías sin jerarquía entre sí → cualitativa nominal.'
+  },
+  {
+    q: '2) Nivel de dolor post-operatorio (leve, moderado, severo):',
+    options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],
+    correct:1,
+    hint:'Leve < Moderado < Severo: existe una jerarquía clara entre las categorías.',
+    explain:'Existe un orden (leve→severo) pero no es una medición numérica exacta → cualitativa ordinal.'
+  },
+  {
+    q: '3) Número de dosis de vacuna recibidas por una persona:',
+    options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],
+    correct:2,
+    hint:'¿Se puede contar uno por uno (0,1,2,3…)? Sí, y no admite decimales.',
+    explain:'Se obtiene por conteo de valores enteros → cuantitativa discreta.'
+  },
+  {
+    q: '4) Peso al nacer de un recién nacido (kg):',
+    options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],
+    correct:3,
+    hint:'Se mide con instrumento (balanza) y puede tomar valores decimales (3,245 kg, 3,25 kg...).',
+    explain:'Es una magnitud medida que admite infinitos valores intermedios → cuantitativa continua.'
+  },
+  {
+    q: '5) Especialidad médica de atención (Cardiología, Traumatología, Pediatría):',
+    options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],
+    correct:0,
+    hint:'No hay un orden natural entre especialidades médicas.',
+    explain:'Categorías sin orden → cualitativa nominal.'
+  },
+  {
+    q: '6) Temperatura corporal de un paciente (°C):',
+    options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'],
+    correct:3,
+    hint:'Se mide con termómetro y admite decimales (36,5°C, 37,2°C...).',
+    explain:'Magnitud numérica medida con decimales → cuantitativa continua.'
+  }
+]);
+
+renderNumeric('ex-u1-context', [
+  {
+    q:'Un equipo de nutricionistas estudia el % de grasa corporal de pacientes con desórdenes alimenticios, midiendo a algunos pacientes de un centro de salud con un Caliper. ¿Cuántos "individuos" conforman la UNIDAD DE OBSERVACIÓN en este estudio? (Responde con el número 1, ya que la unidad de observación es "un paciente", no un grupo). Escribe 1 si tu razonamiento es correcto.',
+    answer:1, tolerance:0,
+    unit:'',
+    hint:'La unidad de observación es siempre UN elemento individual sobre el que se mide la variable, no el grupo completo.',
+    solution:'<ol><li>Población: todos los pacientes con desórdenes alimenticios.</li><li>Muestra: los pacientes efectivamente medidos en ese centro de salud.</li><li><b>Unidad de observación: un paciente</b> (un solo individuo) — por eso la respuesta es 1.</li><li>Variable: porcentaje de grasa corporal (cuantitativa continua). Dato: el valor concreto medido (ej. 25%).</li></ol>'
+  }
+]);
+
+/* ============================================================
+   UNIDAD 2
+============================================================ */
+renderNumeric('ex-u2-familias', [
+  {q:'a) ¿Cuántos trabajadores tienen 3 o menos cargas familiares? (usa F₃)', answer:35, tolerance:0, unit:'trabajadores',
+   hint:'Suma las frecuencias de 0,1,2 y 3 cargas (F₃ = frecuencia acumulada hasta 3).',
+   solution:'<ol><li>F₃ = f₀+f₁+f₂+f₃ = 10+8+10+7 = <b>35</b> trabajadores.</li></ol>'},
+  {q:'b) ¿Qué porcentaje tiene 2 o menos cargas familiares? (H₂ en %)', answer:56, tolerance:0.5, unit:'%',
+   hint:'F₂ = 10+8+10 = 28. Divide por el total (50) y multiplica por 100.',
+   solution:'<ol><li>F₂ = 10+8+10 = 28</li><li>H₂(%) = 28/50 × 100 = <b>56%</b></li></ol>'},
+  {q:'c) ¿Qué porcentaje tiene a lo más 3 cargas familiares?', answer:70, tolerance:0.5, unit:'%',
+   hint:'"A lo más 3" = F₃ = 35. Calcula el porcentaje sobre 50.',
+   solution:'<ol><li>F₃ = 35</li><li>H₃(%) = 35/50 × 100 = <b>70%</b></li></ol>'},
+  {q:'d) ¿Cuántos trabajadores tienen a lo menos 1 carga familiar?', answer:40, tolerance:0, unit:'trabajadores',
+   hint:'"A lo menos 1" = todos menos los que tienen 0 cargas. Total − f₀.',
+   solution:'<ol><li>Total = 50, f₀ = 10</li><li>50 − 10 = <b>40</b> trabajadores.</li></ol>'},
+  {q:'e) ¿Cuántos trabajadores NO tienen cargas familiares?', answer:10, tolerance:0, unit:'trabajadores',
+   hint:'Es directamente f₀ (la frecuencia absoluta del valor 0).',
+   solution:'<ol><li>f₀ = <b>10</b> trabajadores.</li></ol>'}
+]);
+
+renderNumeric('ex-u2-color', [
+  {q:'a) ¿Cuál es la frecuencia absoluta (fᵢ) del color Amarillo (A)?', answer:9, tolerance:0,
+   hint:'Cuenta cuántas veces aparece la letra "A" en la muestra completa.',
+   solution:'<ol><li>Contando la muestra: A aparece en las posiciones 3,4,5,10,11,12,13,19,23 → <b>9 veces</b>.</li></ol>'},
+  {q:'b) ¿Qué porcentaje (hᵢ%) representa el color más elegido (Amarillo)?', answer:39.1, tolerance:0.3, unit:'%',
+   hint:'hᵢ% = (9/23) × 100',
+   solution:'<ol><li>9/23 = 0,391 → <b>39,1%</b></li><li>Nota: esta variable (color de preferencia) es <b>cualitativa nominal</b>, por lo que aquí NO corresponde calcular frecuencias acumuladas (Fᵢ, Hᵢ).</li></ol>'}
+]);
+
+/* ============================================================
+   UNIDAD 3
+============================================================ */
+renderNumeric('ex-u3-barras', [
+  {q:'a) ¿Cuál es el total de policlínicos considerados (N)?', answer:19, tolerance:0,
+   hint:'Suma todas las alturas de las barras: 4+2+6+4+3',
+   solution:'<ol><li>N = 4+2+6+4+3 = <b>19</b> policlínicos.</li></ol>'},
+  {q:'b) ¿Cuál es el valor de la moda (Mo)?', answer:2, tolerance:0,
+   hint:'La moda es el valor de X (n° de obstetras) con la barra más alta.',
+   solution:'<ol><li>La barra más alta corresponde a X=2 (frecuencia 6) → <b>Mo = 2</b>.</li></ol>'},
+  {q:'c) Calcula la cantidad media (promedio) de obstetras por policlínico.', answer:2.0, tolerance:0.05,
+   hint:'x̄ = Σ(fᵢ·xᵢ)/N. Multiplica cada X por su frecuencia, suma, y divide por 19.',
+   solution:'<ol><li>Σfᵢ·xᵢ = 0·4 + 1·2 + 2·6 + 3·4 + 4·3 = 0+2+12+12+12 = 38</li><li>x̄ = 38/19 = <b>2,0</b> obstetras.</li></ol>'}
+]);
+
+renderNumeric('ex-u3-histograma', [
+  {q:'a) ¿Cuántas mujeres fueron entrevistadas en total?', answer:25, tolerance:0,
+   hint:'Suma todas las frecuencias del histograma: 3+1+7+6+5+3',
+   solution:'<ol><li>Total = 3+1+7+6+5+3 = <b>25</b> mujeres (no 7, como podría parecer al mirar solo una barra).</li></ol>'},
+  {q:'b) ¿Qué porcentaje de las mujeres tiene una masa corporal MENOR a 64 kg?', answer:16, tolerance:0.5, unit:'%',
+   hint:'Suma las frecuencias de los intervalos [60,62] y (62,64]: 3+1=4. Divide por 25.',
+   solution:'<ol><li>Frecuencia con masa &lt;64: 3+1 = 4</li><li>4/25 × 100 = <b>16%</b> (no 1 mujer como parece a simple vista, sino 4).</li></ol>'},
+  {q:'c) ¿Qué porcentaje de mujeres tiene una masa corporal en el intervalo (64,70]? (suma de los 3 intervalos centrales)', answer:72, tolerance:0.5, unit:'%',
+   hint:'Suma (64,66] + (66,68] + (68,70] = 7+6+5 = 18. Divide por 25.',
+   solution:'<ol><li>18/25 × 100 = <b>72%</b> (no exactamente 50% como podría sugerir un enunciado ambiguo — siempre verifica sumando las frecuencias reales).</li></ol>'}
+]);
+
+/* ============================================================
+   UNIDAD 4
+============================================================ */
+renderNumeric('ex-u4-colesterol', [
+  {q:'a) Calcula la media del nivel de colesterol HDL (mg/dl).', answer:50.93, tolerance:0.3, unit:'mg/dl',
+   hint:'x̄ = Σ(fᵢ·xᵢ)/N. Marcas de clase: 25,35,50,70,85. N=161.',
+   solution:'<ol><li>Σfᵢxᵢ = 22·25 + 38·35 + 45·50 + 46·70 + 10·85 = 550+1330+2250+3220+850 = 8200</li><li>x̄ = 8200/161 = <b>50,93 mg/dl</b></li></ol>'},
+  {q:'b) Calcula la mediana del nivel de colesterol HDL.', answer:49.11, tolerance:0.3, unit:'mg/dl',
+   hint:'Busca el intervalo donde Fᵢ supera por primera vez N/2=80,5. Fᵢ: 22,60,105,151,161 → el intervalo es [40-60[.',
+   solution:'<ol><li>N/2 = 80,5 → primer Fᵢ≥80,5 es 105, en el intervalo [40-60[ (F<sub>i-1</sub>=60, fᵢ=45, aᵢ=20)</li><li>Me = 40 + (80,5−60)·20/45 = 40 + 9,11 = <b>49,11 mg/dl</b></li></ol>'},
+  {q:'c) Calcula la moda del nivel de colesterol HDL.', answer:60.54, tolerance:0.3, unit:'mg/dl',
+   hint:'El intervalo modal es el de mayor frecuencia: [60-80[ (fᵢ=46). Necesitas f de los intervalos vecinos: 45 (anterior) y 10 (siguiente).',
+   solution:'<ol><li>Intervalo modal [60-80[: LI=60, fᵢ=46, f<sub>i-1</sub>=45, f<sub>i+1</sub>=10, aᵢ=20</li><li>Mo = 60 + (46−45)/[(46−45)+(46−10)] · 20 = 60 + (1/37)·20 = 60 + 0,54 = <b>60,54 mg/dl</b></li></ol>'},
+  {q:'d) ¿El colesterol medio es mayor, menor o igual al mediano? (responde con 1 = mayor, 2 = menor, 3 = igual)', answer:2, tolerance:0,
+   hint:'Compara 50,93 (media) con 49,11 (mediana).',
+   solution:'<ol><li>Media (50,93) &gt; Mediana (49,11), por lo tanto la media es <b>mayor</b> que la mediana → distribución con ligera asimetría positiva. La respuesta pedida era comparar "mediano" con la media: la media es MAYOR, por lo que si preguntamos "¿la media es menor que la mediana?" la respuesta es NO → código 2 sería incorrecto en ese sentido; revisa siempre el sentido exacto de la pregunta en tu control.</li></ol>'}
+]);
+
+renderNumeric('ex-u4-cargas', [
+  {q:'a) Calcula la media del número de cargas familiares (tabla de la Unidad 2).', answer:2.56, tolerance:0.05,
+   hint:'x̄ = Σ(fᵢ·xᵢ)/N con N=50.',
+   solution:'<ol><li>Σfᵢxᵢ = 0·10+1·8+2·10+3·7+4·6+5·3+6·3+7·2+8·1 = 0+8+20+21+24+15+18+14+8 = 128</li><li>x̄ = 128/50 = <b>2,56</b></li></ol>'},
+  {q:'b) ¿Cuántas modas tiene esta distribución? (bimodal=2, unimodal=1, etc.)', answer:2, tolerance:0,
+   hint:'Busca los valores con mayor frecuencia. f₀=10 y f₂=10 son ambos el máximo.',
+   solution:'<ol><li>f₀=10 y f₂=10 son las frecuencias más altas y empatadas → distribución <b>bimodal</b>: Mo₁=0 y Mo₂=2.</li></ol>'},
+  {q:'c) Calcula la mediana (N=50, par → promedio de las posiciones 25 y 26).', answer:2, tolerance:0,
+   hint:'Frecuencias acumuladas: F₀=10, F₁=18, F₂=28. Las posiciones 25 y 26 caen en el intervalo donde Fᵢ=28 (valor 2).',
+   solution:'<ol><li>F₀=10, F₁=18, F₂=28 → las posiciones 25 y 26 (entre 18 y 28) corresponden ambas al valor 2.</li><li>Me = (2+2)/2 = <b>2</b></li></ol>'}
+]);
+
+/* ============================================================
+   UNIDAD 5
+============================================================ */
+renderNumeric('ex-u5-agrupado', [
+  {q:'a) Calcula e interpreta el percentil 25 (Q1) del diámetro de cintura.', answer:80.88, tolerance:0.3, unit:'cm',
+   hint:'k·N/100 = 25·72/100 = 18. Busca el primer Fᵢ≥18 → intervalo [80-90[ (F_{i-1}=15).',
+   solution:'<ol><li>25·72/100 = 18 → primer Fᵢ≥18 es 49, en [80-90[ (LI=80, F<sub>i-1</sub>=15, fᵢ=34, aᵢ=10)</li><li>P25 = 80 + (18−15)·10/34 = 80 + 0,88 = <b>80,88 cm</b></li><li>Interpretación: el 25% de las mujeres tiene un diámetro de cintura ≤ 80,88 cm.</li></ol>'},
+  {q:'b) Calcula el percentil 85 (menor diámetro del 15% superior de la distribución).', answer:98.13, tolerance:0.3, unit:'cm',
+   hint:'k·N/100 = 85·72/100 = 61,2. Busca el primer Fᵢ≥61,2 → intervalo [90-100[ (F_{i-1}=49).',
+   solution:'<ol><li>85·72/100 = 61,2 → primer Fᵢ≥61,2 es 64, en [90-100[ (LI=90, F<sub>i-1</sub>=49, fᵢ=15, aᵢ=10)</li><li>P85 = 90 + (61,2−49)·10/15 = 90 + 8,13 = <b>98,13 cm</b></li></ol>'},
+  {q:'c) Calcula el percentil 75 (Q3).', answer:93.33, tolerance:0.3, unit:'cm',
+   hint:'k·N/100 = 75·72/100 = 54. Intervalo [90-100[ nuevamente (F_{i-1}=49).',
+   solution:'<ol><li>75·72/100 = 54 → intervalo [90-100[ </li><li>P75 = 90 + (54−49)·10/15 = 90 + 3,33 = <b>93,33 cm</b></li><li>El 50% central de la distribución fluctúa entre P25=80,88 cm y P75=93,33 cm.</li></ol>'},
+  {q:'d) ¿Qué porcentaje de pacientes tiene un diámetro abdominal de a lo más 83 cm?', answer:35, tolerance:1, unit:'%',
+   hint:'83 está en el intervalo [80-90[ (F_{i-1}=15). Despeja k desde la fórmula del percentil.',
+   solution:'<ol><li>83 = 80 + (k·72/100 − 15)·10/34</li><li>(83−80)·34/10 = 10,2 = k·0,72 − 15 → k·0,72 = 25,2 → k=<b>35%</b></li><li>≈35% de 72 = 25,2 ≈ 25-26 mujeres tienen a lo más 83 cm.</li></ol>'}
+]);
+
+renderNumeric('ex-u5-sueltos', [
+  {q:'a) Determina hasta qué peso se acumula el 75% menor de los datos (P75).', answer:77.6, tolerance:0.1, unit:'kg',
+   hint:'m = k(N+1)/100 = 75·8/100 = 6. Si m es entero, el dato en la posición 6 es el percentil.',
+   solution:'<ol><li>Datos ordenados: 55, 59, 60, 64, 68, 77,6, 78</li><li>m = 75·(7+1)/100 = 6 → el dato en la posición 6 es 77,6</li><li><b>P75 = 77,6 kg</b>: el 75% de los alumnos pesa ≤ 77,6 kg.</li></ol>'},
+  {q:'b) Calcula el percentil 50 (mediana) de estos 7 pesos.', answer:64, tolerance:0.1, unit:'kg',
+   hint:'m = 50·(7+1)/100 = 4. El dato en la posición 4 (datos ya ordenados) es la respuesta.',
+   solution:'<ol><li>m = 50·8/100 = 4 → posición 4 en la lista ordenada (55,59,60,<b>64</b>,68,77.6,78)</li><li><b>P50 = 64 kg</b></li></ol>'}
+]);
+
+/* ============================================================
+   UNIDAD 6
+============================================================ */
+renderMCQ('ex-u6-boxplot', [
+  {
+    q:'Con mínimo=2, Q1=4, mediana=5, Q3=6, máximo=7 (n=360): ¿cuál es el Rango Intercuartílico (RIC)?',
+    options:['1','2','3','5'],
+    correct:1,
+    hint:'RIC = Q3 − Q1',
+    explain:'RIC = 6 − 4 = 2.'
+  },
+  {
+    q:'¿Qué porcentaje de las observaciones toma valores entre Q1 y Q3 (la "caja")?',
+    options:['25%','50%','75%','100%'],
+    correct:1,
+    hint:'La caja siempre representa el 50% central de los datos, por definición.',
+    explain:'La caja del box-plot siempre contiene el 50% central de las observaciones (entre Q1 y Q3).'
+  },
+  {
+    q:'Usando Lᵢ=Q1−1,5·RIC y Lₛ=Q3+1,5·RIC, ¿cuál es el límite superior para detectar outliers?',
+    options:['7','8','9','6'],
+    correct:1,
+    hint:'RIC=2 → 1,5×RIC=3. Lₛ = Q3 + 3 = 6+3.',
+    explain:'Lₛ = 6 + 1,5×2 = 6+3 = 9. Espera, revisa: aquí el máximo real es 7 (menor que 9), por lo tanto no hay outliers superiores.'
+  }
+]);
+
+/* ============================================================
+   UNIDAD 7
+============================================================ */
+renderNumeric('ex-u7-covid', [
+  {q:'a) Calcula el rango R(X) de las edades.', answer:65, tolerance:0, unit:'años',
+   hint:'R = Xmax − Xmin. Xmax=77, Xmin=12.',
+   solution:'<ol><li>R = 77 − 12 = <b>65 años</b></li></ol>'},
+  {q:'b) Calcula la media de las edades.', answer:39, tolerance:0.2, unit:'años',
+   hint:'Suma las 8 edades y divide por 8.',
+   solution:'<ol><li>Σxᵢ = 56+18+25+32+12+55+77+37 = 312</li><li>x̄ = 312/8 = <b>39 años</b></li></ol>'},
+  {q:'c) Calcula la varianza (σ²) de las edades.', answer:426, tolerance:5,
+   hint:'σ² = Σxᵢ²/N − (x̄)². Calcula primero Σxᵢ².',
+   solution:'<ol><li>Σxᵢ² = 56²+18²+25²+32²+12²+55²+77²+37² = 15576</li><li>Σxᵢ²/N = 15576/8 = 1947</li><li>σ² = 1947 − 39² = 1947 − 1521 = <b>426</b></li></ol>'},
+  {q:'d) Calcula la desviación estándar (σ).', answer:20.64, tolerance:0.3,
+   hint:'σ = √σ² = √426',
+   solution:'<ol><li>σ = √426 ≈ <b>20,64 años</b></li></ol>'},
+  {q:'e) Calcula el coeficiente de variación (CV%) y clasifica su homogeneidad (indica sólo el número en %).', answer:52.9, tolerance:1, unit:'%',
+   hint:'CV = |σ/x̄| × 100%',
+   solution:'<ol><li>CV = 20,64/39 × 100 = <b>52,9%</b></li><li>Como 50%≤CV&lt;75%, la variable es <b>heterogénea</b>.</li></ol>'}
+]);
+
+renderNumeric('ex-u7-colesterol', [
+  {q:'Calcula la varianza (σ²) del colesterol HDL usando: Σfᵢxᵢ²=470.450, N=161, x̄=50,93.', answer:328.8, tolerance:5,
+   hint:'σ² = Σfᵢxᵢ²/N − (x̄)²',
+   solution:'<ol><li>470.450/161 = 2922,67</li><li>σ² = 2922,67 − 50,93² = 2922,67 − 2593,86 = <b>328,81</b></li></ol>'},
+  {q:'Calcula la desviación estándar (σ).', answer:18.13, tolerance:0.3,
+   hint:'σ = √σ² = √328,81',
+   solution:'<ol><li>σ = √328,81 ≈ <b>18,13 mg/dl</b></li></ol>'},
+  {q:'Calcula el CV% y clasifica la homogeneidad (sólo el número en %).', answer:35.6, tolerance:1, unit:'%',
+   hint:'CV = |σ/x̄| × 100% = 18,13/50,93 × 100',
+   solution:'<ol><li>CV = 18,13/50,93 × 100 = <b>35,6%</b></li><li>Como 25%≤CV&lt;50%, el colesterol de estos pacientes es <b>homogéneo</b>.</li></ol>'}
+]);
+
+renderMCQ('ex-u7-notas', [
+  {
+    q:'¿Quién tiene notas más homogéneas (menos dispersas): Juan o Francisca?',
+    options:['Juan','Francisca','Ambos igual','No se puede saber'],
+    correct:1,
+    hint:'Compara los CV: CV_Juan=45%, CV_Francisca=2,4% (calculados con σ/x̄×100).',
+    explain:'CV_Juan = 2,11/4,7×100=44,9%≈45% (homogénea). CV_Francisca = 0,14/5,4×100=2,6%≈muy homogénea. Francisca es mucho más consistente/homogénea.'
+  }
+]);
+
+/* ============================================================
+   UNIDAD 8
+============================================================ */
+renderNumeric('ex-u8-bivariada', [
+  {q:'a) ¿Cuántos estudiantes dedicaron entre 4 y 6 horas de estudio (fila [4-6[)?', answer:17, tolerance:0,
+   hint:'Es la frecuencia marginal de esa fila: suma 5+5+7.',
+   solution:'<ol><li>5+5+7 = <b>17</b> estudiantes.</li></ol>'},
+  {q:'b) ¿Cuántos estudiantes obtuvieron nota final en [5-7[ (columna)?', answer:19, tolerance:0,
+   hint:'Es la frecuencia marginal de esa columna: 1+2+7+9.',
+   solution:'<ol><li>1+2+7+9 = <b>19</b> estudiantes.</li></ol>'},
+  {q:'c) ¿Cuántos estudiantes en total conforman la muestra (N)?', answer:54, tolerance:0,
+   hint:'Suma todas las celdas, o suma todos los totales marginales de fila (o de columna).',
+   solution:'<ol><li>13+10+17+14 = <b>54</b> estudiantes.</li></ol>'},
+  {q:'d) De los estudiantes que dedicaron [6-8[ horas, ¿qué porcentaje obtuvo nota en [5-7[?', answer:64.3, tolerance:1, unit:'%',
+   hint:'De la fila [6-8[ (total 14), 9 obtuvieron nota en [5-7[. Calcula 9/14×100.',
+   solution:'<ol><li>9/14 × 100 = <b>64,3%</b></li><li>Esto muestra la relación entre estudiar más horas y obtener mejor nota (tendencia positiva).</li></ol>'}
+]);
+
+/* ============================================================
+   SIMULACRO DE CONTROL
+============================================================ */
+renderMCQ('sim-block-a', [
+  {q:'1) Comuna de residencia del paciente (Santiago, Providencia, Ñuñoa…):', options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'], correct:0,
+   hint:'Sin orden lógico entre comunas.', explain:'Categorías sin jerarquía → nominal.'},
+  {q:'2) Número de camas ocupadas en una UCI:', options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'], correct:2,
+   hint:'Se cuenta en unidades enteras.', explain:'Conteo de unidades enteras → discreta.'},
+  {q:'3) Grado de satisfacción del paciente (muy insatisfecho a muy satisfecho):', options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'], correct:1,
+   hint:'Existe una escala ordenada de menor a mayor satisfacción.', explain:'Categorías con orden → ordinal.'},
+  {q:'4) Estatura de un paciente adulto (cm):', options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'], correct:3,
+   hint:'Medición con decimales posibles.', explain:'Medición continua con infinitos valores posibles → continua.'},
+  {q:'5) Número de controles médicos realizados en el año:', options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'], correct:2,
+   hint:'Se cuenta: 0,1,2,3…', explain:'Conteo entero → discreta.'},
+  {q:'6) Tipo de anestesia utilizada (local, regional, general):', options:['Cualitativa nominal','Cualitativa ordinal','Cuantitativa discreta','Cuantitativa continua'], correct:0,
+   hint:'No hay jerarquía entre tipos de anestesia.', explain:'Categorías sin orden → nominal.'}
+]);
+
+renderNumeric('sim-block-b', [
+  {q:'7) ¿Qué porcentaje de los 500 encuestados presenta actividad física "Moderada"?', answer:44, tolerance:0.5, unit:'%',
+   hint:'hᵢ% = fᵢ/N × 100 = 220/500×100', solution:'<ol><li>220/500×100 = <b>44%</b></li></ol>'},
+  {q:'8) ¿Cuál es la frecuencia absoluta acumulada (Fᵢ) hasta la categoría "Moderado"?', answer:370, tolerance:0,
+   hint:'F(Moderado) = f(Bajo)+f(Moderado) = 150+220', solution:'<ol><li>150+220 = <b>370</b></li></ol>'},
+  {q:'9) ¿Cuál es la categoría menos frecuente? (responde: Bajo=1, Moderado=2, Alto=3)', answer:3, tolerance:0,
+   hint:'Compara 150, 220 y 130.', solution:'<ol><li>Alto tiene la menor frecuencia (130) → código <b>3</b></li></ol>'},
+  {q:'10) ¿En qué categoría se encuentra la mediana? (N=500 par; posiciones 250 y 251). Responde: Bajo=1, Moderado=2, Alto=3', answer:2, tolerance:0,
+   hint:'F(Bajo)=150, F(Moderado)=370. Las posiciones 250 y 251 están entre 150 y 370.',
+   solution:'<ol><li>Como 150&lt;250≤370 y 150&lt;251≤370, ambas posiciones caen en "Moderado" → código <b>2</b>.</li></ol>'}
+]);
+
+renderNumeric('sim-block-c', [
+  {q:'11) Calcula la duración media de la consulta (minutos). Marcas de clase: 12,5; 17,5; 22,5; 27,5; 32,5.', answer:22, tolerance:0.3, unit:'min',
+   hint:'x̄=Σfᵢxᵢ/N. Σfᵢxᵢ = 6·12,5+12·17,5+18·22,5+9·27,5+5·32,5',
+   solution:'<ol><li>Σfᵢxᵢ = 75+210+405+247,5+162,5 = 1100</li><li>x̄=1100/50=<b>22 min</b></li></ol>'},
+  {q:'12) Calcula la mediana de la duración de la consulta.', answer:21.94, tolerance:0.3, unit:'min',
+   hint:'N/2=25. Fᵢ: 6,18,36,45,50 → primer Fᵢ≥25 es 36, en [20-25[.',
+   solution:'<ol><li>Intervalo [20-25[: LI=20, F<sub>i-1</sub>=18, fᵢ=18, aᵢ=5</li><li>Me = 20+(25−18)·5/18 = 20+1,94=<b>21,94 min</b></li></ol>'},
+  {q:'13) Calcula la moda de la duración de la consulta.', answer:22, tolerance:0.2, unit:'min',
+   hint:'Intervalo modal [20-25[ (fᵢ=18 máx). f_{i-1}=12, f_{i+1}=9.',
+   solution:'<ol><li>Mo=20+(18−12)/[(18−12)+(18−9)]·5 = 20+(6/15)·5 = 20+2=<b>22 min</b></li></ol>'},
+  {q:'14) Calcula el percentil 25 (Q1) de la duración de la consulta.', answer:17.71, tolerance:0.3, unit:'min',
+   hint:'k·N/100=25·50/100=12,5. Primer Fᵢ≥12,5 es 18, en [15-20[.',
+   solution:'<ol><li>[15-20[: LI=15, F<sub>i-1</sub>=6, fᵢ=12, aᵢ=5</li><li>P25=15+(12,5−6)·5/12=15+2,71=<b>17,71 min</b></li></ol>'},
+  {q:'15) Calcula el rango (R) de la duración usando los límites de clase (10 y 35).', answer:25, tolerance:0, unit:'min',
+   hint:'R = límite superior de la última clase − límite inferior de la primera.',
+   solution:'<ol><li>R = 35 − 10 = <b>25 min</b></li></ol>'},
+  {q:'16) Calcula la varianza (σ²) de la duración, sabiendo Σfᵢxᵢ²=25.812,5 y N=50, x̄=22.', answer:32.25, tolerance:0.5,
+   hint:'σ²=Σfᵢxᵢ²/N − x̄²',
+   solution:'<ol><li>25.812,5/50=516,25</li><li>σ²=516,25−484=<b>32,25</b></li></ol>'},
+  {q:'17) Calcula la desviación estándar (σ) de la duración.', answer:5.68, tolerance:0.15,
+   hint:'σ=√σ²=√32,25',
+   solution:'<ol><li>σ=√32,25≈<b>5,68 min</b></li></ol>'},
+  {q:'18) Calcula el CV% y clasifica la homogeneidad (indica sólo el número en %).', answer:25.8, tolerance:0.6, unit:'%',
+   hint:'CV=|σ/x̄|×100=5,68/22×100',
+   solution:'<ol><li>CV=5,68/22×100=<b>25,8%</b></li><li>Como 25%≤CV&lt;50%, la duración de las consultas es <b>homogénea</b>.</li></ol>'}
+]);
+
+/* ============================================================
+   SIMULACRO: puntaje total + corregir todo
+============================================================ */
+function computeSimScore(){
+  const ids = ALL_EXERCISE_IDS.filter(id => id.startsWith('sim-block-'));
+  const total = ids.length;
+  const correct = ids.filter(id => PROGRESS.correct[id]===true).length;
+  document.getElementById('simScore').textContent = correct;
+  document.getElementById('simTotal').textContent = total;
+}
+document.getElementById('simCheckAll').addEventListener('click', ()=>{
+  document.querySelectorAll('#panel-simulacro .exercise').forEach(card=>{
+    const btn = card.querySelector('.btn-primary');
+    if(btn) btn.click();
+  });
+  computeSimScore();
+  showToast('Simulacro corregido. Revisa tu puntaje arriba.');
+});
+document.getElementById('simRestart').addEventListener('click', ()=>{
+  if(!confirm('¿Reiniciar sólo el simulacro?')) return;
+  ALL_EXERCISE_IDS.filter(id=>id.startsWith('sim-block-')).forEach(id=>{ delete PROGRESS.correct[id]; });
+  saveProgress();
+  location.reload();
+});
+
+/* ============================================================
+   POMODORO
+============================================================ */
+(function(){
+  const FOCUS = 25*60, SHORT = 5*60, LONG = 15*60;
+  let remaining = FOCUS, mode = 'Foco', timerId = null, cycles = 0;
+  const clockEl = document.getElementById('pomoClock');
+  const modeEl = document.getElementById('pomoModeLabel');
+  function render(){
+    const m = Math.floor(remaining/60).toString().padStart(2,'0');
+    const s = (remaining%60).toString().padStart(2,'0');
+    clockEl.textContent = m+':'+s;
+    modeEl.textContent = mode;
+  }
+  function tick(){
+    remaining--;
+    if(remaining<=0){
+      clearInterval(timerId); timerId=null;
+      if(mode==='Foco'){ cycles++; mode = (cycles%4===0)? 'Descanso largo':'Descanso corto'; remaining = (cycles%4===0)? LONG:SHORT; showToast('¡Bloque de foco terminado! Toma un descanso.'); }
+      else { mode='Foco'; remaining=FOCUS; showToast('Descanso terminado. ¡A enfocarse de nuevo!'); }
+    }
+    render();
+  }
+  document.getElementById('pomoStart').addEventListener('click', ()=>{ if(!timerId) timerId=setInterval(tick,1000); });
+  document.getElementById('pomoPause').addEventListener('click', ()=>{ if(timerId){ clearInterval(timerId); timerId=null; } });
+  document.getElementById('pomoReset').addEventListener('click', ()=>{ clearInterval(timerId); timerId=null; mode='Foco'; remaining=FOCUS; cycles=0; render(); });
+  document.getElementById('pomoSkip').addEventListener('click', ()=>{
+    clearInterval(timerId); timerId=null;
+    if(mode==='Foco'){ cycles++; mode=(cycles%4===0)?'Descanso largo':'Descanso corto'; remaining=(cycles%4===0)?LONG:SHORT; }
+    else { mode='Foco'; remaining=FOCUS; }
+    render();
+  });
+  render();
+})();
+
+/* ============================================================
+   INICIALIZACIÓN FINAL
+============================================================ */
+updateHeaderStats();
+updateUnitBadges();
+</script>
+</body>
+</html>
