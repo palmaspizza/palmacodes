@@ -951,6 +951,7 @@
                 <iframe id="frame-admin" class="demo-iframe" title="Demo: panel de administrador" data-src="webdemoadminbarberia.html" style="display:none"></iframe>
             </div>
         </div>
+        <a class="demo-full" id="demo-full" href="webdemoclientesbarberia.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Abrir en pantalla completa</a>
     </div>
 </section>
 
@@ -2024,7 +2025,7 @@ function cambiarDemo(vista){
 </div>
 <script>
 (function(){
-var active=false, i=0, lastScroll=0, lastKey='', infoDone=-1;
+var active=false, i=0, lastScroll=0, lastKey='';
 function $(id){return document.getElementById(id)}
 function frameOf(v){return $(v==='admin'?'frame-admin':'frame-cliente')}
 function docOf(v){try{return frameOf(v).contentDocument}catch(e){return null}}
@@ -2114,7 +2115,6 @@ function loop(){
    }
   }
  }
- if(s.info&&box&&infoDone!==i){infoDone=i;later(next,800);}
  if(box){
   ring.style.opacity=1;ring.classList.toggle('info',!!s.info);ring.style.left=(box.left-5)+'px';ring.style.top=(box.top-5)+'px';
   ring.style.width=(box.width+10)+'px';ring.style.height=(box.height+10)+'px';
@@ -2137,7 +2137,6 @@ function ocultarBarras(fr){try{var d=fr.contentDocument;if(!d||!d.head||d.getEle
 ['frame-cliente','frame-admin'].forEach(function(id){var f=document.getElementById(id);f.addEventListener('load',function(){ocultarBarras(f)});ocultarBarras(f)});
 window.iniciarTour=function(){
  try{frameOf('cliente').contentWindow.__reservaHecha=false}catch(e){}
- infoDone=-1;
  active=true;i=0;lastScroll=0;lastKey='';
  document.body.classList.add('tour-on');
  cambiarDemo('cliente');
