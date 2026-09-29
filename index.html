@@ -951,7 +951,6 @@
                 <iframe id="frame-admin" class="demo-iframe" title="Demo: panel de administrador" data-src="webdemoadminbarberia.html" style="display:none"></iframe>
             </div>
         </div>
-        <a class="demo-full" id="demo-full" href="webdemoclientesbarberia.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Abrir en pantalla completa</a>
     </div>
 </section>
 
@@ -2025,7 +2024,7 @@ function cambiarDemo(vista){
 </div>
 <script>
 (function(){
-var active=false, i=0, lastScroll=0, lastKey='';
+var active=false, i=0, lastScroll=0, lastKey='', infoDone=-1;
 function $(id){return document.getElementById(id)}
 function frameOf(v){return $(v==='admin'?'frame-admin':'frame-cliente')}
 function docOf(v){try{return frameOf(v).contentDocument}catch(e){return null}}
@@ -2043,7 +2042,6 @@ var TOUR=[
  {v:'cliente',n:6,t:'Marca la casillita de los términos',ev:'change',find:function(d){return q(d,'.terminos-container')},ok:function(e,el,d){var c=q(d,'#aceptoTerminos');return !!(c&&c.checked)}},
  {v:'cliente',n:7,t:'Toca el botón “Reservar”',find:function(d){return q(d,'#reservar-button')},poll:function(d){return !!(d.defaultView&&d.defaultView.__reservaHecha)}},
  {v:'cliente',n:8,parent:true,t:'¡Reserva hecha! 🎉 Ahora toca “Vista admin”',find:function(){return $('tab-admin')}},
- {v:'admin',n:9,info:true,t:'📅 Este es tu Calendario de Reservas. Aquí ves todas las horas.',find:function(d){return q(d,'.calendario-header')}},
  {v:'admin',n:10,t:'Toca el día que dice “res.”: ahí está la reserva',find:function(d){return celdaReserva(d)},done:function(el){var n=el.querySelector('.dia-numero');tourDia=n?parseInt(n.textContent,10):null}},
  {v:'admin',n:11,t:'Toca ⚙️ “Horario especial” para cambiar las horas de ese día',find:function(d){return visible(q(d,'.btn-ver-horarios'))}},
  {v:'admin',n:12,t:'Toca una hora para apagarla o encenderla',find:function(d){return visible(q(d,'#horas-editables .hora-btn.activa'))}},
@@ -2115,6 +2113,7 @@ function loop(){
    }
   }
  }
+ if(s.info&&box&&infoDone!==i){infoDone=i;later(next,800);}
  if(box){
   ring.style.opacity=1;ring.classList.toggle('info',!!s.info);ring.style.left=(box.left-5)+'px';ring.style.top=(box.top-5)+'px';
   ring.style.width=(box.width+10)+'px';ring.style.height=(box.height+10)+'px';
@@ -2137,6 +2136,7 @@ function ocultarBarras(fr){try{var d=fr.contentDocument;if(!d||!d.head||d.getEle
 ['frame-cliente','frame-admin'].forEach(function(id){var f=document.getElementById(id);f.addEventListener('load',function(){ocultarBarras(f)});ocultarBarras(f)});
 window.iniciarTour=function(){
  try{frameOf('cliente').contentWindow.__reservaHecha=false}catch(e){}
+ infoDone=-1;
  active=true;i=0;lastScroll=0;lastKey='';
  document.body.classList.add('tour-on');
  cambiarDemo('cliente');
