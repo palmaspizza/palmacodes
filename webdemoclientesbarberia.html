@@ -1899,7 +1899,62 @@ firebase.auth().onAuthStateChanged((user) => {
     <h2 class="mis-reservas-titulo">
         <span class="icono-titulo">📋</span>
         Mis Reservas
-    </h2><p class="hint-text">💡 tus reservas aparecerán automáticamente si las hiciste desde este dispositivo</p>
+    </h2><p class="hint-text">💡 tus reservas aparecerán automáticamente si las hiciste desde este dispositivo</p>  <!-- Formulario de identificación (inicialmente visible) -->
+    <div class="identificacion-cliente" id="identificacionCliente">
+        <p  hidden="texto-identificacion">Ingresa tu nombre para ver tus reservas</p>
+        <div class="input-group">
+            <input  hidden
+                type="text" 
+                id="nombreClienteBusqueda" 
+                placeholder="Tu nombre (como lo escribiste al reservar)"
+                class="input-nombre-cliente"
+                autocomplete="name"
+            >
+            <button hidden class="btn-buscar-reservas">
+                🔍 Buscar
+            </button>
+        </div>
+        
+    </div>
+    
+    <!-- Lista de reservas (inicialmente oculta) -->
+    <div class="lista-reservas-cliente hidden" id="listaReservasCliente">
+        <div class="reservas-header">
+            <h3>Tus reservas activas</h3>
+            <button hidden onclick="cerrarMisReservas()" class="btn-cambiar-nombre">
+                ✏️ Cambiar nombre / Cerrar sesión
+            </button>
+        </div>
+        
+        <div id="contenedorReservasCliente" class="reservas-grid">
+            <!-- Se llena dinámicamente -->
+        </div>
+        
+        <div class="sin-reservas hidden" id="sinReservas">
+            <span class="icono-vacio">🔍</span>
+            <p>No encontramos reservas</p>
+        </div>
+    </div>
+    
+    <!-- Modal de confirmación de cancelación -->
+    <div class="modal-cancelar hidden" id="modalCancelar">
+        <div class="modal-content-cancelar">
+            <h3>⚠️ ¿Cancelar reserva?</h3>
+            <div class="info-reserva-cancelar" id="infoReservaCancelar"></div>
+            <div class="modal-botones">
+                <button onclick="confirmarCancelacion()" class="btn-confirmar-cancelar">
+                    ✅ Sí, cancelar reserva
+                </button>
+                <button onclick="cerrarModalCancelar()" class="btn-cancelar-accion">
+                    ❌ No, mantener reserva
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast de notificaciones -->
+<div class="toast-cliente" id="toastCliente"></div>
   <br> <br><br><br><br><br> <!-- SNIPPET: pega esto donde quieras dentro de tu HTML -->
 <h2 class="mis-reservas-titulo">
      
@@ -2025,62 +2080,7 @@ firebase.auth().onAuthStateChanged((user) => {
     window.open(url, '_blank');
   });
 </script>
-    <!-- Formulario de identificación (inicialmente visible) -->
-    <div class="identificacion-cliente" id="identificacionCliente">
-        <p  hidden="texto-identificacion">Ingresa tu nombre para ver tus reservas</p>
-        <div class="input-group">
-            <input  hidden
-                type="text" 
-                id="nombreClienteBusqueda" 
-                placeholder="Tu nombre (como lo escribiste al reservar)"
-                class="input-nombre-cliente"
-                autocomplete="name"
-            >
-            <button hidden class="btn-buscar-reservas">
-                🔍 Buscar
-            </button>
-        </div>
-        
-    </div>
-    
-    <!-- Lista de reservas (inicialmente oculta) -->
-    <div class="lista-reservas-cliente hidden" id="listaReservasCliente">
-        <div class="reservas-header">
-            <h3>Tus reservas activas</h3>
-            <button hidden onclick="cerrarMisReservas()" class="btn-cambiar-nombre">
-                ✏️ Cambiar nombre / Cerrar sesión
-            </button>
-        </div>
-        
-        <div id="contenedorReservasCliente" class="reservas-grid">
-            <!-- Se llena dinámicamente -->
-        </div>
-        
-        <div class="sin-reservas hidden" id="sinReservas">
-            <span class="icono-vacio">🔍</span>
-            <p>No encontramos reservas</p>
-        </div>
-    </div>
-    
-    <!-- Modal de confirmación de cancelación -->
-    <div class="modal-cancelar hidden" id="modalCancelar">
-        <div class="modal-content-cancelar">
-            <h3>⚠️ ¿Cancelar reserva?</h3>
-            <div class="info-reserva-cancelar" id="infoReservaCancelar"></div>
-            <div class="modal-botones">
-                <button onclick="confirmarCancelacion()" class="btn-confirmar-cancelar">
-                    ✅ Sí, cancelar reserva
-                </button>
-                <button onclick="cerrarModalCancelar()" class="btn-cancelar-accion">
-                    ❌ No, mantener reserva
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Toast de notificaciones -->
-<div class="toast-cliente" id="toastCliente"></div>
+  
 <style>/* ============================================
    MIS RESERVAS - SECCIÓN CLIENTE
    ============================================ */
