@@ -1900,7 +1900,24 @@ firebase.auth().onAuthStateChanged((user) => {
         <span class="icono-titulo">📋</span>
         Mis Reservas
     </h2><p class="hint-text">💡 tus reservas aparecerán automáticamente si las hiciste desde este dispositivo</p>
-  <br> <br><br><br><br><br> <!-- SNIPPET: pega esto donde quieras dentro de tu HTML -->
+   <!-- Lista de reservas (inicialmente oculta) -->
+    <div class="lista-reservas-cliente hidden" id="listaReservasCliente">
+        <div class="reservas-header">
+            <h3>Tus reservas activas</h3>
+            <button hidden onclick="cerrarMisReservas()" class="btn-cambiar-nombre">
+                ✏️ Cambiar nombre / Cerrar sesión
+            </button>
+        </div>
+        
+        <div id="contenedorReservasCliente" class="reservas-grid">
+            <!-- Se llena dinámicamente -->
+        </div>
+        
+        <div class="sin-reservas hidden" id="sinReservas">
+            <span class="icono-vacio">🔍</span>
+            <p>No encontramos reservas</p>
+        </div>
+    </div>  <br> <br><br><br><br><br> <!-- SNIPPET: pega esto donde quieras dentro de tu HTML -->
 <h2 class="mis-reservas-titulo">
      
     </h2>
@@ -2043,24 +2060,7 @@ firebase.auth().onAuthStateChanged((user) => {
         
     </div>
     
-    <!-- Lista de reservas (inicialmente oculta) -->
-    <div class="lista-reservas-cliente hidden" id="listaReservasCliente">
-        <div class="reservas-header">
-            <h3>Tus reservas activas</h3>
-            <button hidden onclick="cerrarMisReservas()" class="btn-cambiar-nombre">
-                ✏️ Cambiar nombre / Cerrar sesión
-            </button>
-        </div>
-        
-        <div id="contenedorReservasCliente" class="reservas-grid">
-            <!-- Se llena dinámicamente -->
-        </div>
-        
-        <div class="sin-reservas hidden" id="sinReservas">
-            <span class="icono-vacio">🔍</span>
-            <p>No encontramos reservas</p>
-        </div>
-    </div>
+ 
     
     <!-- Modal de confirmación de cancelación -->
     <div class="modal-cancelar hidden" id="modalCancelar">
