@@ -2082,7 +2082,7 @@ function setBanner(key,step,text,fin,info){
  $('tour-text').textContent=text;
  var a=$('tour-actions');
  a.innerHTML=fin
-  ?'<button class="main" onclick="tourCerrar();openTermsModal()">Quiero esto en mi barbería</button><button onclick="actualizarPagina()">Repetir</button><button onclick="tourCerrar()">Cerrar</button>'
+  ?'<button class="main" onclick="tourCerrar();openTermsModal()">Quiero esto en mi barbería</button><button onclick="location.reload();">Repetir</button><button onclick="tourCerrar()">Cerrar</button>'
   :(info?'<button class="main" onclick="tourSaltar()">Siguiente ›</button>':'')+'<button onclick="tourSaltar()">Saltar paso ›</button><button onclick="tourCerrar()">Salir ✕</button>';
 }
 
@@ -2132,9 +2132,6 @@ function loop(){
  requestAnimationFrame(loop);
 }
 
-function actualizarPagina() {
-    location.reload();
-}
 
 
 function ocultarBarras(fr){try{var d=fr.contentDocument;if(!d||!d.head||d.getElementById('pc-noscroll'))return;var st=d.createElement('style');st.id='pc-noscroll';st.textContent='*{scrollbar-width:none!important;-ms-overflow-style:none!important}*::-webkit-scrollbar,::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}';d.head.appendChild(st)}catch(e){}}
