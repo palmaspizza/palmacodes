@@ -1189,6 +1189,23 @@ const firebaseConfig = {
 
         // Marca actividad de esta sesión (para que la limpieza sepa que sigue viva)
         db.ref(DEMO_PREFIX + '_ultimaActividad').set(firebase.database.ServerValue.TIMESTAMP);
+        // ===== DEMO: WhatsApp predeterminado (para que nadie ponga datos personales) =====
+        const DEMO_WA = '56954998792';
+        function demoWaLink(nombre, fecha, hora) {
+            const msg = 'Hola! 👋 Este es un mensaje de PRUEBA del sistema Palma Codes.\n' +
+                'Reserva de ' + (nombre || 'Cliente') + (fecha ? ' el ' + fecha : '') + (hora ? ' a las ' + hora : '') + '.\n' +
+                'Este botón le permite al barbero contactar al cliente que reservó, con un solo toque y sin escribir números. ¡Quiero esto en mi barbería!';
+            return 'https://wa.me/' + DEMO_WA + '?text=' + encodeURIComponent(msg);
+        }
+        // ===== DEMO: barbero de ejemplo automático (si la sesión está vacía) =====
+        const DEMO_FOTO = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#1a1208"/><circle cx="32" cy="24" r="11" fill="#e4a64f"/><path d="M10 64c2-16 12-22 22-22s20 6 22 22z" fill="#e4a64f"/></svg>');
+        function demoSembrarBarbero() {
+            db.ref(DEMO_PREFIX + 'barberos').transaction(cur => cur ? undefined : {
+                barbero_demo: { nombre: 'Barbero Demo', foto: DEMO_FOTO, pin: '0000', ntfyTopic: '', activo: true }
+            });
+        }
+        demoSembrarBarbero();
+
 
         // Limpieza de sesiones de demo abandonadas (mejor esfuerzo, no bloqueante)
         db.ref('demoSesiones').once('value', snap => {
@@ -1206,9 +1223,6 @@ const firebaseConfig = {
         function demoLimpiarAlSalir() {
             try { db.ref(DEMO_PREFIX.slice(0, -1)).remove(); } catch (e) {}
         }
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') demoLimpiarAlSalir();
-        });
         window.addEventListener('pagehide', demoLimpiarAlSalir);
         
         // ============================================
@@ -1617,7 +1631,8 @@ const firebaseConfig = {
             </div>
             <div style="text-align:right;">
                 <div class="reserva-hora">${r.hora}</div>
-                <button class="btn-eliminar" onclick="eliminarReserva('${r.id}')">Eliminar</button>
+                <a class="btn-eliminar" style="background:#25d366;color:#111;text-decoration:none;display:inline-block;margin-bottom:6px;" href="${demoWaLink(r.nombre, r.fecha, r.hora)}" target="_blank" rel="noopener">💬 WhatsApp</a><br>
+                                <button class="btn-eliminar" onclick="eliminarReserva('${r.id}')">Eliminar</button>
             </div>
         </div>
     `).join('');
@@ -1730,6 +1745,7 @@ const firebaseConfig = {
                             </div>
                             <div style="text-align: right;">
                                 <div class="reserva-hora">${r.hora}</div>
+                                <a class="btn-eliminar" style="background:#25d366;color:#111;text-decoration:none;display:inline-block;margin-bottom:6px;" href="${demoWaLink(r.nombre, r.fecha, r.hora)}" target="_blank" rel="noopener">💬 WhatsApp</a><br>
                                 <button class="btn-eliminar" onclick="eliminarReserva('${r.id}')">Eliminar</button>
                             </div>
                         </div>
