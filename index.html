@@ -364,6 +364,7 @@
         body.tour-on .tour-el { display: block; }
         body.tour-on .demo-hint, body.tour-on .tour-start { display: none; }
         #tour-ring { position: fixed; z-index: 9990; pointer-events: none; border: 3px solid var(--gold); border-radius: 14px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.62), 0 0 30px 8px var(--gold-glow); outline: 3px solid var(--gold); outline-offset: 4px; animation: tourRing 1.1s ease-in-out infinite; transition: left .25s, top .25s, width .25s, height .25s, opacity .2s; opacity: 0; }
+        #tour-ring.info { animation: none; border-style: dashed; outline: none; box-shadow: 0 0 0 9999px rgba(0,0,0,0.35); }
         @keyframes tourRing { 0%,100% { outline-offset: 3px; outline-color: rgba(228,166,79,1); } 50% { outline-offset: 13px; outline-color: rgba(228,166,79,0.15); } }
         #tour-hand { position: fixed; z-index: 9991; pointer-events: none; font-size: 3rem; line-height: 1; margin-left: -1.5rem; opacity: 0; transition: left .25s, top .25s, opacity .2s; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
         #tour-hand span { display: inline-block; animation: tourHand .7s ease-in-out infinite; }
@@ -2040,7 +2041,7 @@ var TOUR=[
  {v:'cliente',n:4,t:'Toca una hora libre',find:function(d){return q(d,'.hora-slot.horaLibre')}},
  {v:'cliente',n:5,t:'Escribe un nombre inventado. Ej: Juan Prueba',ev:'input',delay:1300,find:function(d){return q(d,'#nombre')},ok:function(e,el){return el.value.trim().length>=3}},
  {v:'cliente',n:6,t:'Marca la casillita de los términos',ev:'change',find:function(d){return q(d,'.terminos-container')},ok:function(e,el,d){var c=q(d,'#aceptoTerminos');return !!(c&&c.checked)}},
- {v:'cliente',n:7,t:'Toca el botón “Reservar”',find:function(d){return q(d,'#reservar-button')},poll:function(d){return !!q(d,'.modal-codigo-reserva')}},
+ {v:'cliente',n:7,t:'Toca el botón “Reservar”',find:function(d){return q(d,'#reservar-button')},poll:function(d){return !!(d.defaultView&&d.defaultView.__reservaHecha)}},
  {v:'cliente',n:8,parent:true,t:'¡Reserva hecha! 🎉 Ahora toca “Vista admin”',find:function(){return $('tab-admin')}},
  {v:'admin',n:9,info:true,t:'📅 Este es tu Calendario de Reservas. Aquí ves todas las horas.',find:function(d){return q(d,'.calendario-header')}},
  {v:'admin',n:10,t:'Toca el día que dice “res.”: ahí está la reserva',find:function(d){return celdaReserva(d)},done:function(el){var n=el.querySelector('.dia-numero');tourDia=n?parseInt(n.textContent,10):null}},
@@ -2115,11 +2116,11 @@ function loop(){
   }
  }
  if(box){
-  ring.style.opacity=1;ring.style.left=(box.left-5)+'px';ring.style.top=(box.top-5)+'px';
+  ring.style.opacity=1;ring.classList.toggle('info',!!s.info);ring.style.left=(box.left-5)+'px';ring.style.top=(box.top-5)+'px';
   ring.style.width=(box.width+10)+'px';ring.style.height=(box.height+10)+'px';
   var limit=inFrame?inFrame.bottom:innerHeight;
   var below=box.bottom+75<Math.min(limit,innerHeight);
-  hand.style.opacity=1;hand.firstChild.textContent=below?'👆':'👇';
+  hand.style.opacity=s.info?0:1;hand.firstChild.textContent=below?'👆':'👇';
   hand.style.left=(box.left+box.width/2)+'px';
   hand.style.top=(below?box.bottom+8:box.top-70)+'px';
   ban.classList.toggle('top',box.top+box.height/2>innerHeight*0.55);
@@ -2135,6 +2136,7 @@ function loop(){
 function ocultarBarras(fr){try{var d=fr.contentDocument;if(!d||!d.head||d.getElementById('pc-noscroll'))return;var st=d.createElement('style');st.id='pc-noscroll';st.textContent='*{scrollbar-width:none!important;-ms-overflow-style:none!important}*::-webkit-scrollbar,::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}';d.head.appendChild(st)}catch(e){}}
 ['frame-cliente','frame-admin'].forEach(function(id){var f=document.getElementById(id);f.addEventListener('load',function(){ocultarBarras(f)});ocultarBarras(f)});
 window.iniciarTour=function(){
+ try{frameOf('cliente').contentWindow.__reservaHecha=false}catch(e){}
  active=true;i=0;lastScroll=0;lastKey='';
  document.body.classList.add('tour-on');
  cambiarDemo('cliente');

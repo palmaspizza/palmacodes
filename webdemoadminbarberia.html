@@ -1712,7 +1712,7 @@ const firebaseConfig = {
             const panel = document.getElementById('panel-dia');
             panel.classList.add('active');
             
-            const fecha = new Date(diaSeleccionado);
+            const fecha = new Date(diaSeleccionado + 'T00:00:00');
             const diaSemana = fecha.getDay();
             const esDiaSemanaCerrado = diasSemanaCerrados.includes(diaSemana);
             const esDiaEspecificoCerrado = diasCerrados.includes(diaSeleccionado);
@@ -1967,7 +1967,7 @@ const firebaseConfig = {
         }
         
         function obtenerHorarioDefault(fechaStr) {
-            const fecha = new Date(fechaStr);
+            const fecha = new Date(fechaStr + 'T00:00:00');
             const diaSemana = fecha.getDay();
             return diaSemana === 0 ? horarioDomingo : horarioSemana;
         }

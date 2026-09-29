@@ -1724,8 +1724,7 @@ ocultarContadorTemporal();
         return;
     }
 
-    // 1. Avisamos al cliente en pantalla
-    alert("¡Tu reserva ha sido agendada con éxito!");
+
 
     // 2. Cerramos el modal de reserva (si usas la función estándar de tu archivo)
     if (typeof cerrarModalReserva === "function") {
@@ -4647,7 +4646,7 @@ function obtenerHorario(fechaStr) {
     const personalizado = horariosPersonalizados[fechaStr];
     if (Array.isArray(personalizado)) return personalizado;
 
-    const dia = new Date(fechaStr).getDay();
+    const dia = new Date(fechaStr + 'T00:00:00').getDay();
     if (dia === 0) return horarioDomingo;
 
     return horarioSemana;
@@ -5074,45 +5073,11 @@ const total = document.getElementById("eltotal")?.value || "";
 }
 // NUEVA FUNCIÓN: Mostrar confirmación bonita
 function mostrarConfirmacionReserva(reservaId, fecha, hora, nombre) {
-    // 🔴 USAR EL VALOR GLOBAL SI EXISTE, SINO EL PARÁMETRO
-    const fechaSegura = window.ULTIMA_FECHA_RESERVA || fecha;
-    
-    console.log("🔴 FECHA EN CONFIRMACIÓN:", fechaSegura); // DEBUG
-    
-    // Crear modal de confirmación
-    const modalExistente = document.getElementById('modal-confirmacion-reserva');
-    if (modalExistente) modalExistente.remove();
-
-    const modal = document.createElement('div');
-    modal.id = 'modal-confirmacion-reserva';
-    modal.className = 'modal-codigo-reserva';
-    modal.innerHTML = `
-        <div class="contenido-codigo">
-            <h3>✅ ¡Reserva Confirmada!</h3>
-            <div class="codigo-box">
-                <span class="label">Tu reserva está guardada</span>
-                <div class="info-reserva" style="margin: 15px 0; text-align: center;">
-                    <p><strong>📅 ${formatearFechaLarga(fechaSegura)}</strong></p>
-                    <p><strong>⏰ ${hora}</strong></p>
-                    <p style="color: #888; font-size: 0.9rem;">A nombre de: ${nombre}</p>
-                    <p style="color: #33d17a; font-size: 0.8rem; margin-top: 8px;">
-                        Fecha registrada: ${fechaSegura}
-                    </p>
-                </div>
-                <span class="hint">Puedes cancelar tu reserva cuando quieras</span>
-            </div>
-            <a href="${demoWaLink(nombre, fechaSegura, hora)}" target="_blank" rel="noopener" style="display:block;margin:0 0 10px;padding:12px;border-radius:12px;background:#25d366;color:#111;font-weight:800;text-decoration:none;text-align:center;">💬 Probar aviso por WhatsApp</a>
-            <button onclick="cerrarModalConfirmacion(); location.reload()" class="btn-entendido">
-                Entendido
-            </button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    
-    // Limpiar variable global
     window.ULTIMA_FECHA_RESERVA = null;
+    var m = document.getElementById('modal-hora-personalizada');
+    if (m) m.classList.add('hidden');   // cierra el formulario
+    window.__reservaHecha = true;       // avisa al tour
 }
-
 
 
 
@@ -5467,7 +5432,7 @@ const horarioDelDia = obtenerHorarioDelDiaDesdeFecha(fecha);
         }
 
         function abrirVentanaConfiguracionHorarios() {
-            const diaSemana = new Date(fechaSeleccionadaParaConfigurar).getDay();
+            const diaSemana = new Date(fechaSeleccionadaParaConfigurar + 'T00:00:00').getDay();
             const esSabado = diaSemana === 6;
 
             tituloConfigHorarios.textContent = `Configurar Horario (${fechaSeleccionadaParaConfigurar})`;
