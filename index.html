@@ -375,7 +375,7 @@
         #tour-text { font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 1.25rem; line-height: 1.3; }
         .tour-actions { display: flex; gap: 0.6rem; justify-content: center; margin-top: 0.7rem; flex-wrap: wrap; }
         .tour-actions button { border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; padding: 0.5rem 1.1rem; border-radius: 50px; background: rgba(0,0,0,0.15); color: #111; }
-        .tour-actions button.main { background: #111; color: var(--gold); font-size: 1rem; padding: 0.7rem 1.4rem; }
+        .tour-actions button.main { background: #111; color: var(--gold); font-size: 1rem; padding: 0.9rem 1.7rem; }
         @media (max-width: 480px) { #tour-text { font-size: 1.05rem; } }
 
         /* ========== SECTIONS ========== */
@@ -951,7 +951,6 @@
                 <iframe id="frame-admin" class="demo-iframe" title="Demo: panel de administrador" data-src="webdemoadminbarberia.html" style="display:none"></iframe>
             </div>
         </div>
-        <a class="demo-full" id="demo-full" href="webdemoclientesbarberia.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Abrir en pantalla completa</a>
     </div>
 </section>
 
@@ -2025,7 +2024,7 @@ function cambiarDemo(vista){
 </div>
 <script>
 (function(){
-var active=false, i=0, lastScroll=0, lastKey='';
+var active=false, i=0, lastScroll=0, lastKey='', infoDone=-1;
 function $(id){return document.getElementById(id)}
 function frameOf(v){return $(v==='admin'?'frame-admin':'frame-cliente')}
 function docOf(v){try{return frameOf(v).contentDocument}catch(e){return null}}
@@ -2058,7 +2057,9 @@ var TOUR=[
 
 function next(){var pr=TOUR[i];if(pr&&pr.done){try{pr.done(pr.__el)}catch(e){}}i++;lastScroll=0;if(i>=TOUR.length){i=TOUR.length-1}}
 function later(fn,ms){var my=i;setTimeout(function(){if(active&&i===my)fn()},ms)}
-
+function actualizarPagina() {
+    location.reload();
+}
 function bind(d){
  if(d.__tb)return;d.__tb=1;
  ['click','input','change'].forEach(function(type){
@@ -2082,7 +2083,7 @@ function setBanner(key,step,text,fin,info){
  $('tour-text').textContent=text;
  var a=$('tour-actions');
  a.innerHTML=fin
-  ?'<button class="main" onclick="tourCerrar();openTermsModal()">Quiero esto en mi barbería</button><button onclick="iniciarTour()">Repetir</button><button onclick="tourCerrar()">Cerrar</button>'
+  ?'<button class="main" onclick="tourCerrar();openTermsModal()">Quiero esto en mi barbería</button><button onclick="actualizarPagina()">Repetir</button><button onclick="tourCerrar()">Cerrar</button>'
   :(info?'<button class="main" onclick="tourSaltar()">Siguiente ›</button>':'')+'<button onclick="tourSaltar()">Saltar paso ›</button><button onclick="tourCerrar()">Salir ✕</button>';
 }
 
@@ -2115,6 +2116,7 @@ function loop(){
    }
   }
  }
+ if(s.info&&box&&infoDone!==i){infoDone=i;later(next,800);}
  if(box){
   ring.style.opacity=1;ring.classList.toggle('info',!!s.info);ring.style.left=(box.left-5)+'px';ring.style.top=(box.top-5)+'px';
   ring.style.width=(box.width+10)+'px';ring.style.height=(box.height+10)+'px';
@@ -2137,6 +2139,7 @@ function ocultarBarras(fr){try{var d=fr.contentDocument;if(!d||!d.head||d.getEle
 ['frame-cliente','frame-admin'].forEach(function(id){var f=document.getElementById(id);f.addEventListener('load',function(){ocultarBarras(f)});ocultarBarras(f)});
 window.iniciarTour=function(){
  try{frameOf('cliente').contentWindow.__reservaHecha=false}catch(e){}
+ infoDone=-1;
  active=true;i=0;lastScroll=0;lastKey='';
  document.body.classList.add('tour-on');
  cambiarDemo('cliente');
