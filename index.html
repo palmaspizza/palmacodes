@@ -2031,20 +2031,31 @@ function docOf(v){try{return frameOf(v).contentDocument}catch(e){return null}}
 function q(d,sel){try{return d.querySelector(sel)}catch(e){return null}}
 function celdaReserva(d){var c=q(d,'.dia-celda .dia-reservas');return c?c.parentElement:null}
 
+var TOTAL=16, tourDia=null;
+function visible(el){if(!el)return null;var r=el.getBoundingClientRect();return r.width>0&&r.height>0?el:null}
 var TOUR=[
- {v:'cliente',n:1,t:'Toca a tu barbero',find:function(d){return q(d,'#barberos-selector > div[onclick]')}},
- {v:'cliente',n:2,t:'Elige un servicio',find:function(d){return q(d,'#servicios .servicio-btn')}},
- {v:'cliente',n:3,t:'Toca un día libre del calendario',find:function(d){return q(d,'#cuadroCalendario .diaLibre')}},
+ {v:'cliente',n:1,t:'Toca un día libre del calendario',find:function(d){return q(d,'#cuadroCalendario .diaLibre')}},
+ {v:'cliente',n:2,t:'Toca a tu barbero',find:function(d){return q(d,'#barberos-selector > div[onclick]')}},
+ {v:'cliente',n:3,t:'Elige un servicio',find:function(d){return q(d,'#servicios .servicio-btn')}},
  {v:'cliente',n:4,t:'Toca una hora libre',find:function(d){return q(d,'.hora-slot.horaLibre')}},
  {v:'cliente',n:5,t:'Escribe un nombre inventado. Ej: Juan Prueba',ev:'input',delay:1300,find:function(d){return q(d,'#nombre')},ok:function(e,el){return el.value.trim().length>=3}},
  {v:'cliente',n:6,t:'Marca la casillita de los términos',ev:'change',find:function(d){return q(d,'.terminos-container')},ok:function(e,el,d){var c=q(d,'#aceptoTerminos');return !!(c&&c.checked)}},
  {v:'cliente',n:7,t:'Toca el botón “Reservar”',find:function(d){return q(d,'#reservar-button')},poll:function(d){return !!q(d,'.modal-codigo-reserva')}},
  {v:'cliente',n:8,parent:true,t:'¡Reserva hecha! 🎉 Ahora toca “Vista admin”',find:function(){return $('tab-admin')}},
- {v:'admin',n:9,t:'Toca el día que dice “res.”: ahí está tu reserva',find:function(d){return q(d,'#reservas-hoy-lista .reserva-item')||celdaReserva(d)},fin:function(el){return el.classList.contains('reserva-item')}},
- {v:'admin',n:9,find:function(d){return q(d,'#reservas-dia-seleccionado .reserva-item')},fin:function(){return true}}
+ {v:'admin',n:9,info:true,t:'📅 Este es tu Calendario de Reservas. Aquí ves todas las horas.',find:function(d){return q(d,'.calendario-header')}},
+ {v:'admin',n:10,t:'Toca el día que dice “res.”: ahí está la reserva',find:function(d){return celdaReserva(d)},done:function(el){var n=el.querySelector('.dia-numero');tourDia=n?parseInt(n.textContent,10):null}},
+ {v:'admin',n:11,t:'Toca ⚙️ “Horario especial” para cambiar las horas de ese día',find:function(d){return visible(q(d,'.btn-ver-horarios'))}},
+ {v:'admin',n:12,t:'Toca una hora para apagarla o encenderla',find:function(d){return visible(q(d,'#horas-editables .hora-btn.activa'))}},
+ {v:'admin',n:13,t:'Toca “Guardar Cambios”',find:function(d){return visible(q(d,'#modal-horario .btn-login'))}},
+ {v:'admin',n:14,t:'Ahora toca 🔒 “Cerrar día” (o 🔓 “Abrir día”)',find:function(d){return visible(q(d,'#btn-cerrar-dia'))||visible(q(d,'#btn-abrir-dia'))}},
+ {v:'admin',n:15,parent:true,t:'Mira el cambio en vivo: toca “Vista cliente”',find:function(){return $('tab-cliente')}},
+ {v:'cliente',n:16,fin:true,find:function(d){
+   var cs=d.querySelectorAll('#cuadroCalendario .diaCalendario');
+   for(var k=0;k<cs.length;k++){var t=cs[k].firstChild;if(t&&parseInt(t.nodeValue,10)===tourDia)return cs[k]}
+   return null}}
 ];
 
-function next(){i++;lastScroll=0;if(i>=TOUR.length){i=TOUR.length-1}}
+function next(){var pr=TOUR[i];if(pr&&pr.done){try{pr.done(pr.__el)}catch(e){}}i++;lastScroll=0;if(i>=TOUR.length){i=TOUR.length-1}}
 function later(fn,ms){var my=i;setTimeout(function(){if(active&&i===my)fn()},ms)}
 
 function bind(d){
@@ -2052,9 +2063,9 @@ function bind(d){
  ['click','input','change'].forEach(function(type){
   d.addEventListener(type,function(e){
    if(!active)return;var s=TOUR[i];
-   if(!s||s.parent||s.poll||e.type!==(s.ev||'click'))return;
+   if(!s||s.parent||s.poll||s.info||s.fin||e.type!==(s.ev||'click'))return;
    var el=null;try{el=s.find(d)}catch(x){}
-   if(!el||(s.fin&&s.fin(el)))return;
+   if(!el)return;s.__el=el;
    if(s.ok?s.ok(e,el,d):el.contains(e.target))later(next,s.delay||350);
   },true);
  });
@@ -2064,14 +2075,14 @@ document.addEventListener('click',function(e){
  if(s&&s.parent){var el=s.find();if(el&&el.contains(e.target))later(next,300)}
 },true);
 
-function setBanner(key,step,text,fin){
+function setBanner(key,step,text,fin,info){
  if(key===lastKey)return;lastKey=key;
- $('tour-step').textContent=fin?'¡TERMINASTE!':'PASO '+step+' DE 9';
+ $('tour-step').textContent=fin?'¡TERMINASTE!':'PASO '+step+' DE '+TOTAL;
  $('tour-text').textContent=text;
  var a=$('tour-actions');
  a.innerHTML=fin
   ?'<button class="main" onclick="tourCerrar();openTermsModal()">Quiero esto en mi barbería</button><button onclick="iniciarTour()">Repetir</button><button onclick="tourCerrar()">Cerrar</button>'
-  :'<button onclick="tourSaltar()">Saltar paso ›</button><button onclick="tourCerrar()">Salir ✕</button>';
+  :(info?'<button class="main" onclick="tourSaltar()">Siguiente ›</button>':'')+'<button onclick="tourSaltar()">Saltar paso ›</button><button onclick="tourCerrar()">Salir ✕</button>';
 }
 
 function loop(){
@@ -2088,7 +2099,7 @@ function loop(){
    try{el=s.find(d)}catch(e){}
   }
  }
- var fin=!!(el&&s.fin&&s.fin(el));
+ var fin=!!(el&&s.fin);if(el)s.__el=el;
  if(el){
   var r=el.getBoundingClientRect();
   if(r.width>0&&r.height>0){
@@ -2114,11 +2125,15 @@ function loop(){
   ban.classList.toggle('top',box.top+box.height/2>innerHeight*0.55);
  }else{ring.style.opacity=0;hand.style.opacity=0}
  var txt=s.t||'';
- if(fin)txt='¡Ahí está tu reserva! Así de fácil la ve el dueño 🎉';
- setBanner(fin?'fin':'s'+i,s.n,txt,fin);
+ if(fin)txt='¡Mira! Ese día ya aparece cerrado para tus clientes, al instante ✨';
+ if(s.fin&&!el)txt='Vuelve al calendario del cliente para ver el cambio en vivo';
+ setBanner(fin?'fin':'s'+i,s.n,txt,fin,s.info);
  requestAnimationFrame(loop);
 }
 
+
+function ocultarBarras(fr){try{var d=fr.contentDocument;if(!d||!d.head||d.getElementById('pc-noscroll'))return;var st=d.createElement('style');st.id='pc-noscroll';st.textContent='*{scrollbar-width:none!important;-ms-overflow-style:none!important}*::-webkit-scrollbar,::-webkit-scrollbar{display:none!important;width:0!important;height:0!important}';d.head.appendChild(st)}catch(e){}}
+['frame-cliente','frame-admin'].forEach(function(id){var f=document.getElementById(id);f.addEventListener('load',function(){ocultarBarras(f)});ocultarBarras(f)});
 window.iniciarTour=function(){
  active=true;i=0;lastScroll=0;lastKey='';
  document.body.classList.add('tour-on');
