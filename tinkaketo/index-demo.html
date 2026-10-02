@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tinka Keto · Demo de integración</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0E0E0E;--gold:#C9A24B;--gold-l:#E3C77E;--f-head:'Cinzel',Georgia,serif;--f:'Jost',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);color:#111;background:#fff}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
+
+/* ===== Navbar (réplica del sitio) ===== */
+.nav{background:var(--black);color:#fff;position:sticky;top:0;z-index:50;border-bottom:1px solid #222}
+.nav .in{max-width:1300px;margin:0 auto;padding:0 40px;height:80px;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:20px;font-family:var(--f-head);letter-spacing:8px;font-size:22px;font-weight:600}
+.brand img{width:46px;height:46px;object-fit:contain}
+.links{margin:0 auto;display:flex;gap:48px;font-size:13px;letter-spacing:3px}
+.links a:hover{color:var(--gold-l)}
+.pedir{font-size:13px;font-weight:600;letter-spacing:3px;padding:10px 4px;border-bottom:1px solid transparent}
+.pedir:hover{border-color:var(--gold)}
+.strip{height:40px;background:var(--black)}
+
+/* ===== Sección Contáctanos ===== */
+.sec{max-width:1300px;margin:0 auto;padding:110px 40px 40px;text-align:center}
+.eyebrow{font-size:12px;letter-spacing:7px;display:inline-block;padding-bottom:6px;border-bottom:1px solid #111}
+.sec h1{font-family:var(--f-head);font-size:clamp(30px,5vw,52px);letter-spacing:3px;margin:26px 0 14px;font-weight:500;text-transform:uppercase}
+.sub{color:#5A6B8C;font-size:18px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:46px;margin-top:70px;text-align:left}
+.card{position:relative;min-height:560px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:52px;overflow:hidden}
+.card.a{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.8)),radial-gradient(circle at 60% 30%,#6b4a30,#1b1410 70%)}
+.card.b{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.8)),radial-gradient(circle at 60% 35%,#7a5a2a,#14100a 70%)}
+.card h2{font-family:var(--f-head);font-size:36px;letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:12px}
+.card p{font-size:18px;margin-bottom:26px;max-width:46ch}
+.ghost{align-self:flex-start;border:1px solid #fff;padding:16px 30px;font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;transition:.2s}
+.ghost:hover{background:#fff;color:#111}
+
+/* ===== Demo: integración ===== */
+.demo{background:#F6F4EE;margin-top:100px;padding:80px 40px}
+.demo .in{max-width:1100px;margin:0 auto}
+.demo h2{font-family:var(--f-head);font-size:30px;letter-spacing:3px;text-align:center;text-transform:uppercase;font-weight:500}
+.demo .lead{text-align:center;color:#555;margin:12px 0 36px}
+.frame{border:1px solid #222;background:var(--black);box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.frame iframe{display:block;width:100%;height:760px;border:0}
+.code{margin-top:56px}
+.code h3{font-size:14px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px}
+pre{background:var(--black);color:#E9E4D6;padding:22px;overflow-x:auto;font:13px/1.65 ui-monospace,Menlo,Consolas,monospace;border-left:3px solid var(--gold)}
+pre i{color:var(--gold-l);font-style:normal}
+footer{background:var(--black);color:#777;text-align:center;padding:30px;font-size:13px;letter-spacing:2px}
+
+/* ===== Botón flotante + modal ===== */
+.fab{position:fixed;right:24px;bottom:24px;z-index:60;background:var(--gold);color:#111;font-weight:600;font-size:13px;letter-spacing:3px;padding:16px 28px;border-radius:999px;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:transform .15s,background .15s}
+.fab:hover{background:var(--gold-l);transform:translateY(-2px)}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.on{display:flex}
+.box{position:relative;width:min(1100px,100%);height:min(780px,100%);background:var(--black);border:1px solid #333;box-shadow:0 30px 80px #000}
+.box iframe{width:100%;height:100%;border:0;display:block}
+.close{position:absolute;top:10px;right:12px;z-index:2;width:36px;height:36px;border-radius:50%;background:#222;color:#fff;font-size:20px;border:1px solid #444}
+.close:hover{border-color:var(--gold)}
+
+@media(max-width:900px){
+  .links{display:none}.pedir{margin-left:auto}
+  .nav .in{padding:0 20px}.brand{font-size:18px;letter-spacing:5px}
+  .sec{padding:60px 20px 20px}
+  .cards{grid-template-columns:1fr;gap:24px}.card{min-height:420px;padding:28px}
+  .demo{padding:50px 16px}.frame iframe{height:900px}
+  .modal{padding:0}.box{height:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Réplica de la web actual ===== -->
+<nav class="nav">
+  <div class="in">
+    <a class="brand" href="#"><img src="tinka-logo.png" alt="" onerror="this.remove()">TINKA</a>
+    <div class="links"><a href="#">ORIGEN</a><a href="#">PRODUCTO</a><a href="#">VARIEDADES</a><a href="#">CONTACTO</a></div>
+    <button class="pedir" data-open>PEDIR</button>
+  </div>
+</nav>
+<div class="strip"></div>
+
+<section class="sec">
+  <span class="eyebrow">CONTÁCTANOS</span>
+  <h1>¿Para quién es Tinka?</h1>
+  <p class="sub">Llevamos pizzas keto a tu mesa y a tu vitrina.</p>
+  <div class="cards">
+    <article class="card a">
+      <h2>Personas</h2>
+      <p>Disfruta pizza keto de verdad en casa o después de entrenar, lista en 15 minutos.</p>
+      <button class="ghost" data-open>Pedir por WhatsApp</button>
+    </article>
+    <article class="card b">
+      <h2>Tiendas de especialidad</h2>
+      <p>Suma Tinka a tu góndola. Producto keto real que genera confianza y recompra.</p>
+      <a class="ghost" href="#">Quiero vender Tinka</a>
+    </article>
+  </div>
+</section>
+
+<!-- ===== Demo de integración ===== -->
+<section class="demo" id="demo">
+  <div class="in">
+    <h2>Pedidos en línea, integrados</h2>
+    <p class="lead">Opción A: módulo incrustado en la página. Opción B: botón flotante "Pedir ahora" (abajo a la derecha).</p>
+    <div class="frame"><iframe src="ecommerce.html" title="Pedidos Tinka Keto" loading="lazy"></iframe></div>
+
+    <div class="code">
+      <h3>Cómo integrarlo en cualquier sitio (copiar y pegar)</h3>
+<pre><i>&lt;!-- A) Incrustado --&gt;</i>
+&lt;iframe src="https://TU-DOMINIO.netlify.app/ecommerce.html"
+        style="width:100%;height:760px;border:0" title="Pedidos"&gt;&lt;/iframe&gt;
+
+<i>&lt;!-- B) Botón flotante + modal --&gt;</i>
+&lt;button onclick="document.getElementById('m').style.display='flex'"
+        style="position:fixed;right:24px;bottom:24px"&gt;PEDIR AHORA&lt;/button&gt;
+&lt;div id="m" style="display:none;position:fixed;inset:0;background:#000b;z-index:999"
+     onclick="this.style.display='none'"&gt;
+  &lt;iframe src="https://TU-DOMINIO.netlify.app/ecommerce.html"
+          style="width:min(1100px,100%);height:100%;border:0;margin:auto;display:block"&gt;&lt;/iframe&gt;
+&lt;/div&gt;</pre>
+    </div>
+  </div>
+</section>
+<footer>TINKA KETO · DEMO DE INTEGRACIÓN</footer>
+
+<!-- ===== Botón flotante y modal ===== -->
+<button class="fab" data-open aria-haspopup="dialog">PEDIR AHORA</button>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Pedidos Tinka Keto">
+  <div class="box">
+    <button class="close" id="close" aria-label="Cerrar">×</button>
+    <iframe id="mframe" title="Pedidos Tinka Keto"></iframe>
+  </div>
+</div>
+
+<script>
+const modal = document.getElementById('modal'), frame = document.getElementById('mframe');
+const open = () => { if(!frame.src) frame.src = 'ecommerce.html'; modal.classList.add('on'); document.body.style.overflow='hidden'; };
+const close = () => { modal.classList.remove('on'); document.body.style.overflow=''; };
+document.querySelectorAll('[data-open]').forEach(b => b.onclick = open);
+document.getElementById('close').onclick = close;
+modal.onclick = e => { if(e.target === modal) close(); };
+document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+window.addEventListener('message', e => { if(e.data && e.data.tinka === 'order-sent') close(); });  // cierra el modal al enviar el pedido
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tinka Keto · Pedidos</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0E0E0E; --panel:#171717; --panel-2:#1F1F1F; --line:#2C2C2C;
+  --gold:#C9A24B; --gold-l:#E3C77E; --text:#F5F2EA; --muted:#9A968C;
+  --f-head:'Cinzel',Georgia,serif; --f:'Jost',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--text);line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+header{display:flex;align-items:center;gap:14px;padding:16px 24px;border-bottom:1px solid var(--line)}
+header img{width:44px;height:44px;object-fit:contain}
+header h1{font-family:var(--f-head);font-size:20px;letter-spacing:5px;font-weight:600}
+header p{font-size:12px;color:var(--muted);letter-spacing:1px}
+.layout{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;padding:24px;max-width:1100px;margin:0 auto}
+h2{font-family:var(--f-head);font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:0 0 12px;font-weight:600}
+.block{margin-bottom:26px}
+.opts{display:grid;gap:10px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-radius:4px;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover{background:var(--panel-2)}
+.opt input{position:absolute;opacity:0}
+.opt:has(input:checked){border-color:var(--gold);background:var(--panel-2)}
+.opt:has(input:focus-visible){outline:2px solid var(--gold)}
+.opt b{font-weight:500;font-size:16px;display:flex;justify-content:space-between;gap:8px}
+.opt b i{font-style:normal;color:var(--gold-l);font-weight:500}
+.opt small{color:var(--muted);font-size:13px}
+.btn{width:100%;height:50px;background:var(--gold);color:#111;font-weight:600;letter-spacing:2px;text-transform:uppercase;font-size:13px;border-radius:3px;transition:background .15s}
+.btn:hover:not(:disabled){background:var(--gold-l)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn.wa{background:#25D366;color:#06361A}
+.cart{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:20px;align-self:start;position:sticky;top:16px}
+.empty{color:var(--muted);font-size:14px;padding:6px 0 14px}
+.line{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.line small{color:var(--muted);grid-column:1}
+.line .p{grid-row:1;grid-column:2;color:var(--gold-l)}
+.q{display:flex;gap:10px;align-items:center;margin-top:6px}
+.q button{width:26px;height:26px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line)}
+.q button:hover{border-color:var(--gold)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 10px}
+.seg label{text-align:center;padding:10px;border:1px solid var(--line);border-radius:3px;font-size:13px;cursor:pointer;letter-spacing:.5px}
+.seg input{position:absolute;opacity:0}
+.seg label:has(input:checked){border-color:var(--gold);color:var(--gold-l)}
+input[type=text],textarea{width:100%;padding:12px 14px;margin-bottom:10px;background:var(--bg);border:1px solid var(--line);border-radius:3px;color:var(--text);font:400 14px var(--f)}
+input::placeholder,textarea::placeholder{color:#6B685F}
+input:focus,textarea:focus{outline:0;border-color:var(--gold)}
+.err{border-color:#C0524A!important}
+textarea{min-height:64px;resize:vertical}
+.tot{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0}
+.tot span{color:var(--muted);font-size:13px;letter-spacing:2px;text-transform:uppercase}
+.tot b{font-family:var(--f-head);font-size:26px;color:var(--gold-l)}
+@media(max-width:860px){
+  .layout{grid-template-columns:1fr;padding:16px}
+  .cart{position:static}
+  header{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="tinka-logo.png" alt="Tinka Keto" onerror="this.remove()">
+  <div><h1>TINKA</h1><p>PIZZA KETO · ARMA TU PEDIDO</p></div>
+</header>
+
+<div class="layout">
+  <!-- ===== Constructor ===== -->
+  <main>
+    <div class="block"><h2>1 · Formato</h2><div class="opts two" id="fmts"></div></div>
+    <div class="block"><h2>2 · Variedad</h2><div class="opts" id="varis"></div></div>
+    <div class="block"><h2>3 · Adicionales</h2><div class="opts two" id="extras"></div></div>
+    <button class="btn" id="add" disabled>Elige una variedad</button>
+  </main>
+
+  <!-- ===== Pedido ===== -->
+  <aside class="cart" aria-label="Tu pedido">
+    <h2>Tu pedido</h2>
+    <div id="items"></div>
+    <div class="seg" role="radiogroup" aria-label="Tipo de entrega">
+      <label><input type="radio" name="mode" value="Despacho a domicilio" checked>Despacho</label>
+      <label><input type="radio" name="mode" value="Retiro en tienda">Retiro</label>
+    </div>
+    <input type="text" id="name" placeholder="Nombre y apellido" autocomplete="name">
+    <input type="text" id="addr" placeholder="Dirección (calle, número, comuna)" autocomplete="street-address">
+    <textarea id="notes" placeholder="Notas u observaciones (opcional)"></textarea>
+    <div class="tot"><span>Total</span><b id="total">$0</b></div>
+    <button class="btn wa" id="send" disabled>Enviar por WhatsApp</button>
+  </aside>
+</div>
+
+<script>
+/* ===== CONFIGURACIÓN (editar por cliente) ===== */
+const WA_NUMBER = '56900000000';   // <-- número de WhatsApp de Tinka Keto (con 56, sin + ni espacios)
+
+const FORMATS = [
+  {id:'rect', name:'Rectangular', sub:'30 x 15 cm · Individual',      price:7990},
+  {id:'circ', name:'Circular',    sub:'26 cm diámetro · Para compartir', price:12990}
+];
+/* Variedades: agregar las 3 restantes copiando el formato */
+const VARIETIES = [
+  {id:'margarita', name:'Margarita', desc:'Mozzarella, tomate, aceitunas negras, albahaca'},
+  {id:'pepe',      name:'Pepe',      desc:'Mozzarella, pepperoni, carne molida'},
+  {id:'carne',     name:'Carne',     desc:'Mozzarella, carne molida, cebolla caramelizada'}
+  // {id:'var4', name:'Variedad 4', desc:'Ingredientes...'},
+  // {id:'var5', name:'Variedad 5', desc:'Ingredientes...'},
+  // {id:'var6', name:'Variedad 6', desc:'Ingredientes...'}
+];
+const EXTRAS = [
+  {id:'moz', name:'Queso Mozzarella',    price:1500},
+  {id:'pep', name:'Pepperoni',           price:1800},
+  {id:'car', name:'Carne molida',        price:2000},
+  {id:'ace', name:'Aceitunas negras',    price:1000},
+  {id:'cebo',name:'Cebolla caramelizada',price:1200}
+];
+
+/* ===== Utilidades ===== */
+const $ = s => document.querySelector(s);
+const CLP = n => '$' + n.toLocaleString('es-CL');
+let cart = [];
+
+/* ===== Render del constructor ===== */
+$('#fmts').innerHTML = FORMATS.map((f,i)=>`<label class="opt"><input type="radio" name="fmt" value="${f.id}" ${i?'':'checked'}><b>${f.name}<i>${CLP(f.price)}</i></b><small>${f.sub}</small></label>`).join('');
+$('#varis').innerHTML = VARIETIES.map(v=>`<label class="opt"><input type="radio" name="vari" value="${v.id}"><b>${v.name}</b><small>${v.desc}</small></label>`).join('');
+$('#extras').innerHTML = EXTRAS.map(e=>`<label class="opt"><input type="checkbox" name="extra" value="${e.id}"><b>${e.name}<i>+${CLP(e.price)}</i></b></label>`).join('');
+
+const sel = () => {
+  const f = FORMATS.find(x=>x.id===document.querySelector('[name=fmt]:checked').value);
+  const vEl = document.querySelector('[name=vari]:checked');
+  const v = vEl && VARIETIES.find(x=>x.id===vEl.value);
+  const ex = [...document.querySelectorAll('[name=extra]:checked')].map(c=>EXTRAS.find(x=>x.id===c.value));
+  return {f, v, ex, unit: f.price + ex.reduce((s,e)=>s+e.price,0)};
+};
+function refreshAdd(){
+  const s = sel(), b = $('#add');
+  b.disabled = !s.v;
+  b.textContent = s.v ? `Agregar al pedido · ${CLP(s.unit)}` : 'Elige una variedad';
+}
+document.querySelector('main').addEventListener('change', refreshAdd);
+
+/* ===== Carrito ===== */
+$('#add').onclick = () => {
+  const {f,v,ex,unit} = sel();
+  const key = [v.id,f.id,...ex.map(e=>e.id).sort()].join('|');
+  const found = cart.find(i=>i.key===key);
+  found ? found.qty++ : cart.push({key, name:`Pizza ${v.name} (${f.name})`, extras:ex.map(e=>e.name), unit, qty:1});
+  document.querySelectorAll('[name=extra]').forEach(c=>c.checked=false);
+  refreshAdd(); renderCart();
+};
+const total = () => cart.reduce((s,i)=>s+i.unit*i.qty,0);
+function renderCart(){
+  $('#items').innerHTML = cart.length ? cart.map(i=>`
+    <div class="line"><b>${i.name}</b><span class="p">${CLP(i.unit*i.qty)}</span>
+    ${i.extras.length?`<small>Extra: ${i.extras.join(', ')}</small>`:''}
+    <div class="q"><button data-k="${i.key}" data-d="-1" aria-label="Quitar uno">−</button>${i.qty}<button data-k="${i.key}" data-d="1" aria-label="Agregar uno">+</button></div></div>`).join('')
+    : '<p class="empty">Aún no agregas pizzas.</p>';
+  $('#total').textContent = CLP(total());
+  $('#send').disabled = !cart.length;
+}
+$('#items').onclick = e => {
+  const b = e.target.closest('[data-k]'); if(!b) return;
+  const i = cart.find(x=>x.key===b.dataset.k); i.qty += +b.dataset.d;
+  if(i.qty<=0) cart = cart.filter(x=>x!==i);
+  renderCart();
+};
+document.querySelectorAll('[name=mode]').forEach(r=>r.onchange=()=>{
+  $('#addr').style.display = document.querySelector('[name=mode]:checked').value.startsWith('Despacho') ? '' : 'none';
+});
+
+/* ===== Mensaje de WhatsApp ===== */
+$('#send').onclick = () => {
+  const mode = document.querySelector('[name=mode]:checked').value;
+  const delivery = mode.startsWith('Despacho');
+  const name = $('#name'), addr = $('#addr');
+  let ok = true;
+  [name, ...(delivery?[addr]:[])].forEach(el=>{ const bad=!el.value.trim(); el.classList.toggle('err',bad); if(bad) ok=false; });
+  if(!ok) return;
+
+  const SEP = '──────────────────────────────';
+  const lines = cart.map(i => `• ${i.qty}x ${i.name}` + (i.extras.length ? `\n  └ Extra: ${i.extras.join(', ')}` : '')).join('\n');
+  const msg = [
+    '🍕 *NUEVO PEDIDO - TINKA KETO* 🍕', SEP, lines, SEP,
+    `💰 *Total a pagar:* ${CLP(total())}`,
+    `🛵 *Tipo:* ${mode}`,
+    `👤 *Cliente:* ${name.value.trim()}`,
+    ...(delivery ? [`📍 *Dirección:* ${addr.value.trim()}`] : []),
+    ...($('#notes').value.trim() ? [`📝 *Notas:* ${$('#notes').value.trim()}`] : [])
+  ].join('\n');
+
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+  try { parent.postMessage({tinka:'order-sent'}, '*'); } catch(e){}   // aviso opcional a la web anfitriona
+};
+[$('#name'),$('#addr')].forEach(i=>i.oninput=()=>i.classList.remove('err'));
+
+refreshAdd(); renderCart();
+</script>
+</body>
+</html>
