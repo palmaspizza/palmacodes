@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06060b"><title>Barbería Demian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--s1:#0d0e1d;--s2:#15162d;--line:#26284f;--ac:#7f7bd9;--ac2:#b5b1ff;--tx:#ecebf8;--mu:#9391b3;--ok:#3ddc84;--bad:#ff7b8a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;color:var(--tx);font:500 15px/1.55 Manrope,system-ui,sans-serif;background:linear-gradient(170deg,#030306 0%,#0a0b1c 50%,#1f1d4a 100%) fixed;padding-bottom:96px}
+h1,h2,h3{font-family:'Barlow Condensed',sans-serif;margin:0;letter-spacing:.02em;font-weight:700}
+h2{font-size:28px;margin-bottom:14px}h3{font-size:21px}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--ac2);outline-offset:2px}
+svg.i{width:1.2em;height:1.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.22em;flex:none}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+.hero{position:relative;height:clamp(240px,42vh,420px);overflow:hidden}
+.hero>img{width:100%;height:100%;object-fit:cover;display:block}
+.shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(6,6,11,.15),rgba(6,6,11,.95))}
+.hh{position:absolute;left:0;right:0;bottom:18px;display:flex;align-items:center;gap:14px}
+.hh .wrap{display:contents}.logo{width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid var(--ac);background:#000}
+.hh h1{font-size:44px;line-height:1}.hh p{margin:2px 0 0;color:var(--ac2)}
+.hhi{max-width:960px;margin:0 auto;padding:0 16px;width:100%;display:flex;align-items:center;gap:14px}
+#inf{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}
+.chip{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:99px;background:var(--s1);border:1px solid var(--line);font-size:14px;color:var(--tx);text-decoration:none}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--bad)}.chip.on i{background:var(--ok)}
+section{margin-top:34px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.card{background:linear-gradient(180deg,var(--s2),var(--s1));border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.svc{display:flex;flex-direction:column;text-align:left;width:100%}
+.svc img,.ph{width:100%;height:150px;object-fit:cover;display:flex;align-items:center;justify-content:center;background:#10112a;color:var(--ac);font-size:34px}
+.svc .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.svc p{margin:0;color:var(--mu);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:auto;color:var(--mu);font-size:14px}.meta b{color:var(--tx);font-size:19px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 24px;border-radius:14px;background:linear-gradient(135deg,#4f4bb8,var(--ac));color:#fff;font-weight:700;font-size:16px;width:100%}
+.btn:disabled{opacity:.5}.btn.ghost{background:var(--s2);border:1px solid var(--line)}
+.cta{position:fixed;left:0;right:0;bottom:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,#06060b 55%,transparent);z-index:20}
+.cta .btn{max-width:520px;display:flex;margin:0 auto;box-shadow:0 8px 30px rgba(127,123,217,.35)}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.gal img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px;cursor:pointer}
+@media(min-width:700px){.gal{grid-template-columns:repeat(4,1fr)}}
+.stars{display:inline-flex;color:#3a3b66}.stars .on{color:#f5c451}.stars svg{fill:currentColor;stroke:none}
+.rv{padding:16px;margin-bottom:10px}.rv p{margin:6px 0 0;color:#d4d2ea}.rv small{color:var(--mu)}
+.hrs{padding:6px 16px}.hrs div{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}.hrs div:last-child{border:0}
+input,textarea{width:100%;background:var(--s1);border:1px solid var(--line);border-radius:12px;padding:14px;min-height:50px;font-size:16px}
+label{display:block;margin:0 0 6px;color:var(--mu);font-size:14px}.f{margin-bottom:14px}
+.sheet{position:fixed;inset:0;z-index:50;background:rgba(3,3,8,.72);display:none;justify-content:center;align-items:flex-end}.sheet.on{display:flex}
+.sp{width:100%;max-width:520px;height:100dvh;background:#0a0b1b;display:flex;flex-direction:column}
+@media(min-width:600px){.sheet{align-items:center}.sp{height:auto;max-height:90vh;min-height:520px;border-radius:22px;border:1px solid var(--line)}}
+.sph{display:flex;align-items:center;justify-content:space-between;padding:12px 8px 12px 8px}.sph h2{margin:0;font-size:24px}
+.ib{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px}.ib[hidden]{display:block;visibility:hidden}
+.pg{display:flex;gap:6px;padding:0 16px 8px}.pg i{flex:1;height:4px;border-radius:4px;background:var(--line)}.pg i.d{background:var(--ac)}
+.spb{overflow:auto;padding:12px 16px 24px;flex:1}
+.sum{color:var(--ac2);font-size:14px;margin-bottom:14px}
+.row{display:flex;gap:12px;align-items:center;padding:12px;margin-bottom:10px;width:100%;text-align:left}
+.row img,.row .ph{width:56px;height:56px;border-radius:12px;flex:none;font-size:22px}.row div{flex:1}.row small{color:var(--mu)}
+.days{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px}
+.day,.hr{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;min-height:64px;justify-content:center}
+.day b{font-size:22px;line-height:1.1}.day small{color:var(--mu);font-size:12px}.day:disabled{opacity:.3}
+.hrs2{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}.hr{font-weight:700;min-height:52px}
+.day:active,.hr:active,.svc:active{border-color:var(--ac)}
+.msg{color:var(--mu);text-align:center;padding:30px 10px}.err{color:var(--bad);margin:0 0 12px}
+.ok{text-align:center;padding:20px 0}.ok .c{width:76px;height:76px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;background:rgba(61,220,132,.14);color:var(--ok);font-size:38px}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:60;display:none;place-items:center}.lb.on{display:grid}.lb img{max-width:96vw;max-height:90vh;border-radius:10px}
+@media(prefers-reduced-motion:no-preference){.sp{animation:up .25s ease-out}@keyframes up{from{transform:translateY(24px);opacity:0}}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+<symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.9L12 17.8 5.8 21.1 7 14.2 2 9.3l6.9-1z"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+</defs></svg>
+
+<header class="hero"><img id="bn" src="bannerimg.webp" alt=""><div class="shade"></div>
+<div class="hh"><div class="hhi"><img class="logo" src="logo.webp" alt="Logo"><div><h1 id="nm">DEMIAN</h1><p>Barbería</p></div></div></div></header>
+<main class="wrap">
+<div id="inf"></div>
+<section><h2>Servicios</h2><div class="grid" id="svl"><p class="msg">Cargando…</p></div></section>
+<section id="gas" hidden><h2>Portafolio</h2><div class="gal" id="gal"></div><button class="btn ghost" id="more" style="margin-top:12px" hidden>Ver más fotos</button></section>
+<section><h2>Reseñas</h2><div id="rvs"></div><button class="btn ghost" id="rvb">Escribir una reseña</button>
+<div id="rvf" class="card" style="padding:16px;margin-top:12px" hidden>
+<div class="f"><label>Tu calificación</label><div id="rst" class="stars" style="font-size:34px;gap:4px"></div></div>
+<div class="f"><label for="rn">Tu nombre</label><input id="rn" autocomplete="given-name"></div>
+<div class="f"><label for="rt">Tu comentario</label><textarea id="rt" rows="3"></textarea></div>
+<p class="err" id="rerr" hidden></p><button class="btn" id="rsend">Publicar reseña</button></div></section>
+<section><h2>Horario</h2><div class="card hrs" id="hrs"></div></section>
+</main>
+<div class="cta"><button class="btn" id="go">Reservar hora</button></div>
+
+<div class="sheet" id="sh"><div class="sp" role="dialog" aria-modal="true" aria-labelledby="st">
+<div class="sph"><button class="ib" id="bk" aria-label="Volver"><svg class="i"><use href="#i-back"/></svg></button><h2 id="st"></h2><button class="ib" id="cx" aria-label="Cerrar"><svg class="i"><use href="#i-x"/></svg></button></div>
+<div class="pg" id="pg"></div><div class="spb" id="sb"></div></div></div>
+<div class="lb" id="lb"><img alt=""></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getDatabase,ref,onValue,get,set,push,runTransaction} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+const db=getDatabase(initializeApp({apiKey:"AIzaSyCSqgJA6uL8SkY-kphhuaR9TuGPulucPic",authDomain:"ajedrez-65b15.firebaseapp.com",databaseURL:"https://ajedrez-65b15-default-rtdb.firebaseio.com",projectId:"ajedrez-65b15",storageBucket:"ajedrez-65b15.firebasestorage.app",messagingSenderId:"501222935015",appId:"1:501222935015:web:bb08aeab5af07a77eb1542"}));
+const B='barberia',STEP=30,$=s=>document.querySelector(s);
+const I=n=>`<svg class="i"><use href="#i-${n}"/></svg>`;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pd=s=>new Date(s+'T12:00:00'),m=h=>{const[a,b]=h.split(':');return a*60+ +b},hm=n=>String(n/60|0).padStart(2,'0')+':'+String(n%60).padStart(2,'0'),k=n=>hm(n).replace(':','');
+const money=n=>'$'+Number(n||0).toLocaleString('es-CL'),cl=(u,w)=>u&&u.includes('/upload/')?u.replace('/upload/',`/upload/f_auto,q_auto,w_${w}/`):u;
+const DW=Object.fromEntries([0,1,2,3,4,5,6].map(d=>[d,{open:d>0,start:'09:00',end:'20:00'}]));
+const DN=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+let C={},SV={},SC={},GL={},RV={},S={},step=0,gAll=false,rate=0;
+const dayInfo=d=>{const e=SC.exc?.[iso(d)];if(e)return e.closed?null:e;const w=SC.week?.[d.getDay()]||DW[d.getDay()];return w.open?w:null};
+const on=(p,f)=>onValue(ref(db,B+'/'+p),s=>f(s.val()||{}));
+on('config',v=>{C=v;head()});on('services',v=>{SV=v;svcs()});on('schedule',v=>{SC=v;head();hours()});on('gallery',v=>{GL=v;gallery()});on('reviews',v=>{RV=v;reviews()});
+
+function head(){$('#bn').src=C.bannerUrl?cl(C.bannerUrl,1600):'bannerimg.webp';$('#nm').textContent=C.name||'DEMIAN';
+ const ad=C.address||'Perpetua Freire 589, La Florida, Santiago, Chile',n=new Date(),di=dayInfo(n),now=n.getHours()*60+n.getMinutes();let st;
+ if(!di)st=['','Cerrado hoy'];else if(now<m(di.start))st=['on','Abre hoy a las '+di.start];else if(now<m(di.end))st=['on','Abierto hasta las '+di.end];else st=['','Cerrado por hoy'];
+ $('#inf').innerHTML=`<div class="chip ${st[0]}"><i></i>${st[1]}</div><a class="chip" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ad)}">${I('pin')}${esc(ad)}</a>`}
+function hours(){const t=new Date();$('#hrs').innerHTML=[1,2,3,4,5,6,0].map(d=>{const w=SC.week?.[d]||DW[d];return`<div><span>${DN[d]}</span><span>${w.open?w.start+' - '+w.end:'Cerrado'}</span></div>`}).join('')}
+function svcList(){return Object.entries(SV).map(([id,s])=>({id,...s})).filter(s=>s.active!==false).sort((a,b)=>(a.order||0)-(b.order||0))}
+function svcs(){const l=svcList();$('#svl').innerHTML=l.length?l.map(s=>`<button class="card svc" data-s="${s.id}">${s.img?`<img loading="lazy" src="${esc(cl(s.img,700))}" alt="">`:`<div class="ph">${I('scissors')}</div>`}<div class="b"><h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p><div class="meta"><b>${money(s.price)}</b><span>${I('clock')} ${s.duration||30} min</span></div></div></button>`).join(''):'<p class="msg">Pronto publicaremos los servicios.</p>'}
+function gallery(){const l=Object.values(GL).sort((a,b)=>b.createdAt-a.createdAt);$('#gas').hidden=!l.length;$('#gal').innerHTML=(gAll?l:l.slice(0,6)).map(g=>`<img loading="lazy" src="${esc(cl(g.url,500))}" data-f="${esc(cl(g.url,1400))}" alt="Trabajo de la barbería">`).join('');$('#more').hidden=gAll||l.length<=6}
+const stars=n=>`<span class="stars" role="img" aria-label="${n} de 5">${[1,2,3,4,5].map(i=>`<span class="${i<=Math.round(n)?'on':''}">${I('star')}</span>`).join('')}</span>`;
+function reviews(){const l=Object.values(RV).sort((a,b)=>b.createdAt-a.createdAt);
+ $('#rvs').innerHTML=l.length?`<p style="margin:0 0 14px;display:flex;gap:10px;align-items:center"><b style="font-size:30px;font-family:'Barlow Condensed'">${(l.reduce((a,r)=>a+r.rating,0)/l.length).toFixed(1)}</b>${stars(l.reduce((a,r)=>a+r.rating,0)/l.length)}<span style="color:var(--mu)">${l.length} reseña${l.length>1?'s':''}</span></p>`+l.slice(0,20).map(r=>`<div class="card rv"><div style="display:flex;justify-content:space-between"><b>${esc(r.name)}</b>${stars(r.rating)}</div><p>${esc(r.text)}</p><small>${new Date(r.createdAt).toLocaleDateString('es-CL')}</small></div>`).join(''):'<p class="msg">Aún no hay reseñas. Sé el primero.</p>'}
+$('#rst').innerHTML=[1,2,3,4,5].map(i=>`<button data-r="${i}" aria-label="${i} estrellas" style="font-size:inherit">${I('star')}</button>`).join('');
+$('#rst').onclick=e=>{const b=e.target.closest('[data-r]');if(!b)return;rate=+b.dataset.r;$('#rst').querySelectorAll('button').forEach((x,i)=>x.style.color=i<rate?'#f5c451':'')};
+$('#rvb').onclick=()=>{$('#rvf').hidden=!$('#rvf').hidden};
+$('#rsend').onclick=async()=>{const n=$('#rn').value.trim(),t=$('#rt').value.trim(),e=$('#rerr');e.hidden=false;
+ if(!rate||n.length<2||t.length<3){e.textContent='Elige una calificación y completa tu nombre y comentario.';return}
+ try{await set(push(ref(db,B+'/reviews')),{name:n,rating:rate,text:t,createdAt:Date.now()});e.hidden=true;$('#rvf').hidden=true;$('#rt').value='';rate=0}catch{e.textContent='No pudimos publicar tu reseña. Intenta de nuevo.'}};
+$('#more').onclick=()=>{gAll=true;gallery()};
+$('#gal').onclick=e=>{const i=e.target.closest('img');if(!i)return;$('#lb img').src=i.dataset.f;$('#lb').classList.add('on')};$('#lb').onclick=()=>$('#lb').classList.remove('on');
+
+/* Reserva paso a paso */
+const T=['Elige el servicio','Elige el día','Elige la hora','Tus datos','¡Reserva lista!'];
+function openSheet(id){S={svc:id||null};step=id?1:0;$('#sh').classList.add('on');document.body.style.overflow='hidden';draw()}
+function close(){$('#sh').classList.remove('on');document.body.style.overflow=''}
+$('#go').onclick=()=>openSheet();$('#cx').onclick=close;$('#bk').onclick=()=>{step--;draw()};
+$('#svl').onclick=e=>{const b=e.target.closest('[data-s]');if(b)openSheet(b.dataset.s)};
+async function draw(){const sv=SV[S.svc],sb=$('#sb');$('#st').textContent=T[step];$('#bk').hidden=step===0||step===4;$('#cx').hidden=false;
+ $('#pg').innerHTML=[0,1,2,3].map(i=>`<i class="${i<=step?'d':''}"></i>`).join('');
+ const sum=[sv&&esc(sv.name),S.date&&pd(S.date).toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'}),S.time].filter(Boolean).join(' · ');
+ const pre=sum&&step<4?`<p class="sum">${sum}</p>`:'';
+ if(step===0)sb.innerHTML=svcList().map(s=>`<button class="card row" data-s="${s.id}">${s.img?`<img src="${esc(cl(s.img,200))}" alt="">`:`<div class="ph">${I('scissors')}</div>`}<div><b>${esc(s.name)}</b><br><small>${s.duration||30} min</small></div><b>${money(s.price)}</b></button>`).join('')||'<p class="msg">No hay servicios disponibles.</p>';
+ if(step===1){const days=[],n=new Date();for(let i=0;i<21;i++){const d=new Date(n.getFullYear(),n.getMonth(),n.getDate()+i,12);days.push(d)}
+  sb.innerHTML=pre+`<div class="days">${days.map(d=>`<button class="day" data-d="${iso(d)}" ${dayInfo(d)?'':'disabled'}><small>${d.toLocaleDateString('es-CL',{weekday:'short'}).replace('.','')}</small><b>${d.getDate()}</b><small>${d.toLocaleDateString('es-CL',{month:'short'}).replace('.','')}</small></button>`).join('')}</div>`}
+ if(step===2){sb.innerHTML=pre+'<p class="msg">Buscando horas libres…</p>';const l=await slots(S.date,sv.duration||30);if(step!==2)return;
+  sb.innerHTML=pre+(S.warn?`<p class="err">${S.warn}</p>`:'')+(l.length?`<div class="hrs2">${l.map(t=>`<button class="hr" data-t="${hm(t)}">${hm(t)}</button>`).join('')}</div>`:'<p class="msg">No quedan horas este día. Prueba con otro.</p>');S.warn=''}
+ if(step===3){const sv2=sv;sb.innerHTML=pre+`<div class="card" style="padding:14px;margin-bottom:16px;display:flex;justify-content:space-between"><span>${esc(sv2.name)}</span><b>${money(sv2.price)}</b></div>
+  <div class="f"><label for="cn">Tu nombre</label><input id="cn" autocomplete="name" value="${esc(localStorage.bn||'')}"></div>
+  <div class="f"><label for="cp">Tu WhatsApp</label><input id="cp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+56 9 1234 5678" value="${esc(localStorage.bp||'')}"></div>
+  <p class="err" id="ce" hidden></p><button class="btn" id="ok">Confirmar reserva</button>`}
+ if(step===4)sb.innerHTML=`<div class="ok"><div class="c">${I('check')}</div><h2>${esc(S.name.split(' ')[0])}, te esperamos</h2><p style="color:var(--mu)">${esc(sv.name)}<br>${pd(S.date).toLocaleDateString('es-CL',{weekday:'long',day:'numeric',month:'long'})} a las ${S.time}</p></div><button class="btn" id="fin">Listo</button>`;
+ sb.scrollTop=0}
+$('#sb').onclick=async e=>{const t=e.target.closest('button');if(!t)return;
+ if(t.dataset.s){S.svc=t.dataset.s;step=1;draw()}
+ else if(t.dataset.d){S.date=t.dataset.d;S.time=null;step=2;draw()}
+ else if(t.dataset.t){S.time=t.dataset.t;step=3;draw()}
+ else if(t.id==='fin')close();
+ else if(t.id==='ok')submit(t)};
+async function slots(date,dur){const d=pd(date),di=dayInfo(d);if(!di)return[];const tk=(await get(ref(db,B+'/taken/'+date))).val()||{},n=new Date(),nm=n.getHours()*60+n.getMinutes(),out=[];
+ for(let t=m(di.start);t+dur<=m(di.end);t+=STEP){if(date===iso(n)&&t<=nm+15)continue;let ok=true;for(let x=t;x<t+dur;x+=STEP)if(tk[k(x)]){ok=false;break}if(ok)out.push(t)}return out}
+async function submit(btn){const name=$('#cn').value.trim();let ph=$('#cp').value.replace(/\D/g,'');if(ph.length===9)ph='56'+ph;const e=$('#ce');e.hidden=false;
+ if(name.length<2){e.textContent='Escribe tu nombre.';return}if(ph.length<10){e.textContent='Revisa tu número de WhatsApp.';return}
+ e.hidden=true;btn.disabled=true;btn.textContent='Reservando…';const sv=SV[S.svc],dur=sv.duration||30,t0=m(S.time);
+ try{const r=await runTransaction(ref(db,B+'/taken/'+S.date),cur=>{cur=cur||{};for(let x=t0;x<t0+dur;x+=STEP){if(cur[k(x)])return;cur[k(x)]=1}return cur});
+  if(!r.committed){S.warn='Esa hora acaba de ser tomada. Elige otra.';step=2;draw();return}
+  await set(push(ref(db,B+'/bookings')),{serviceId:S.svc,service:sv.name,price:sv.price||0,duration:dur,date:S.date,time:S.time,name,phone:ph,createdAt:Date.now()});
+  localStorage.bn=name;localStorage.bp=$('#cp').value;S.name=name;step=4;draw()}
+ catch{e.hidden=false;e.textContent='No pudimos reservar. Revisa tu conexión e intenta de nuevo.';btn.disabled=false;btn.textContent='Confirmar reserva'}}
+</script></body></html>
