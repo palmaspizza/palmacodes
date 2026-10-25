@@ -57,6 +57,20 @@ nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px
 nav button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:12px;border-radius:10px;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
 nav button i{font-style:normal;font-size:20px;line-height:1}
 nav button.on{color:var(--blue);font-weight:700;background:var(--blueS)}
+.tkr{display:flex;flex-wrap:wrap;gap:6px 2px;justify-content:center;margin:6px 0}
+.tk{display:flex;flex-direction:column;align-items:center;min-width:32px;padding:4px 3px;border-radius:10px}
+.tk .a{font-weight:700;font-size:18px}
+.tk .ar{color:var(--bad);font-size:22px;line-height:1.1;font-weight:700;opacity:0}
+.tk .n{font-size:26px;font-weight:700;min-height:34px;color:var(--blue);opacity:0}
+.tk.on .ar,.tk.on .n{opacity:1}
+.tk.op .a{color:var(--mut)}.tk.op .n{color:var(--mut)}
+.tk.cur{background:var(--mark)}.tk.cur .a,.tk.cur .n{color:#1b1b1b}
+.res{text-align:center;font-size:32px;font-weight:800;min-height:44px;color:var(--ok)}
+.gr{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.gr label{font-size:13px;color:var(--mut)}
+.gr input{font-size:18px;min-height:46px;padding:8px}
+select.fs{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px;min-height:50px;margin:0 0 10px}
+details summary{cursor:pointer;color:var(--blue);font-weight:600;min-height:40px;display:flex;align-items:center}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -89,6 +103,14 @@ nav button.on{color:var(--blue);font-weight:700;background:var(--blueS)}
   <div id="fb"></div>
 </section>
 
+<section class="panel" id="p-sus">
+  <p class="mut">Cada parte de la fórmula baja a su número, como en tu dibujo con flechas. Elige una fórmula.</p>
+  <select class="fs" id="fs" aria-label="Fórmula"></select>
+  <div class="card"><div class="tkr" id="tk"></div><div class="res" id="rs"></div></div>
+  <div class="row"><button class="btn" id="go">Paso a paso con voz</button><button class="btn g" id="all">Mostrar todo</button></div>
+  <details><summary>Datos del ejercicio (puedes cambiarlos)</summary><div class="gr" id="dg"></div></details>
+</section>
+
 <section class="panel" id="p-key">
   <p class="mut">Toca una tarjeta para escuchar cómo se reconoce y se resuelve.</p>
   <div id="kl"></div>
@@ -97,6 +119,7 @@ nav button.on{color:var(--blue);font-weight:700;background:var(--blueS)}
 <nav>
   <button class="on" data-t="les"><i>▶</i>Lección</button>
   <button data-t="pra"><i>✎</i>Practicar</button>
+  <button data-t="sus"><i>↓</i>Sustituir</button>
   <button data-t="key"><i>★</i>Claves</button>
 </nav>
 
@@ -181,8 +204,34 @@ const K=[['al menos uno','Suma todas las zonas de adentro. También: círculos �
 $('#kl').innerHTML=K.map((k,i)=>`<button class="kc" data-i="${i}"><b><mark>${k[0]}</mark></b><span class="mut" style="display:block">${k[3]}</span><span class="f">${k[2]}</span></button>`).join('');
 $('#kl').onclick=e=>{const b=e.target.closest('.kc');if(!b)return;$$('.kc').forEach(x=>x.classList.toggle('sp',x==b));const k=K[b.dataset.i];say(k[0]+'. '+k[1]+' '+k[3]+' La fórmula es: '+k[2].replace(/·/g,' por '))};
 
-function tab(t){$$('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==t));$$('.panel').forEach(x=>x.classList.toggle('on',x.id=='p-'+t));syn&&syn.cancel();scrollTo(0,0);if(t=='les')les(1);else if(t=='pra')say(Q.q+'. Datos: '+Q.D.join('. ')+'.')}
+function tab(t){$$('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==t));$$('.panel').forEach(x=>x.classList.toggle('on',x.id=='p-'+t));syn&&syn.cancel();run++;scrollTo(0,0);if(t=='les')les(1);else if(t=='pra')say(Q.q+'. Datos: '+Q.D.join('. ')+'.')}
 $$('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+
+const FD={soloH:['Solo H','H - HI - HN + HIN'],soloI:['Solo I','I - HI - IN + HIN'],soloN:['Solo N','N - HN - IN + HIN'],parHI:['Solo H e I (el par sin el centro)','HI - HIN'],union:['Al menos uno','H + I + N - HI - IN - HN + HIN'],uno:['Exactamente uno','H + I + N - 2* ( HI + IN + HN ) + 3* HIN'],dos:['Exactamente dos','HI + IN + HN - 3* HIN'],almenos2:['Dos o más','HI + IN + HN - 2* HIN'],ninguno:['Ninguno','T - ( H + I + N - HI - IN - HN + HIN )']};
+const LB={T:'Total',H:'H',I:'I',N:'N',HI:'(H∩I)',IN:'(I∩N)',HN:'(H∩N)',HIN:'(H∩I∩N)'};
+const DV={T:60,H:30,I:25,N:15,HI:5,IN:4,HN:3,HIN:0};
+let run=0,cu=null;
+$('#fs').innerHTML=Object.keys(FD).map(k=>`<option value="${k}">${FD[k][0]}</option>`).join('');
+$('#dg').innerHTML=Object.keys(DV).map(k=>`<div><label for="d_${k}">${LB[k]}</label><input id="d_${k}" type="number" inputmode="numeric" value="${DV[k]}"></div>`).join('');
+const SP={'-':'menos','+':'más','(':'abre paréntesis',')':'cierra paréntesis'};
+function toks(){const v={};Object.keys(DV).forEach(k=>v[k]=parseInt($('#d_'+k).value)||0);
+ return FD[$('#fs').value][1].split(' ').map(t=>{if(v[t]!==undefined)return{key:1,a:LB[t],n:v[t],e:v[t]<0?`(${v[t]})`:String(v[t])};
+  const m=t.match(/^(\d)\*$/);if(m)return{op:1,a:m[1]+'×',n:m[1]+'×',e:m[1]+'*',sp:'por '+m[1]};
+  const x=t=='-'?'−':t;return{op:1,a:x,n:x,e:t,sp:SP[t]}})}
+function rend(show){run++;if(syn)syn.cancel();const T=toks();
+ $('#tk').innerHTML=T.map((t,i)=>`<div class="tk${t.op?' op':''}${show?' on':''}" id="t${i}"><span class="a">${t.a}</span><span class="ar">↓</span><span class="n">${t.n}</span></div>`).join('');
+ window.R=Function('return '+T.map(t=>t.e).join(' '))();$('#rs').textContent=show?'= '+window.R:'';return T}
+function say2(t,cb){if(!on||!syn){setTimeout(cb,850);return}syn.cancel();const u=new SpeechSynthesisUtterance(clean(t));u.lang=voice?voice.lang:'es-ES';if(voice)u.voice=voice;u.rate=rate;cu=u;u.onend=()=>{if(cu===u)cb()};syn.speak(u)}
+$('#go').onclick=()=>{const T=rend(false),id=run;
+ const step=i=>{if(id!==run)return;$$('.tk').forEach(x=>x.classList.remove('cur'));
+  if(i>=T.length){$('#rs').textContent='= '+window.R;say2('El resultado es '+window.R+'.',()=>{});return}
+  $('#t'+i).classList.add('on','cur');const t=T[i];
+  say2(t.key?`${t.a.replace(/[()]/g,'').replace(/∩/g,' y ')} vale ${t.n}`:t.sp,()=>step(i+1))};
+ say2('Fórmula de '+FD[$('#fs').value][0]+'. Cada parte baja a su número.',()=>step(0))};
+$('#all').onclick=()=>rend(true);
+$('#fs').onchange=()=>rend(true);
+$('#dg').addEventListener('input',()=>rend(true));
+rend(true);
 setTimeout(()=>{if(syn&&!voice)$('#nov').textContent='No encontré una voz en español en este dispositivo. Instálala en Ajustes > Accesibilidad > Voz, o prueba otro navegador.',$('#nov').hidden=false},1800);
 </script>
 </body>
