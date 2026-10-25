@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15233B">
+<title>Tutor de conjuntos con voz</title>
+<style>
+:root{--bg:#F2F5F9;--card:#fff;--ink:#15233B;--mut:#5B6B82;--line:#D9E0EA;--blue:#2F55D4;--blueS:#E6ECFF;--mark:#FFD93D;--ok:#12805C;--okS:#DDF4EA;--bad:#C23A3A;--badS:#FBE3E3}
+@media (prefers-color-scheme:dark){:root{--bg:#0E1626;--card:#17233A;--ink:#EAF0FA;--mut:#9DAEC7;--line:#2A3B58;--blue:#7C98FF;--blueS:#1F2F57;--okS:#12362B;--ok:#4FD1A0;--badS:#3C1E24;--bad:#FF8A8A}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Avenir Next","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;font-variant-numeric:tabular-nums;padding-top:env(safe-area-inset-top);padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{max-width:640px;margin:0 auto;padding:16px 16px 4px}
+h1{font-size:22px;line-height:1.2;margin:0 0 2px}
+h2{font-size:18px;margin:0 0 6px}
+p{margin:0 0 10px}
+.mut{color:var(--mut);font-size:14px}
+main{max-width:640px;margin:0 auto;padding:8px 14px}
+.bar{position:sticky;top:0;z-index:4;background:var(--bg);padding:8px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.bar select,.bar button,.chip{font:inherit;font-size:14px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:9px 13px;min-height:42px;cursor:pointer}
+.bar button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{display:none}.panel.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.btn{font:inherit;font-weight:700;background:var(--blue);color:#fff;border:0;border-radius:12px;padding:13px 16px;min-height:48px;cursor:pointer;flex:1}
+.btn.g{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn:disabled{opacity:.45}
+.row{display:flex;gap:8px;margin:10px 0}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:0 0 10px}
+.prog i{display:block;height:100%;background:var(--blue);transition:width .25s}
+svg{width:100%;height:auto;display:block;max-width:420px;margin:0 auto}
+.circ{fill-opacity:.22;stroke-width:1.5}
+.rg{opacity:0;transition:opacity .25s}
+.rg.on{opacity:1}.rg.dim{opacity:.35}
+.rg .b{fill:var(--card);stroke:var(--line)}
+.rg.hl .b{fill:var(--mark);stroke:#b89400}
+.rg text{fill:var(--ink);font-weight:700;font-size:16px;text-anchor:middle;dominant-baseline:central}
+.rg.hl text{fill:#1b1b1b}
+.lb{fill:var(--ink);font-size:13px;font-weight:600}
+.step{font-size:17px}
+input[type=number]{width:100%;font:inherit;font-size:20px;font-weight:700;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px;min-height:52px}
+input:focus{border-color:var(--blue);outline:none}
+ul.d{margin:6px 0;padding-left:20px}
+.fb{border-radius:12px;padding:12px;margin:10px 0}
+.fb.good{background:var(--okS)}.fb.bad{background:var(--badS)}
+.fb ol{margin:6px 0 0;padding-left:20px}
+.fb li{margin:3px 0;overflow-wrap:anywhere}
+.stats{display:flex;gap:8px;margin:0 0 10px}
+.stats div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px;text-align:center;font-size:12px;color:var(--mut)}
+.stats b{display:block;font-size:19px;color:var(--ink)}
+.kc{width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:13px;margin:0 0 10px;font:inherit;cursor:pointer}
+.kc b mark{background:var(--mark);color:#1b1b1b;border-radius:4px;padding:1px 6px}
+.kc .f{display:block;background:var(--blueS);border-radius:8px;padding:6px 10px;margin-top:6px;font-weight:600;font-size:14px;overflow-wrap:anywhere}
+.kc.sp{border-color:var(--blue)}
+.warn{background:var(--badS);color:var(--bad);border-radius:12px;padding:10px;margin:0 0 10px;font-size:14px;font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:12px;border-radius:10px;min-height:52px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+nav button i{font-style:normal;font-size:20px;line-height:1}
+nav button.on{color:var(--blue);font-weight:700;background:var(--blueS)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><h1>Tutor de conjuntos con voz</h1><p class="mut">Toca los botones y escucha la explicación. Mejor con audífonos.</p></header>
+<main>
+<div id="nov" class="warn" hidden>Tu navegador no tiene voz. Abre el archivo en Chrome o Safari para escuchar las explicaciones.</div>
+<div class="bar">
+  <button id="vz" class="on">Voz: sí</button>
+  <button id="rp">Repetir</button>
+  <button id="sh">Callar</button>
+  <select id="sp" aria-label="Velocidad"><option value="0.8">Lento</option><option value="1" selected>Normal</option><option value="1.2">Rápido</option></select>
+</div>
+
+<section class="panel on" id="p-les">
+  <div class="prog"><i id="pg"></i></div>
+  <div class="card">
+    <svg id="vn" viewBox="0 0 344 330" role="img" aria-label="Diagrama de Venn con tres círculos P, A y M"></svg>
+  </div>
+  <div class="card"><h2 id="lt"></h2><p class="step" id="ls"></p></div>
+  <div class="row"><button class="btn g" id="pv">Atrás</button><button class="btn" id="nx">Siguiente</button></div>
+</section>
+
+<section class="panel" id="p-pra">
+  <div class="stats"><div><b id="s1">0/0</b>aciertos</div><div><b id="s2">0</b>racha</div></div>
+  <div class="card"><h2 id="qt"></h2><ul class="d" id="qd"></ul></div>
+  <input id="an" type="number" inputmode="numeric" placeholder="Tu respuesta" aria-label="Tu respuesta">
+  <div class="row"><button class="btn" id="ck">Revisar</button><button class="btn g" id="ht">Pista</button></div>
+  <div class="row"><button class="btn g" id="ex">Explícame</button><button class="btn g" id="nq">Otro ejercicio</button></div>
+  <div id="fb"></div>
+</section>
+
+<section class="panel" id="p-key">
+  <p class="mut">Toca una tarjeta para escuchar cómo se reconoce y se resuelve.</p>
+  <div id="kl"></div>
+</section>
+</main>
+<nav>
+  <button class="on" data-t="les"><i>▶</i>Lección</button>
+  <button data-t="pra"><i>✎</i>Practicar</button>
+  <button data-t="key"><i>★</i>Claves</button>
+</nav>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const syn=window.speechSynthesis;let on=true,rate=1,voice=null,last='';
+function pick(){const v=syn.getVoices();voice=v.find(x=>/^es[-_](CL|MX|US|419)/i.test(x.lang))||v.find(x=>/^es/i.test(x.lang))||null}
+if(syn){pick();syn.onvoiceschanged=pick}else $('#nov').hidden=false;
+const clean=t=>t.replace(/−/g,' menos ').replace(/\+/g,' más ').replace(/×|·/g,' por ').replace(/=/g,' igual a ').replace(/∩/g,' intersección ').replace(/∪/g,' unión ').replace(/\s+/g,' ');
+function say(t){last=t;if(!on||!syn)return;syn.cancel();const u=new SpeechSynthesisUtterance(clean(t));u.lang=voice?voice.lang:'es-ES';if(voice)u.voice=voice;u.rate=rate;syn.speak(u)}
+$('#vz').onclick=e=>{on=!on;e.target.classList.toggle('on',on);e.target.textContent='Voz: '+(on?'sí':'no');if(!on&&syn)syn.cancel()};
+$('#rp').onclick=()=>{const o=on;on=true;say(last);on=o};
+$('#sh').onclick=()=>syn&&syn.cancel();
+$('#sp').onchange=e=>rate=+e.target.value;
+
+const NS='http://www.w3.org/2000/svg';
+const REG={c:[172,146,10],pa:[172,76,30],am:[234,186,20],pm:[110,186,40],sp:[64,92,70],sa:[280,92,40],sm:[172,264,50]};
+let h='<rect x="2" y="2" width="340" height="326" rx="8" fill="none" stroke="var(--line)"/><circle class="circ" cx="116" cy="116" r="96" fill="#7F77DD" stroke="#534AB7"/><circle class="circ" cx="228" cy="116" r="96" fill="#1D9E75" stroke="#0F6E56"/><circle class="circ" cx="172" cy="212" r="96" fill="#D85A30" stroke="#993C1D"/><text class="lb" x="10" y="18">P plomo 150</text><text class="lb" x="334" y="18" text-anchor="end">A asbesto 100</text><text class="lb" x="172" y="322" text-anchor="middle" dx="-30">M mercurio 120</text>';
+for(const k in REG){const[x,y,v]=REG[k];h+=`<g class="rg" id="r_${k}"><circle class="b" cx="${x}" cy="${y}" r="18"/><text x="${x}" y="${y}">${v}</text></g>`}
+h+='<g class="rg" id="r_out"><rect class="b" x="262" y="304" width="76" height="20" rx="10"/><text x="300" y="314" style="font-size:12px">fuera: 40</text></g>';
+$('#vn').innerHTML=h;
+const ALL=Object.keys(REG);
+const ST=[
+['El orden que siempre se usa','Vamos a resolver un problema real: 300 viviendas y tres riesgos, plomo, asbesto y mercurio. El secreto es llenar el diagrama siempre en el mismo orden: primero el centro, después las zonas de a dos, y al final las zonas de uno solo.',[],[]],
+['Paso 1: el centro','El centro son las viviendas con los tres riesgos. Es un dato directo del enunciado: 10.',['c'],['c']],
+['Paso 2: zonas de a dos','Cuando el enunciado dice que 40 tienen P y A, ese 40 ya incluye al centro. Por eso se le resta el centro. P y A solamente: 40 − 10 = 30. A y M solamente: 30 − 10 = 20. P y M solamente: 50 − 10 = 40.',['c','pa','am','pm'],['pa','am','pm']],
+['Paso 3: zonas de uno solo','Al círculo completo le quitamos todo lo que comparte con los otros. Solo P: 150 − 30 − 40 − 10 = 70. Solo A: 100 − 30 − 20 − 10 = 40. Solo M: 120 − 40 − 20 − 10 = 50.',ALL,['sp','sa','sm']],
+['Paso 4: los que quedan afuera','Sumamos todas las zonas de adentro: 70 + 40 + 50 + 30 + 20 + 40 + 10 = 260. Los que quedan afuera son 300 − 260 = 40.',[...ALL,'out'],['out']],
+['Pregunta: exactamente uno','Palabra clave: exactamente uno. Sumamos solo las tres zonas de un único círculo: 70 + 40 + 50 = 160.',[...ALL,'out'],['sp','sa','sm']],
+['Pregunta: al menos uno','Palabra clave: al menos uno. Sumamos todas las zonas de adentro, las siete: 260.',[...ALL,'out'],ALL],
+['Pregunta: ninguno','Palabra clave: ninguno. Es lo que quedó afuera de los círculos: el total menos el al menos uno. 300 − 260 = 40.',[...ALL,'out'],['out']],
+['Listo: ahora tú','Resumen. Uno: llena el centro. Dos: llena las zonas de a dos restando el centro. Tres: llena las zonas de uno solo. Cuatro: lee la palabra clave y suma las zonas que corresponden. Ahora ve a Practicar y resuélvelo tú.',[...ALL,'out'],[]]];
+let si=0;
+function les(sp){const[t,s,sh,hl]=ST[si];$('#lt').textContent=t;$('#ls').textContent=s;$('#pg').style.width=((si+1)/ST.length*100)+'%';
+ [...ALL,'out'].forEach(k=>{const g=$('#r_'+k),o=sh.includes(k);g.classList.toggle('on',o);g.classList.toggle('hl',hl.includes(k));g.classList.toggle('dim',o&&hl.length>0&&!hl.includes(k))});
+ $('#pv').disabled=si==0;$('#nx').textContent=si==ST.length-1?'Ir a practicar':'Siguiente';if(sp)say(t+'. '+s)}
+$('#nx').onclick=()=>{if(si==ST.length-1){tab('pra');return}si++;les(1)};
+$('#pv').onclick=()=>{if(si>0){si--;les(1)}};
+les();
+
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const SC=[{s:'pacientes',g:'o',c:'síntomas',n:['D','F','M']},{s:'viviendas',g:'a',c:'riesgos',n:['P','A','M']},{s:'muestras',g:'a',c:'valores elevados',n:['C','U','H']}];
+let Q=null;
+function newQ(){syn&&syn.cancel();const sc=SC[rnd(0,2)],N=sc.n;
+ const r={c:rnd(2,8),p01:rnd(3,12),p12:rnd(3,12),p02:rnd(3,12),s0:rnd(8,30),s1:rnd(8,30),s2:rnd(8,30),out:rnd(5,25)};
+ const n=[r.s0+r.p01+r.p02+r.c,r.s1+r.p01+r.p12+r.c,r.s2+r.p12+r.p02+r.c];
+ const n01=r.p01+r.c,n12=r.p12+r.c,n02=r.p02+r.c,u=r.s0+r.s1+r.s2+r.p01+r.p12+r.p02+r.c,tot=u+r.out;
+ const ty=['uno','union','ninguno','solo','dos','almenos2'][rnd(0,5)],k=rnd(0,2);
+ const q0=`¿Cuánt${sc.g=='o'?'os':'as'} ${sc.s} `;
+ const qs={uno:q0+`presentan exactamente uno de los tres ${sc.c}?`,union:q0+`presentan al menos uno de los tres ${sc.c}?`,ninguno:q0+`no presentan ninguno de los tres ${sc.c}?`,solo:q0+`presentan solamente ${N[k]}?`,dos:q0+`presentan exactamente dos de los tres ${sc.c}?`,almenos2:q0+`presentan dos o más de los tres ${sc.c}?`};
+ const sol=[r.s0,r.s1,r.s2][k];
+ const ans={uno:r.s0+r.s1+r.s2,union:u,ninguno:r.out,solo:sol,dos:r.p01+r.p12+r.p02,almenos2:r.p01+r.p12+r.p02+r.c}[ty];
+ const D=[`Se revisaron ${tot} ${sc.s}`,`${n[0]} presentan ${N[0]}`,`${n[1]} presentan ${N[1]}`,`${n[2]} presentan ${N[2]}`,`${n01} presentan ${N[0]} y ${N[1]}`,`${n12} presentan ${N[1]} y ${N[2]}`,`${n02} presentan ${N[0]} y ${N[2]}`,`${r.c} presentan los tres`];
+ const L=[`Centro (los tres) = ${r.c}`,`Solo ${N[0]} y ${N[1]} = ${n01} − ${r.c} = ${r.p01}`,`Solo ${N[1]} y ${N[2]} = ${n12} − ${r.c} = ${r.p12}`,`Solo ${N[0]} y ${N[2]} = ${n02} − ${r.c} = ${r.p02}`,
+  `Solo ${N[0]} = ${n[0]} − ${r.p01} − ${r.p02} − ${r.c} = ${r.s0}`,`Solo ${N[1]} = ${n[1]} − ${r.p01} − ${r.p12} − ${r.c} = ${r.s1}`,`Solo ${N[2]} = ${n[2]} − ${r.p12} − ${r.p02} − ${r.c} = ${r.s2}`];
+ const U=`Al menos uno = ${r.s0} + ${r.s1} + ${r.s2} + ${r.p01} + ${r.p12} + ${r.p02} + ${r.c} = ${u}`;
+ const F={uno:`Exactamente uno = ${r.s0} + ${r.s1} + ${r.s2} = ${ans}`,union:U,ninguno:U+`|Ninguno = ${tot} − ${u} = ${ans}`,solo:`Respuesta: solo ${N[k]} = ${ans}`,dos:`Exactamente dos = ${r.p01} + ${r.p12} + ${r.p02} = ${ans}`,almenos2:`Dos o más = ${r.p01} + ${r.p12} + ${r.p02} + ${r.c} = ${ans}`}[ty].split('|');
+ const H={uno:'La palabra clave es exactamente uno. Suma las tres zonas de un solo círculo.',union:'La palabra clave es al menos uno. Suma todas las zonas de adentro.',ninguno:'La palabra clave es ninguno. Calcula el al menos uno y réstalo al total.',solo:'La palabra clave es solamente. Es una sola zona: el círculo menos lo que comparte.',dos:'La palabra clave es exactamente dos. Suma las tres zonas de a dos, sin el centro.',almenos2:'Dos o más es exactamente dos más el centro.'}[ty];
+ Q={q:qs[ty],D,steps:[...L,...F],ans,H,c:r.c,done:false};
+ $('#qt').textContent=Q.q;$('#qd').innerHTML=D.map(x=>`<li>${x}</li>`).join('');$('#an').value='';$('#fb').innerHTML='';
+ say(Q.q+'. Datos: '+D.join('. ')+'.')}
+let S={ok:0,n:0,st:0};try{S=Object.assign(S,JSON.parse(localStorage.getItem('conj_voz')||'{}'))}catch(e){}
+const st=()=>{$('#s1').textContent=S.ok+'/'+S.n;$('#s2').textContent=S.st;try{localStorage.setItem('conj_voz',JSON.stringify(S))}catch(e){}};
+function show(good,msg){$('#fb').innerHTML=`<div class="fb ${good?'good':'bad'}"><b>${msg}</b><ol>${Q.steps.map(x=>`<li>${x}</li>`).join('')}</ol></div>`}
+$('#ck').onclick=()=>{const v=$('#an').value;if(v===''){say('Escribe tu respuesta primero.');return}
+ const ok=+v===Q.ans;if(!Q.done){S.n++;if(ok){S.ok++;S.st++}else S.st=0;Q.done=true;st()}
+ show(ok,ok?'¡Correcto!':'Casi. La respuesta es '+Q.ans);
+ say(ok?'¡Correcto! Muy bien. La respuesta es '+Q.ans+'.':'Casi. La respuesta correcta es '+Q.ans+'. Mira cómo se llega: '+Q.steps.join('. '))};
+$('#an').onkeydown=e=>{if(e.key==='Enter')$('#ck').click()};
+$('#ht').onclick=()=>{const t=Q.H+' Recuerda: primero el centro, que vale '+Q.c+', y luego resta el centro a cada par.';$('#fb').innerHTML=`<div class="fb good">${t}</div>`;say(t)};
+$('#ex').onclick=()=>{show(true,'Así se resuelve: respuesta '+Q.ans);say('Así se resuelve. '+Q.steps.join('. '))};
+$('#nq').onclick=newQ;
+st();newQ();syn&&syn.cancel();
+
+const K=[['al menos uno','Suma todas las zonas de adentro. También: círculos − pares + centro.','A + B + C − AB − AC − BC + ABC','Palabras: al menos uno, alguno, uno o más, o.'],
+['exactamente uno','Suma solo las tres zonas de un único círculo. También: círculos − 2 × pares + 3 × centro.','A + B + C − 2·(AB + AC + BC) + 3·ABC','Palabras: exactamente uno, solo uno, uno solo, pero no ambas.'],
+['solo A','Es una sola zona: el círculo menos lo que comparte con los otros, más el centro una vez.','A − AB − AC + ABC','Palabras: solo, solamente, únicamente.'],
+['exactamente dos','Suma las tres zonas de a dos, sin el centro. También: pares − 3 × centro.','AB + AC + BC − 3·ABC','Palabras: exactamente dos, solo dos.'],
+['dos o más','Es exactamente dos más el centro. También: pares − 2 × centro.','AB + AC + BC − 2·ABC','Palabras: al menos dos, dos o más.'],
+['ninguno','Es lo que queda afuera de los círculos: el total menos el al menos uno.','Total − (al menos uno)','Palabras: ninguno, ni uno ni otro, no presentan ninguno.'],
+['los tres','No hay que calcular: es el dato del centro.','ABC (dato)','Palabras: los tres, todos, a la vez.']];
+$('#kl').innerHTML=K.map((k,i)=>`<button class="kc" data-i="${i}"><b><mark>${k[0]}</mark></b><span class="mut" style="display:block">${k[3]}</span><span class="f">${k[2]}</span></button>`).join('');
+$('#kl').onclick=e=>{const b=e.target.closest('.kc');if(!b)return;$$('.kc').forEach(x=>x.classList.toggle('sp',x==b));const k=K[b.dataset.i];say(k[0]+'. '+k[1]+' '+k[3]+' La fórmula es: '+k[2].replace(/·/g,' por '))};
+
+function tab(t){$$('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==t));$$('.panel').forEach(x=>x.classList.toggle('on',x.id=='p-'+t));syn&&syn.cancel();scrollTo(0,0);if(t=='les')les(1);else if(t=='pra')say(Q.q+'. Datos: '+Q.D.join('. ')+'.')}
+$$('nav button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+setTimeout(()=>{if(syn&&!voice)$('#nov').textContent='No encontré una voz en español en este dispositivo. Instálala en Ajustes > Accesibilidad > Voz, o prueba otro navegador.',$('#nov').hidden=false},1800);
+</script>
+</body>
+</html>
