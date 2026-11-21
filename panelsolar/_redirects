@@ -1,0 +1,8 @@
+/qr /?utm_source=qr&abrir=asistente 302
+/admin /admin.html 302
+/docs/* /404.html 404
+/boceto/* /404.html 404
+/firebase/* /404.html 404
+/prompt.md /404.html 404
+/propuesta.html /404.html 404
+/README.md /404.html 404

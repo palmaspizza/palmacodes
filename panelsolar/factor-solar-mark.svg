@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title">
+  <title id="title">Símbolo de Factor Solar Chile</title>
+  <g fill="#ffc629">
+    <path d="M100 23a43 43 0 0 0-43 43h86a43 43 0 0 0-43-43Z"/>
+    <path d="M96 8h8v20h-8zM42 25l6-6 15 15-6 6zM137 34l15-15 6 6-15 15zM24 61h21v8H24zM155 61h21v8h-21z"/>
+  </g>
+  <path d="M33 87h134l17 72H16l17-72Z" fill="#101820" stroke="#ffc629" stroke-linejoin="round" stroke-width="8"/>
+  <path d="m52 91-12 64m47-64-4 64m36-64 4 64m31-64 12 64M27 120h146" fill="none" stroke="#ffc629" stroke-linecap="round" stroke-width="6"/>
+</svg>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Energía solar</title>
+<meta name="description" id="md" content="">
+<meta property="og:title" id="ogt" content="">
+<meta property="og:description" id="ogd" content="">
+<meta property="og:image" id="ogi" content="">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F5A524' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E">
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="icons-v2.js"></script>
+<style>
+:root{--p:#0E1B2C;--a:#F5A524;--bg:#F7FAFC;--tx:#0E1B2C;--mut:#5B6B82;--card:#fff;--ln:#DCE5EF;--r:14px;--fd:'Sora',sans-serif;--fb:'DM Sans',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 var(--fb)}
+h1,h2,h3{font-family:var(--fd);line-height:1.15;margin:0}p{margin:0}a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+.c{max-width:1140px;margin:0 auto;padding:0 20px}.sec{padding:76px 0}.sec h2{font-size:clamp(26px,4vw,38px);margin-bottom:10px}.sub{color:var(--mut);margin-bottom:34px;max-width:60ch}
+.btn{display:inline-flex;gap:8px;align-items:center;border:0;border-radius:999px;padding:13px 24px;font:700 15px var(--fb);cursor:pointer;background:var(--a);color:var(--p)}
+.btn.o{background:transparent;border:1.5px solid currentColor;color:inherit}.btn.w{background:#25D366;color:#06260F}.btn:hover{filter:brightness(1.07)}
+header{position:fixed;inset:0 0 auto;z-index:50;padding:14px 0;transition:.3s;color:#fff}
+header.s{background:var(--p);padding:8px 0;box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font:700 18px var(--fd)}.logo img{height:38px;width:auto}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-size:14.5px}
+.nr{display:flex;gap:10px;align-items:center}
+.cb{position:relative;background:none;border:1.5px solid rgba(255,255,255,.5);color:#fff;border-radius:999px;padding:8px 16px;cursor:pointer;font:700 14px var(--fb)}
+.cb i{font-style:normal;background:var(--a);color:var(--p);border-radius:99px;padding:1px 8px;margin-left:6px}
+.bg{display:none;background:none;border:0;color:#fff;font-size:28px;cursor:pointer}
+.mm{position:fixed;inset:0;background:var(--p);color:#fff;z-index:60;padding:28px;transform:translateX(100%);transition:.3s}.mm.on{transform:none}
+.mm a{display:block;font:600 24px var(--fd);padding:12px 0}.mm button{float:right;background:none;border:0;color:#fff;font-size:32px}
+.hero{min-height:100vh;display:flex;align-items:center;color:#fff;background:linear-gradient(160deg,var(--p),#000 160%) center/cover;position:relative}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.65),rgba(0,0,0,.15))}
+.hero .c{position:relative}.hero h1{font-size:clamp(34px,6vw,64px);max-width:15ch}.hero p{max-width:50ch;margin:18px 0 28px;font-size:18px;opacity:.92}
+.hero .bt{display:flex;gap:12px;flex-wrap:wrap}
+.stats{margin-top:-48px;position:relative;z-index:2}.sg{background:var(--card);border-radius:var(--r);box-shadow:0 20px 50px -24px rgba(0,0,0,.35);display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));padding:22px}
+.sg div{text-align:center;padding:6px}.sg b{display:block;font:700 34px var(--fd);color:var(--a)}.sg span{color:var(--mut);font-size:14px}
+.ab{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}.ab img{border-radius:var(--r);width:100%;aspect-ratio:4/3;object-fit:cover}.ab p{color:var(--mut);white-space:pre-line}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.sv{padding:24px}.sv .ic{color:var(--a);margin-bottom:10px}.sv p{color:var(--mut);font-size:15px;margin-top:6px}
+.pi{aspect-ratio:1;object-fit:cover;width:100%;background:var(--ln)}.pb{padding:16px;display:flex;flex-direction:column;gap:6px;flex:1}.pb p{color:var(--mut);font-size:14px;flex:1}
+.pr{font:700 20px var(--fd)}.out{color:#C0392B;font-weight:700;font-size:13px}
+.gl{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}.gl img{aspect-ratio:4/3;object-fit:cover;width:100%;border-radius:var(--r);cursor:zoom-in}
+.gl figure{margin:0}.gl figcaption{font-size:14px;margin-top:6px;color:var(--mut)}
+.q{background:var(--p);color:#fff}.q .sub{color:#B6C3D6}.qf{display:grid;gap:12px;max-width:620px}
+input,textarea,select{width:100%;font:inherit;color:var(--tx);background:#fff;border:1.5px solid var(--ln);border-radius:10px;padding:12px 14px}
+input:focus,textarea:focus,select:focus{outline:3px solid rgba(245,165,36,.45);border-color:var(--a)}
+details{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:16px 18px;margin-bottom:10px}summary{cursor:pointer;font-weight:700}details p{color:var(--mut);margin-top:8px;white-space:pre-line}
+footer{background:#08111d;color:#B6C3D6;padding:44px 0 28px;font-size:14.5px}.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:26px}footer h3{color:#fff;font-size:16px;margin-bottom:10px}footer a{display:block;padding:2px 0}
+.fl{color:#06260F;position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:58px;height:58px;border-radius:50%;background:#25D366;display:grid;place-items:center;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.3);font-size:28px}
+.dr{position:fixed;inset:0 0 0 auto;width:min(420px,100%);background:var(--card);z-index:70;transform:translateX(100%);transition:.3s;display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.25)}.dr.on{transform:none}
+.dh{padding:18px 20px;border-bottom:1px solid var(--ln);display:flex;justify-content:space-between;align-items:center}.dh button{background:none;border:0;font-size:28px;cursor:pointer;color:var(--tx)}
+.db{flex:1;overflow:auto;padding:16px 20px;display:grid;gap:10px;align-content:start}.df{padding:16px 20px;border-top:1px solid var(--ln);display:grid;gap:10px}
+.ci{display:grid;grid-template-columns:54px 1fr auto;gap:10px;align-items:center}.ci img{width:54px;height:54px;border-radius:8px;object-fit:cover}.ci small{color:var(--mut)}
+.qt{display:flex;gap:6px;align-items:center}.qt button{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--ln);background:none;cursor:pointer;color:var(--tx)}
+.tot{display:flex;justify-content:space-between;font:700 18px var(--fd)}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;place-items:center;z-index:80;padding:20px}.lb.on{display:grid}.lb img{max-height:90vh;border-radius:10px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--p);color:#fff;padding:10px 18px;border-radius:99px;z-index:90;opacity:0;transition:.3s;pointer-events:none}.toast.on{opacity:1}
+.hide{display:none!important}
+@media(max-width:860px){nav,.nr .btn{display:none}.bg{display:block}.ab{grid-template-columns:1fr}.sec{padding:56px 0}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<header id="hd"><div class="c nav"><a href="#inicio" class="logo" id="logo"></a>
+<nav><ul id="menu"></ul></nav>
+<div class="nr"><button class="cb" id="cbtn">Carrito<i id="cn">0</i></button><a class="btn w" id="hwa" target="_blank" rel="noopener">WhatsApp</a><button class="bg" id="bg" aria-label="Menú"><span data-i="menu" data-s="28"></span></button></div></div></header>
+<div class="mm" id="mm"><button id="mx" aria-label="Cerrar"><span data-i="x" data-s="30"></span></button><div id="mml" style="margin-top:60px"></div></div>
+
+<section class="hero" id="inicio"><div class="c"><h1 id="ht"></h1><p id="hs"></p><div class="bt"><a class="btn" id="hc" href="#productos"></a><a class="btn o" href="#cotiza">Cotizar un servicio</a></div></div></section>
+<section class="stats"><div class="c"><div class="sg" id="sg"></div></div></section>
+<section class="sec" id="nosotros"><div class="c ab"><div><h2 id="at"></h2><p id="ad"></p></div><img id="ai" alt=""></div></section>
+<section class="sec" id="servicios" style="background:#fff"><div class="c"><h2 id="svt"></h2><p class="sub" id="svs"></p><div class="grid" id="sv"></div></div></section>
+<section class="sec" id="productos"><div class="c"><h2 id="pt"></h2><p class="sub" id="ps"></p><div class="grid" id="pg"></div></div></section>
+<section class="sec" id="proyectos" style="background:#fff"><div class="c"><h2 id="prt"></h2><p class="sub" id="prs"></p><div class="gl" id="gl"></div></div></section>
+<section class="sec q" id="cotiza"><div class="c"><h2 id="qt"></h2><p class="sub" id="qs"></p>
+<form class="qf" id="qf"><input id="qn" placeholder="Tu nombre" required><input id="qp" type="tel" placeholder="Tu teléfono" required><select id="qsv"></select><textarea id="qd" rows="4" placeholder="Cuéntanos qué necesitas (comuna, consumo, tipo de techo…)"></textarea><button class="btn w" style="justify-self:start">Pedir cotización por WhatsApp</button></form></div></section>
+<section class="sec" id="faq"><div class="c" style="max-width:800px"><h2 id="ft"></h2><div id="fq" style="margin-top:24px"></div></div></section>
+<footer><div class="c fg" id="ft2"></div><div class="c" style="margin-top:26px;opacity:.7">© <span id="yr"></span> <span id="fn"></span> · Sitio por PalmaCodes</div></footer>
+<a class="fl" id="fwa" target="_blank" rel="noopener" aria-label="WhatsApp"><span data-i="whatsapp" data-s="30"></span></a>
+
+<aside class="dr" id="dr" aria-label="Carrito"><div class="dh"><h3>Tu pedido</h3><button id="dx" aria-label="Cerrar"><span data-i="x" data-s="26"></span></button></div><div class="db" id="cl"></div>
+<div class="df" id="cf"><p style="font-size:12.5px;color:var(--mut)">Tus datos se usan solo para armar este pedido y enviarlo por WhatsApp; este sitio no los guarda.</p><div class="tot"><span>Total</span><span id="ct"></span></div><div id="cfl" style="display:grid;gap:8px"></div><button class="btn w" id="cs" style="justify-content:center">Enviar pedido por WhatsApp</button></div></aside>
+<div class="lb" id="lb"><img id="li" alt=""></div><div class="toast" id="ts"></div>
+
+<script>
+/* ===== Firebase / Cloudinary ===== */
+firebase.initializeApp({apiKey:"AIzaSyDBEB8Q27hldB1_HKBEaJYfF5Ef1Xw382Q",authDomain:"taxislascondes-a37d4.firebaseapp.com",databaseURL:"https://taxislascondes-a37d4-default-rtdb.firebaseio.com",projectId:"taxislascondes-a37d4",appId:"1:803772576117:web:9e0eeda78e0f55aa13e33c"});
+const db=firebase.database(),R=p=>db.ref("solar/"+p);
+const $=s=>document.getElementById(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cld=(u,t)=>u&&u.includes("/upload/")?u.replace("/upload/","/upload/"+t+"/"):u;
+const money=n=>"$"+Number(n||0).toLocaleString("es-CL");
+const DEF={name:"Tu empresa solar",tagline:"",wa:"",years:"",projectsCount:"",theme:{primary:"#0E1B2C",accent:"#F5A524",bg:"#F7FAFC",text:"#0E1B2C"},
+texts:{heroTitle:"Energía solar para tu hogar y tu empresa",heroSub:"Paneles solares, instalación y servicios eléctricos con respaldo profesional.",heroCta:"Ver productos",aboutTitle:"Quiénes somos",servicesTitle:"Servicios",servicesSub:"Soluciones eléctricas y solares a tu medida.",productsTitle:"Productos",productsSub:"Agrega al carrito y envía tu pedido por WhatsApp.",projectsTitle:"Proyectos realizados",projectsSub:"Mira cómo quedaron nuestros trabajos.",quoteTitle:"Cotiza tu servicio",quoteSub:"Cuéntanos tu caso y te respondemos por WhatsApp.",faqTitle:"Preguntas frecuentes"},
+cartFields:{nombre:true,telefono:true,direccion:true,comentarios:true},sections:{}};
+let C=DEF,P=[],cart={};try{cart=JSON.parse(localStorage.getItem("solar_cart")||"{}")}catch(e){}
+const list=o=>Object.entries(o||{}).map(([id,v])=>({id,...v})).sort((a,b)=>(a.order||0)-(b.order||0));
+const wa=m=>`https://wa.me/${String(C.wa||"").replace(/\D/g,"")}?text=${encodeURIComponent(m)}`;
+const toast=t=>{$("ts").textContent=t;$("ts").classList.add("on");setTimeout(()=>$("ts").classList.remove("on"),1800)};
+
+/* ===== Config y tema ===== */
+R("config").on("value",s=>{const v=s.val()||{};C={...DEF,...v,theme:{...DEF.theme,...v.theme},texts:{...DEF.texts,...v.texts},cartFields:v.cartFields||DEF.cartFields,sections:v.sections||{}};applyCfg()});
+function applyCfg(){const t=C.theme,x=C.texts,r=document.documentElement.style;
+ r.setProperty("--p",t.primary);r.setProperty("--a",t.accent);r.setProperty("--bg",t.bg);r.setProperty("--tx",t.text);
+ document.title=C.name+(C.tagline?" | "+C.tagline:"");$("md").content=$("ogd").content=x.heroSub;$("ogt").content=C.name;$("ogi").content=C.heroImg||"";
+ $("logo").innerHTML=C.logo?`<img src="${esc(cld(C.logo,"f_auto,q_auto,h_80"))}" alt="${esc(C.name)}">`:esc(C.name);
+ if(C.heroImg)$("inicio").style.backgroundImage=`url(${esc(cld(C.heroImg,"f_auto,q_auto,w_1920,c_limit"))})`;
+ $("ht").textContent=x.heroTitle;$("hs").textContent=x.heroSub;$("hc").textContent=x.heroCta;
+ $("at").textContent=x.aboutTitle;$("ad").textContent=C.about||"";$("ai").src=C.aboutImg?cld(C.aboutImg,"f_auto,q_auto,w_900"):"";$("ai").classList.toggle("hide",!C.aboutImg);
+ [["svt","servicesTitle"],["svs","servicesSub"],["pt","productsTitle"],["ps","productsSub"],["prt","projectsTitle"],["prs","projectsSub"],["qt","quoteTitle"],["qs","quoteSub"],["ft","faqTitle"]].forEach(([i,k])=>$(i).textContent=x[k]);
+ const st=[[C.years&&"+"+C.years,"Años de experiencia"],[C.projectsCount&&"+"+C.projectsCount,"Proyectos realizados"],[C.stat3v,C.stat3l]].filter(a=>a[0]&&a[1]);
+ $("sg").innerHTML=st.map(a=>`<div><b>${esc(a[0])}</b><span>${esc(a[1])}</span></div>`).join("");$("sg").parentElement.parentElement.classList.toggle("hide",!st.length);
+ const S=C.sections,M=[["nosotros","Nosotros"],["servicios","Servicios"],["productos","Productos"],["proyectos","Proyectos"],["cotiza","Cotiza"],["faq","Preguntas"]].filter(m=>S[m[0]]!==false);
+ ["nosotros","servicios","productos","proyectos","cotiza","faq"].forEach(i=>$(i).classList.toggle("hide",S[i]===false));
+ $("menu").innerHTML=M.map(m=>`<li><a href="#${m[0]}">${m[1]}</a></li>`).join("");
+ $("mml").innerHTML=[["inicio","Inicio"],...M].map(m=>`<a href="#${m[0]}">${m[1]}</a>`).join("");
+ $("hwa").href=$("fwa").href=wa(`Hola ${C.name}, vi su página web y quiero consultar.`);
+ $("ft2").innerHTML=`<div><h3>${esc(C.name)}</h3><p>${esc(C.tagline||"")}</p></div><div><h3>Contacto</h3>${[C.wa&&"WhatsApp: "+C.wa,C.phone,C.email,C.address,C.hours].filter(Boolean).map(v=>`<a>${esc(v)}</a>`).join("")}</div><div><h3>Redes</h3>${C.ig?`<a href="${esc(C.ig)}" target="_blank" rel="noopener">Instagram</a>`:""}${C.fb?`<a href="${esc(C.fb)}" target="_blank" rel="noopener">Facebook</a>`:""}</div>`;
+ $("fn").textContent=C.name;$("yr").textContent=new Date().getFullYear();renderCart()}
+
+/* ===== Listas ===== */
+R("services").on("value",s=>{const L=list(s.val());$("sv").innerHTML=L.map(v=>`<div class="card sv"><div class="ic">${icon(v.icon,32)}</div><h3>${esc(v.title)}</h3><p>${esc(v.desc)}</p></div>`).join("");
+ $("qsv").innerHTML='<option value="">Servicio de interés</option>'+L.map(v=>`<option>${esc(v.title)}</option>`).join("")+"<option>Otro</option>"});
+R("projects").on("value",s=>{$("gl").innerHTML=list(s.val()).map(v=>`<figure><img loading="lazy" src="${esc(cld(v.img,"f_auto,q_auto,w_700,c_limit"))}" data-full="${esc(cld(v.img,"f_auto,q_auto,w_1600,c_limit"))}" alt="${esc(v.title)}"><figcaption>${esc(v.title)}</figcaption></figure>`).join("")});
+R("faq").on("value",s=>{$("fq").innerHTML=list(s.val()).map(v=>`<details><summary>${esc(v.q)}</summary><p>${esc(v.a)}</p></details>`).join("")});
+R("products").on("value",s=>{P=list(s.val()).filter(p=>p.active!==false);
+ $("pg").innerHTML=P.map(p=>`<div class="card"><img class="pi" loading="lazy" src="${esc(cld(p.img,"f_auto,q_auto,w_600,c_fill,ar_1:1"))}" alt="${esc(p.name)}"><div class="pb"><h3 style="font-size:17px">${esc(p.name)}</h3><p>${esc(p.desc)}</p><div class="pr">${p.price?money(p.price):"Cotizar"}</div>${p.stock===0?'<span class="out">Agotado</span>':`<button class="btn" data-add="${p.id}">Agregar al carrito</button>`}</div></div>`).join("")||'<p class="sub">Pronto verás nuestros productos aquí.</p>';renderCart()});
+document.addEventListener("click",e=>{const a=e.target.closest("[data-add]");if(a){if(!room(a.dataset.add))return;cart[a.dataset.add]=(cart[a.dataset.add]||0)+1;saveCart();toast("Agregado al carrito")}
+ if(e.target.matches(".gl img")){$("li").src=e.target.dataset.full;$("lb").classList.add("on")}
+ const q=e.target.closest("[data-q]");if(q){const[i,d]=q.dataset.q.split(":");if(+d>0&&!room(i))return;cart[i]=(cart[i]||0)+ +d;if(cart[i]<=0)delete cart[i];saveCart()}});
+$("lb").onclick=()=>$("lb").classList.remove("on");
+function room(id){const p=P.find(x=>x.id===id);if(p&&typeof p.stock==="number"&&(cart[id]||0)>=p.stock){toast("Stock máximo disponible: "+p.stock);return false}return true}
+
+/* ===== Carrito ===== */
+const saveCart=()=>{try{localStorage.setItem("solar_cart",JSON.stringify(cart))}catch(e){}renderCart()};
+const LBL={nombre:"Nombre",telefono:"Teléfono",direccion:"Dirección",comuna:"Comuna",correo:"Correo",rut:"RUT",comentarios:"Comentarios"};
+function renderCart(){if(P.length)Object.keys(cart).forEach(k=>{if(!P.some(x=>x.id===k))delete cart[k]});const it=Object.keys(cart).map(i=>({p:P.find(x=>x.id===i),n:cart[i]})).filter(x=>x.p);
+ $("cn").textContent=it.reduce((s,x)=>s+x.n,0);const tot=it.reduce((s,x)=>s+x.n*(+x.p.price||0),0);
+ $("cl").innerHTML=it.length?it.map(x=>`<div class="ci"><img src="${esc(cld(x.p.img,"f_auto,q_auto,w_120,c_fill"))}" alt=""><div><b>${esc(x.p.name)}</b><br><small>${x.p.price?money(x.p.price):"Cotizar"}</small></div><div class="qt"><button data-q="${x.p.id}:-1" aria-label="Quitar">${icon("minus",14)}</button>${x.n}<button data-q="${x.p.id}:1" aria-label="Agregar">${icon("plus",14)}</button></div></div>`).join(""):'<p style="color:var(--mut)">Tu carrito está vacío.</p>';
+ $("ct").textContent=money(tot);$("cf").classList.toggle("hide",!it.length);
+ const F=Object.keys(C.cartFields||{}).filter(k=>C.cartFields[k]);const opt=(s)=>String(s||"").split(",").map(x=>x.trim()).filter(Boolean);
+ const old={};document.querySelectorAll("#cfl [id^=cf_]").forEach(e=>old[e.id]=e.value);
+ $("cfl").innerHTML=F.map(k=>k==="comentarios"?`<textarea id="cf_${k}" rows="2" placeholder="Comentarios"></textarea>`:`<input id="cf_${k}" placeholder="${LBL[k]||k}" ${k==="telefono"?'type="tel"':""}>`).join("")+
+  (opt(C.delivery).length?`<select id="cf_ent"><option value="">Forma de entrega</option>${opt(C.delivery).map(o=>`<option>${esc(o)}</option>`).join("")}</select>`:"")+
+  (opt(C.payments).length?`<select id="cf_pago"><option value="">Forma de pago</option>${opt(C.payments).map(o=>`<option>${esc(o)}</option>`).join("")}</select>`:"");
+ Object.entries(old).forEach(([k,v])=>{if($(k))$(k).value=v});window._it=it;window._tot=tot}
+$("cs").onclick=()=>{const it=window._it;if(!it.length)return;
+ const miss=["nombre","telefono"].find(k=>C.cartFields[k]&&!$("cf_"+k).value.trim());if(miss){$("cf_"+miss).focus();toast("Completa: "+LBL[miss]);return}
+ const L=[`Hola ${C.name}, quiero hacer este pedido:`,""];it.forEach(x=>L.push(`• ${x.n} x ${x.p.name} — ${x.p.price?money(x.p.price*x.n):"cotizar"}`));
+ L.push("",`*Total: ${money(window._tot)}*`,"");
+ document.querySelectorAll("#cfl [id^=cf_]").forEach(e=>{if(e.value.trim()){const k=e.id.slice(3);L.push(`${{ent:"Entrega",pago:"Pago"}[k]||LBL[k]}: ${e.value.trim()}`)}});
+ const msg=L.join("\n");if(wa(msg).length>1900){try{navigator.clipboard.writeText(msg);toast("Pedido largo: copiado, pégalo en el chat")}catch(e){}window.open("https://wa.me/"+String(C.wa||"").replace(/\D/g,""),"_blank","noopener")}else window.open(wa(msg),"_blank","noopener")};
+$("cbtn").onclick=()=>$("dr").classList.add("on");$("dx").onclick=()=>$("dr").classList.remove("on");
+
+/* ===== Cotizador ===== */
+$("qf").onsubmit=e=>{e.preventDefault();window.open(wa(`Hola ${C.name}, soy ${$("qn").value}. Quiero cotizar: ${$("qsv").value||"un servicio"}.\n${$("qd").value}\nMi teléfono: ${$("qp").value}`),"_blank","noopener")};
+
+/* ===== UI ===== */
+addEventListener("scroll",()=>$("hd").classList.toggle("s",scrollY>40));
+$("bg").onclick=()=>$("mm").classList.add("on");$("mx").onclick=()=>$("mm").classList.remove("on");$("mm").onclick=e=>{if(e.target.tagName==="A")$("mm").classList.remove("on")};
+document.querySelectorAll("[data-i]").forEach(e=>e.innerHTML=icon(e.dataset.i,+e.dataset.s||22));
+applyCfg();
+</script></body></html>

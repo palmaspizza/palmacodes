@@ -1,0 +1,180 @@
+{
+  "rules": {
+    "solar": {
+      "meta": {
+        "updatedAt": {
+          ".read": true,
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".read": false,
+          ".write": false
+        }
+      },
+      "mediaUsage": {
+        ".read": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+        ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+        ".validate": "newData.hasChildren(['uploads','bytes']) && newData.child('uploads').isNumber() && newData.child('uploads').val() >= 0 && newData.child('uploads').val() <= 100 && newData.child('bytes').isNumber() && newData.child('bytes').val() >= 0 && newData.child('bytes').val() <= 41943040",
+        "uploads": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100"
+        },
+        "bytes": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 41943040"
+        },
+        "$other": {
+          ".read": false,
+          ".write": false
+        }
+      },
+      "contract": {
+        ".read": true,
+        ".write": false,
+        "modules": {
+          ".validate": "newData.hasChildren(['catalog','cart','gallery','carousel','reviews','stats','qr','assistant','quote','cloudinary','adminPanel'])",
+          "$module": {
+            ".validate": "newData.isBoolean() && ($module === 'catalog' || $module === 'cart' || $module === 'gallery' || $module === 'carousel' || $module === 'reviews' || $module === 'stats' || $module === 'qr' || $module === 'assistant' || $module === 'quote' || $module === 'cloudinary' || $module === 'adminPanel')"
+          }
+        },
+        "$other": {
+          ".read": false,
+          ".write": false
+        }
+      },
+      "config": {
+        ".read": true,
+        ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+        ".validate": "newData.hasChildren(['name','tagline','wa','theme','texts']) && newData.child('name').isString() && newData.child('name').val().length <= 120 && newData.child('tagline').isString() && newData.child('tagline').val().length <= 200 && newData.child('wa').isString() && (newData.child('wa').val() === '' || newData.child('wa').val().matches(/^(569[0-9]{8}|9[0-9]{8})$/)) && newData.child('theme').hasChildren(['primary','accent','bg','text']) && newData.child('texts').hasChildren(['heroTitle','heroSub'])",
+        "logo": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^https:\\/\\/.*/))"
+        },
+        "heroImg": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^https:\\/\\/.*/))"
+        },
+        "heroVideo": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^https:\\/\\/.*/))"
+        },
+        "aboutImg": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^https:\\/\\/.*/))"
+        },
+        "ogImg": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^https:\\/\\/.*/))"
+        },
+        "years": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "techs": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "projectsCount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "$other": {
+          ".validate": true
+        }
+      },
+      "categories": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['name','order','active']) && newData.child('name').isString() && newData.child('name').val().length <= 120 && newData.child('order').isNumber() && newData.child('order').val() >= 0 && newData.child('active').isBoolean()"
+        }
+      },
+      "products": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['name','categoryId','desc','order','active']) && newData.child('name').isString() && newData.child('name').val().length <= 120 && newData.child('desc').isString() && newData.child('desc').val().length <= 140 && newData.child('categoryId').isString() && newData.child('order').isNumber() && newData.child('order').val() >= 0 && newData.child('active').isBoolean() && (!newData.child('price').exists() || newData.child('price').isNumber() && newData.child('price').val() >= 0) && (!newData.child('img').exists() || newData.child('img').val() === '' || newData.child('img').val().matches(/^https:\\/\\/.*/))",
+          "longDesc": {
+            ".validate": "newData.isString() && newData.val().length <= 4000"
+          },
+          "includes": {
+            ".validate": "newData.isString() && newData.val().length <= 1000"
+          },
+          "images": {
+            "$index": {
+              ".validate": "($index.matches(/^(0|1|2|3)$/) || ($index === '4' && (!newData.parent().parent().child('img').exists() || newData.parent().parent().child('img').val() === ''))) && newData.isString() && newData.val().length <= 500 && newData.val().matches(/^https:\\/\\/.*/)"
+            }
+          },
+          "specs": {
+            "$index": {
+              ".validate": "$index.matches(/^(0|[1-9]|1[0-9])$/) && newData.hasChildren(['name','value']) && newData.child('name').isString() && newData.child('name').val().length <= 80 && newData.child('value').isString() && newData.child('value').val().length <= 200"
+            }
+          }
+        }
+      },
+      "services": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['title','group','icon','desc','order','active']) && newData.child('title').isString() && newData.child('title').val().length <= 120 && (newData.child('group').val() === 'solar' || newData.child('group').val() === 'electrico') && newData.child('desc').isString() && newData.child('desc').val().length <= 2000 && newData.child('order').isNumber() && newData.child('active').isBoolean() && (!newData.child('consultationIntro').exists() || newData.child('consultationIntro').isString() && newData.child('consultationIntro').val().length <= 240) && (!newData.child('consultationQuestions').exists() || newData.child('consultationQuestions').isString() && newData.child('consultationQuestions').val().length <= 800)"
+        }
+      },
+      "projects": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['title','order','active']) && newData.child('title').isString() && newData.child('title').val().length <= 120 && newData.child('order').isNumber() && newData.child('active').isBoolean() && (!newData.child('img').exists() || newData.child('img').val() === '' || newData.child('img').val().matches(/^https:\\/\\/.*/)) && (!newData.child('desc').exists() || newData.child('desc').val().length <= 2000)",
+          "images": {
+            "$index": {
+              ".validate": "($index.matches(/^(0|1|2|3|4)$/) || ($index === '5' && (!newData.parent().parent().child('img').exists() || newData.parent().parent().child('img').val() === ''))) && newData.isString() && newData.val().length <= 500 && newData.val().matches(/^https:\\/\\/.*/)"
+            }
+          },
+          "location": {
+            ".validate": "newData.isString() && newData.val().length <= 120"
+          }
+        }
+      },
+      "carousel": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['img','order','active']) && newData.child('img').isString() && newData.child('img').val().matches(/^https:\\/\\/.*/) && newData.child('order').isNumber() && newData.child('active').isBoolean() && (!newData.child('title').exists() || newData.child('title').val().length <= 120) && (!newData.child('subtitle').exists() || newData.child('subtitle').val().length <= 240)"
+        }
+      },
+      "reviews": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['name','text','stars','order','active']) && newData.child('name').isString() && newData.child('name').val().length <= 120 && newData.child('text').isString() && newData.child('text').val().length <= 400 && newData.child('stars').isNumber() && newData.child('stars').val() >= 1 && newData.child('stars').val() <= 5 && newData.child('order').isNumber() && newData.child('active').isBoolean()"
+        }
+      },
+      "faq": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['q','a','order','active']) && newData.child('q').isString() && newData.child('q').val().length <= 140 && newData.child('a').isString() && newData.child('a').val().length <= 2000 && newData.child('order').isNumber() && newData.child('active').isBoolean()"
+        }
+      },
+      "quoteRanges": {
+        ".read": true,
+        "$id": {
+          ".write": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          ".validate": "newData.hasChildren(['system','billMin','billMax','priceMin','priceMax','active']) && (newData.child('system').val() === 'ongrid' || newData.child('system').val() === 'offgrid' || newData.child('system').val() === 'asesoria') && newData.child('billMin').isNumber() && newData.child('billMin').val() >= 0 && newData.child('billMax').isNumber() && newData.child('billMax').val() > newData.child('billMin').val() && newData.child('priceMin').isNumber() && newData.child('priceMin').val() >= 0 && newData.child('priceMax').isNumber() && newData.child('priceMax').val() >= newData.child('priceMin').val() && newData.child('active').isBoolean()"
+        }
+      },
+      "stats": {
+        "$date": {
+          ".read": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          "$event": {
+            ".write": "$date.matches(/^\\d{4}-\\d{2}-\\d{2}$/) && ($event === 'visitas' || $event === 'visitas_qr' || $event === 'chat_abierto' || $event === 'chat_completado' || $event === 'cotizador_abierto' || $event === 'cotizador_completado' || $event === 'whatsapp_click' || $event === 'carrito_agregar' || $event === 'pedido_preparado' || $event === 'ficha_producto' || $event === 'proyecto_abierto') && ((!data.exists() && newData.val() === 1) || (data.isNumber() && data.val() < 5000 && newData.val() === data.val() + 1))",
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5000"
+          }
+        }
+      },
+      "statsProd": {
+        "$date": {
+          ".read": "auth != null && (auth.uid === '7GtDlXFAZwbInUMXcQqvKk3ZrHq1')",
+          "$productId": {
+            ".write": "$date.matches(/^\\d{4}-\\d{2}-\\d{2}$/) && $productId.matches(/^[A-Za-z0-9_-]{1,128}$/) && root.child('solar/products').child($productId).exists() && ((!data.exists() && newData.val() === 1) || (data.isNumber() && data.val() < 5000 && newData.val() === data.val() + 1))",
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 5000"
+          }
+        }
+      },
+      "$other": {
+        ".read": false,
+        ".write": false
+      }
+    }
+  }
+}

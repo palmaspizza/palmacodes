@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "updatedAt": 0
+  },
+  "contract": {
+    "modules": {
+      "catalog": true,
+      "cart": true,
+      "gallery": true,
+      "carousel": true,
+      "reviews": true,
+      "stats": true,
+      "qr": true,
+      "assistant": true,
+      "quote": true,
+      "cloudinary": true,
+      "adminPanel": true
+    }
+  },
+  "config": {
+    "name": "Factor Solar Chile",
+    "tagline": "Energía al alcance de todos",
+    "years": 15,
+    "techs": 2,
+    "coverage": "Santiago y regiones de Chile",
+    "metaDescription": "Soluciones solares y eléctricas para hogares, condominios, empresas, agricultura e industria en Santiago y regiones de Chile.",
+    "logo": "",
+    "heroImg": "",
+    "heroVideo": "",
+    "aboutImg": "",
+    "ogImg": "",
+    "wa": "56965048155",
+    "phone": "+56 9 6504 8155",
+    "email": "fabian.alarconsoto@gmail.com",
+    "address": "El Mirador 30037, Pudahuel",
+    "fb": "",
+    "ig": "",
+    "hours": {
+      "lun": { "open": "09:00", "close": "18:00" },
+      "mar": { "open": "09:00", "close": "18:00" },
+      "mie": { "open": "09:00", "close": "18:00" },
+      "jue": { "open": "09:00", "close": "18:00" },
+      "vie": { "open": "09:00", "close": "18:00" },
+      "sab": { "open": "10:00", "close": "14:00" },
+      "dom": { "closed": true }
+    },
+    "theme": {
+      "primary": "#ffc629",
+      "accent": "#f5a400",
+      "bg": "#f5f7f8",
+      "text": "#101820"
+    },
+    "texts": {
+      "heroTitle": "Energía solar y soluciones eléctricas para tu hogar y tu empresa",
+      "heroSub": "15 años de experiencia instalando sistemas fotovoltaicos y soluciones eléctricas en Santiago y regiones.",
+      "heroCta": "Cotizar mi proyecto",
+      "aboutTitle": "Una solución solar comienza entendiendo tu necesidad",
+      "aboutText": "Factor Solar tiene 15 años de experiencia ofreciendo soluciones energéticas. Su historia se basa en acercar la energía solar a las familias, con asesoramiento técnico y soluciones adaptadas a hogares, empresas y otros clientes.",
+      "quoteTitle": "Cuéntanos tu proyecto solar",
+      "quoteText": "Reunimos la información necesaria para que Factor Solar evalúe tu caso.",
+      "priceNote": "Los precios son referenciales y se muestran más IVA. La compra se confirma por WhatsApp; no se realizan pagos en este sitio.",
+      "privacy": "El sitio no guarda datos personales de visitantes en su base de datos. Las solicitudes y pedidos se envían por WhatsApp y son gestionados por Factor Solar. El carrito se guarda únicamente en este dispositivo. Los precios son referenciales y se muestran más IVA."
+    },
+    "sections": {
+      "nosotros": true,
+      "servicios": true,
+      "productos": true,
+      "proyectos": true,
+      "resenas": true,
+      "preguntas": true,
+      "contacto": true
+    },
+    "showCredit": false,
+    "showOpenBadge": true,
+    "cartShowIva": false,
+    "delivery": [
+      "Delivery",
+      "Envío por pagar con Starken",
+      "Envío por pagar con Chilexpress",
+      "Envío por pagar con otra empresa"
+    ],
+    "payments": [
+      { "name": "Transferencia", "requiresDelivery": [] },
+      { "name": "Efectivo", "requiresDelivery": [] },
+      { "name": "Link de pago", "requiresDelivery": [] },
+      { "name": "Pago contra entrega", "requiresDelivery": ["Delivery"] }
+    ],
+    "cartFields": {
+      "nombre": { "ask": true, "required": true },
+      "telefono": { "ask": true, "required": false },
+      "direccion": { "ask": false, "required": false },
+      "comuna": { "ask": false, "required": false },
+      "correo": { "ask": false, "required": false },
+      "rut": { "ask": false, "required": false },
+      "comentarios": { "ask": false, "required": false }
+    },
+    "assistantFields": {
+      "nombre": true,
+      "comuna": true,
+      "direccion": false,
+      "correo": false,
+      "rut": false
+    },
+    "quoteFields": {
+      "nombre": true,
+      "comuna": true,
+      "direccion": false,
+      "correo": false,
+      "rut": false
+    }
+  },
+  "categories": {
+    "kits": { "name": "Kits fotovoltaicos con instalación", "order": 1, "active": true },
+    "solares": { "name": "Productos solares", "order": 2, "active": true },
+    "mano-obra": { "name": "Mano de obra", "order": 3, "active": true },
+    "certificaciones": { "name": "Certificaciones", "order": 4, "active": true }
+  },
+  "services": {
+    "kits": { "title": "Venta e instalación de kits fotovoltaicos", "group": "solar", "icon": "panel", "desc": "Kits fotovoltaicos y apoyo para evaluar una solución adecuada a cada proyecto.", "order": 1, "active": true },
+    "instalaciones": { "title": "Instalaciones solares", "group": "solar", "icon": "sun", "desc": "Instalaciones solares para hogares y empresas.", "order": 2, "active": true },
+    "ongrid": { "title": "Proyectos On-Grid", "group": "solar", "icon": "bolt", "desc": "Sistemas conectados a la red eléctrica.", "order": 3, "active": true },
+    "offgrid": { "title": "Proyectos Off-Grid", "group": "solar", "icon": "battery", "desc": "Sistemas solares con baterías para proyectos sin conexión o con respaldo.", "order": 4, "active": true },
+    "manoobra": { "title": "Mano de obra especializada", "group": "solar", "icon": "wrench", "desc": "Servicios de instalación y apoyo especializado en proyectos solares.", "order": 5, "active": true },
+    "tableros": { "title": "Tableros de fuerza y control", "group": "electrico", "icon": "cpu", "desc": "Tableros de fuerza y control para proyectos eléctricos.", "order": 6, "active": true },
+    "condensadores": { "title": "Bancos de condensadores fijos y automáticos", "group": "electrico", "icon": "bolt", "desc": "Bancos de condensadores fijos y automáticos.", "order": 7, "active": true },
+    "domiciliaria": { "title": "Electricidad domiciliaria", "group": "electrico", "icon": "home", "desc": "Servicios eléctricos domiciliarios.", "order": 8, "active": true },
+    "domotica": { "title": "Domótica", "group": "electrico", "icon": "cpu", "desc": "Soluciones de domótica para proyectos.", "order": 9, "active": true },
+    "camaras": { "title": "Instalación de cámaras de seguridad", "group": "electrico", "icon": "camera", "desc": "Instalación de cámaras de seguridad.", "order": 10, "active": true },
+    "certificaciones": { "title": "Certificaciones eléctricas TE1 y TE4", "group": "electrico", "icon": "clipboard-check", "desc": "Servicios de certificación eléctrica TE1 y TE4.", "order": 11, "active": true }
+  },
+  "faq": {
+    "autonomia": { "q": "¿Puede un sistema solar mantener funcionando una casa completamente autónoma?", "a": "Depende del consumo eléctrico, la capacidad de generación, el dimensionamiento del sistema, el almacenamiento en baterías y las condiciones de instalación y del lugar. Factor Solar evalúa cada caso; no se promete autonomía sin una evaluación técnica.", "order": 1, "active": true },
+    "cotizar": { "q": "¿Qué necesito para cotizar un sistema solar?", "a": "Para evaluar un proyecto es útil contar con una boleta de luz, información sobre el espacio disponible para paneles y para el inversor, el tipo de sistema que buscas y tus necesidades de energía.", "order": 2, "active": true },
+    "sistemas": { "q": "¿Qué diferencia hay entre On-Grid y Off-Grid?", "a": "On-Grid es un sistema conectado a la red eléctrica. Off-Grid funciona de forma independiente y considera almacenamiento en baterías. La configuración adecuada depende de cada proyecto.", "order": 3, "active": true },
+    "cobertura": { "q": "¿Atienden en regiones?", "a": "Factor Solar atiende proyectos en Santiago y regiones de Chile. Consulta por tu comuna para revisar tu caso.", "order": 4, "active": true },
+    "pedido": { "q": "¿Cómo funciona el pedido por WhatsApp?", "a": "Puedes revisar los productos y preparar un pedido. Al enviarlo, WhatsApp se abrirá con el detalle para que Factor Solar revise y coordine contigo.", "order": 5, "active": true },
+    "pago": { "q": "¿Qué formas de pago y entrega hay?", "a": "Las formas de pago y entrega se coordinan directamente con Factor Solar. Los costos de envío por pagar los cancela el cliente al recibir, de acuerdo con la tarifa del transportista.", "order": 6, "active": true }
+  }
+}

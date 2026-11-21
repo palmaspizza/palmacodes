@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b0f14"><link rel="icon" type="image/svg+xml" href="factor-solar-mark.svg">
+  <title>Panel de administración | Factor Solar Chile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <script src="icons.js"></script>
+  <style>
+    :root{--ink:#111a20;--muted:#596773;--line:#dbe2e5;--bg:#f4f6f7;--surface:#fff;--accent:#f5b800;--danger:#a32121;--ok:#19734e;--shadow:0 12px 40px #0b1a2415;--head:"Sora",system-ui,sans-serif;--body:"DM Sans",system-ui,sans-serif}
+    *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body)}h1,h2,h3{font-family:var(--head);line-height:1.2;letter-spacing:-.02em}h1{font-size:clamp(1.7rem,3vw,2.4rem)}h2{font-size:1.3rem}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}:focus-visible{outline:3px solid #006e86;outline-offset:3px}
+    .login-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 85% 15%,#f5b80020,transparent 35%),var(--bg)}.login-card{width:min(440px,100%);background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:32px;box-shadow:var(--shadow)}.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:26px}.brand-svg{width:48px;height:48px;color:#987100}.login-card h1{font-size:1.55rem;margin:0 0 8px}.login-card p{color:var(--muted)}.field{display:grid;gap:5px;margin:14px 0}.field label{font-weight:700;font-size:.92rem}.field input,.field select,.field textarea,.control{width:100%;min-height:46px;padding:10px 12px;border:1px solid #b9c5cb;border-radius:9px;background:#fff;color:var(--ink)}.field textarea{min-height:100px;resize:vertical}.field input[type=checkbox]{width:20px;height:20px;min-height:0}.field-help{color:var(--muted);font-size:.85rem}.field-error,.error{color:var(--danger);min-height:1.3em;font-size:.88rem}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:9px 16px;border:1px solid transparent;border-radius:9px;background:var(--accent);color:#171a18;font-weight:700}.btn.secondary{border-color:var(--line);background:#fff;color:var(--ink)}.btn.danger{border-color:#e4baba;background:#fff4f4;color:var(--danger)}.btn:disabled{opacity:.55;cursor:not-allowed}.login-card .btn{width:100%;margin-top:8px}
+    .app{min-height:100vh;display:grid;grid-template-columns:260px 1fr}.sidebar{background:#0b0f14;color:#e6eaec;position:sticky;top:0;height:100vh;padding:20px 14px;display:flex;flex-direction:column;z-index:10}.side-brand{display:flex;gap:10px;align-items:center;padding:4px 8px 22px;border-bottom:1px solid #ffffff20;font-family:var(--head);font-weight:700}.side-brand small{display:block;color:#aab4ba;font:400 .78rem var(--body)}.side-nav{overflow:auto;padding:16px 0;display:grid;gap:4px}.side-nav button{border:0;background:transparent;color:#c5cdd1;text-align:left;min-height:46px;border-radius:9px;padding:9px 12px;display:flex;align-items:center;gap:12px}.side-nav button:hover,.side-nav button[aria-current=page]{background:#263038;color:#fff}.side-nav button[aria-current=page]{box-shadow:inset 3px 0 var(--accent)}.side-nav .icon{width:21px;height:21px;display:inline-flex}.side-foot{margin-top:auto;color:#aab4ba;font-size:.82rem;padding:12px}
+    .workspace{min-width:0}.topbar{height:74px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 28px;position:sticky;top:0;z-index:8}.topbar-left{display:flex;gap:12px;align-items:center}.topbar h1{font-size:1.2rem;margin:0}.topbar-actions{display:flex;align-items:center;gap:8px}.content{max-width:1280px;margin:auto;padding:28px 30px 100px}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}.page-head h2{margin:0}.page-head p{margin:6px 0 0;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 3px 14px #0b1a2408}.metric{font:700 2rem var(--head);margin-top:6px}.muted{color:var(--muted)}.small{font-size:.85rem}.card h3{margin:0 0 12px;font-size:1.05rem}.quick-actions{display:flex;gap:8px;flex-wrap:wrap}.list-tools{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}.list-tools input,.list-tools select{min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:#fff}.records{display:grid;gap:12px}.record{display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:16px;align-items:center}.record-image{width:74px;height:74px;border-radius:10px;background:linear-gradient(140deg,#e7ecec,#fbf3d9);display:grid;place-items:center;color:#816400;overflow:hidden}.record-image img{width:100%;height:100%;object-fit:cover}.record h3{font-size:1rem;margin:0 0 3px}.record p{color:var(--muted);margin:0;font-size:.9rem}.record-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.record-actions .btn{min-height:40px;padding:7px 10px;font-size:.88rem}.status-pill{display:inline-flex;border-radius:99px;background:#e8f4ec;color:#155a39;padding:3px 10px;font-size:.78rem;font-weight:700}.status-pill.archived{background:#edf0f2;color:#56626a}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 18px}.form-grid .wide{grid-column:1/-1}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.dirtybar{position:fixed;left:260px;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);z-index:9;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;box-shadow:0 -8px 24px #0b1a240d}.dirtybar p{margin:0;color:#7a5100}.dropzone{border:1px dashed #aa8b34;border-radius:12px;padding:14px;background:#fffcf2}.upload-status{font-size:.85rem;color:var(--muted)}.progress{height:7px;background:#e7ecee;border-radius:99px;overflow:hidden}.progress span{height:100%;display:block;width:0;background:#1a7450}.table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse}.data-table th,.data-table td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);vertical-align:top}.data-table th{font-size:.82rem;color:var(--muted)}.toolbar-mobile{display:none}.toast{position:fixed;bottom:82px;right:24px;padding:12px 16px;background:#101820;color:#fff;border-radius:10px;box-shadow:var(--shadow);z-index:30;max-width:min(400px,calc(100% - 24px))}.modal{position:fixed;inset:0;background:#071018a8;display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.open{display:flex}.modal-box{width:min(560px,100%);background:#fff;padding:24px;border-radius:16px;box-shadow:0 20px 70px #0004}.modal-box h2{margin:0 0 8px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}.alert{background:#fff6de;border:1px solid #ead18d;border-radius:11px;padding:12px;color:#594300}.connection{background:#fff1f1;border:1px solid #e6bcbc;color:#7c1d1d;border-radius:10px;padding:12px;margin-bottom:16px}.empty{padding:38px;text-align:center;border:1px dashed #bbc5ca;border-radius:14px;background:#fff}.empty .icon{width:42px;height:42px;color:#876500;margin:0 auto 10px}.app-nav-toggle{display:none}
+    .brand-svg img{width:100%;height:100%;object-fit:contain}.btn{background:linear-gradient(135deg,#ffd95e,var(--accent));box-shadow:0 6px 16px #9b700022;transition:transform .2s,box-shadow .2s,border-color .2s}.btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px #9b700033}.btn:active{transform:none}.btn.secondary{box-shadow:none}.btn.danger{box-shadow:none}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+    @media(prefers-color-scheme:dark){:root{--ink:#e7edf0;--muted:#a6b2b9;--line:#2c3940;--bg:#11191e;--surface:#182329}body,.login-screen{background-color:var(--bg)}.login-card,.card,.topbar,.dirtybar,.modal-box,.empty{background:var(--surface);color:var(--ink)}.field input,.field select,.field textarea,.control,.list-tools input,.list-tools select{background:#10181d;color:var(--ink);border-color:#435159}.btn.secondary{background:#202c32;color:var(--ink)}.record-image{background:#263238}}
+    @media(max-width:980px){.app{grid-template-columns:220px 1fr}.sidebar{padding-inline:10px}.dirtybar{left:220px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:22px 18px 100px}.topbar{padding:0 18px}}
+    @media(max-width:720px){.app{display:block}.sidebar{position:fixed;left:0;top:0;width:min(300px,85vw);transform:translateX(-105%);transition:transform .25s;box-shadow:var(--shadow);height:100dvh}.sidebar.open{transform:none}.app-nav-toggle{display:grid}.topbar{height:64px;padding:0 12px}.topbar-actions #siteLink{display:none}.topbar h1{font-size:1rem}.content{padding:20px 14px 100px}.grid{grid-template-columns:1fr}.page-head{display:grid}.record{grid-template-columns:56px minmax(0,1fr)}.record-image{width:56px;height:56px}.record-actions{grid-column:1/-1;justify-content:flex-start}.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.dirtybar{left:0;padding:10px 12px}.toolbar-mobile{display:grid;position:fixed;inset:auto 0 0;background:#fff;border-top:1px solid var(--line);padding:7px 8px calc(7px + env(safe-area-inset-bottom));grid-template-columns:repeat(4,1fr);z-index:7}.toolbar-mobile button{border:0;background:transparent;display:grid;justify-items:center;gap:2px;min-height:48px;font-size:.72rem;color:var(--muted)}.toolbar-mobile button .icon{width:22px;height:22px}.dirtybar{bottom:62px}.toast{bottom:128px;right:12px}.table-wrap{display:none}}
+    @media(max-width:420px){.login-card{padding:22px}.record-actions .btn{flex:1}.topbar-actions #logout{padding:7px 9px}.card{padding:16px}.content{padding-inline:12px}}
+  </style>
+  <style>
+    :root{--ink:#132126;--muted:#617174;--line:#dce5e2;--bg:#f1f5f3;--accent:#f5bd22;--shadow:0 18px 56px #06141c16;--ease:cubic-bezier(.2,.8,.2,1)}
+    body{background:radial-gradient(ellipse at 90% 0%,#dfe9e422,transparent 36%),var(--bg)}
+    .login-screen{background:radial-gradient(ellipse at 82% 12%,#f5bd2226,transparent 32%),radial-gradient(ellipse at 12% 100%,#1b666b16,transparent 40%),var(--bg)}
+    .login-card{width:min(460px,100%);padding:38px;border-color:#e2e8e5;border-radius:24px;box-shadow:0 28px 90px #0a1a1f18}
+    .login-brand{padding-bottom:22px;border-bottom:1px solid var(--line)}
+    .login-brand .brand-svg{width:54px;height:54px}
+    .login-card h1{font-size:clamp(1.55rem,4vw,1.9rem);letter-spacing:-.04em}
+    .login-card p{line-height:1.65}
+    .login-card .field input{min-height:50px;border-radius:11px}
+    .login-card .btn{min-height:48px;border-radius:11px}
+    .login-card .btn:first-of-type{box-shadow:0 8px 18px #9b700022}
+    .app{background:var(--bg)}
+    .sidebar{background:linear-gradient(180deg,#09171d 0%,#10282d 100%);border-right:1px solid #ffffff12}
+    .side-brand{min-height:70px;padding-bottom:19px}
+    .side-brand .brand-svg{color:#f5bd22}
+    .side-brand small{color:#aebdc0}
+    .side-nav button{min-height:48px;border:1px solid transparent;transition:background .2s,border-color .2s,color .2s,transform .2s}
+    .side-nav button:hover{transform:translateX(2px);background:#ffffff0b;border-color:#ffffff12}
+    .side-nav button[aria-current=page]{background:linear-gradient(100deg,#f5bd2222,#ffffff08);color:#fff;border-color:#f5bd2238;box-shadow:inset 3px 0 #f5bd22}
+    .side-nav button[aria-current=page] .icon{color:#ffd45b}
+    .side-foot{border-top:1px solid #ffffff18;padding-top:16px}
+    .topbar{background:#ffffffed;backdrop-filter:blur(16px);box-shadow:0 4px 20px #0a1a1f07}
+    .topbar h1{font-size:1.16rem;letter-spacing:-.035em}
+    .content{max-width:1320px;padding-top:34px}
+    .page-head{padding-bottom:20px;border-bottom:1px solid var(--line)}
+    .page-head h2{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.045em}
+    .grid{gap:18px}
+    .card{border-color:#e1e8e5;border-radius:18px;box-shadow:0 8px 24px #0b1a2407;transition:transform .2s,box-shadow .2s,border-color .2s}
+    .card:hover{transform:translateY(-2px);border-color:#d6e0dc;box-shadow:0 16px 36px #0b1a2410}
+    .card h3{letter-spacing:-.025em}
+    .metric{color:#14282d;font-size:2.15rem;letter-spacing:-.045em}
+    .btn{min-height:46px;border-radius:11px;transition:transform .2s var(--ease),box-shadow .2s var(--ease),border-color .2s var(--ease)}
+    .btn.secondary{background:#fff;border-color:#dce5e2}
+    .btn.secondary:hover{border-color:#c8a134;background:#fffdf6}
+    .btn.danger{background:#fff4f4;border-color:#e4baba;color:var(--danger)}
+    .field input,.field select,.field textarea,.control,.list-tools input,.list-tools select{border-radius:11px;border-color:#d5dfdc}
+    .field input:focus,.field select:focus,.field textarea:focus,.control:focus,.list-tools input:focus,.list-tools select:focus{border-color:#a47c08;box-shadow:0 0 0 4px #f5bd2225;outline:0}
+    .record{padding:14px;border:1px solid #e3e9e7;border-radius:15px;background:#fff;box-shadow:0 4px 14px #0b1a2406}
+    .record-image{border-radius:12px}
+    .record-actions .btn{border-radius:9px}
+    .control::placeholder,.field input::placeholder,.field textarea::placeholder,.list-tools input::placeholder{color:var(--muted);opacity:.9}
+    .btn:focus-visible,.icon-button:focus-visible,.side-nav button:focus-visible,.toolbar-mobile button:focus-visible{outline:3px solid #a47c08;outline-offset:3px}
+    .dirtybar{backdrop-filter:blur(16px);background:#fffffff2;border-color:#dce5e2}
+    .dropzone{border-color:#c4a348;border-radius:14px;background:linear-gradient(135deg,#fffdf5,#f8f6ec)}
+    .status-pill{background:#e8f4ec;color:#155a39}
+    .empty{border-color:#cdd8d5;border-radius:18px;background:linear-gradient(145deg,#fff,#fbfcfb)}
+    .modal-box{border:1px solid #e1e8e5;border-radius:20px}
+    .toast{border:1px solid #ffffff22;border-radius:12px}
+    .toolbar-mobile{box-shadow:0 -8px 26px #0a1c2010;backdrop-filter:blur(16px)}
+    .record-pagination{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 2px;color:var(--muted)}
+    .record-pagination>div{display:flex;align-items:center;gap:10px}
+    .record-pagination .btn{min-height:40px}
+    .sidebar-backdrop,.sidebar-close{display:none}
+    @media(max-width:720px){
+      .sidebar-backdrop{display:block;position:fixed;inset:0;width:100%;height:100%;padding:0;border:0;background:#071018a8;opacity:0;visibility:hidden;pointer-events:none;touch-action:none;z-index:9;transition:opacity .25s,visibility .25s}
+      .app.menu-open .sidebar-backdrop{opacity:1;visibility:visible;pointer-events:auto}
+      .side-brand>span:nth-child(2){min-width:0;white-space:nowrap}
+      .side-brand>span:nth-child(2) small{white-space:normal}
+      .sidebar-close{display:inline-grid;place-items:center;width:40px;height:40px;flex:0 0 40px;padding:0;border:1px solid #ffffff30;border-radius:10px;background:#ffffff0b;color:#fff}
+      .sidebar-close .icon{width:21px;height:21px}
+    }
+    @media(max-width:640px){.record-pagination{align-items:flex-start;flex-direction:column}.record-pagination>div{width:100%;justify-content:space-between}.record-pagination>div>span{font-size:.86rem}}
+    @media(prefers-color-scheme:dark){:root{--ink:#e7edf0;--muted:#a6b2b9;--line:#2c3940;--bg:#11191e;--surface:#182329}body,.login-screen,.app{background-color:var(--bg)}.login-screen{background-image:radial-gradient(ellipse at 82% 12%,#f5bd2218,transparent 32%),radial-gradient(ellipse at 12% 100%,#1b666b20,transparent 40%)}.login-card,.card,.topbar,.dirtybar,.modal-box,.empty,.record{background:var(--surface);color:var(--ink)}.metric{color:#f4f6f5}.record{border-color:var(--line)}.btn.secondary{background:#202c32;color:var(--ink)}.btn.secondary:hover{background:#29383e}.toolbar-mobile{background:#182329}}
+  </style>
+</head>
+<body>
+  <main class="login-screen" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <div class="login-brand"><span class="brand-svg" id="loginLogo"></span><div><strong>Factor Solar Chile</strong><small class="muted" style="display:block">Administración del sitio</small></div></div>
+      <h1>Panel de administración</h1><p>Ingresa con la cuenta autorizada de Factor Solar.</p>
+      <div class="field"><label for="email">Correo</label><input id="email" type="email" autocomplete="username" placeholder="nombre@correo.cl" required></div>
+      <div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" placeholder="Ingresa tu contraseña" required></div>
+      <label class="field" style="display:flex;align-items:center;gap:9px"><input id="remember" type="checkbox" style="width:20px;height:20px"> Mantener sesión iniciada en este dispositivo</label>
+      <button class="btn" id="loginButton" type="submit">Ingresar</button>
+      <button class="btn secondary" id="forgotPassword" type="button">¿Olvidaste tu contraseña?</button>
+      <p class="error" id="loginError" role="alert" aria-live="polite"></p>
+      <p class="field-help">Acceso protegido por Firebase Authentication. Solo pueden ingresar las cuentas autorizadas.</p>
+    </form>
+  </main>
+  <div class="app hidden" id="adminApp">
+    <button class="sidebar-backdrop" id="sidebarBackdrop" type="button" aria-label="Cerrar navegación" aria-hidden="true" tabindex="-1"></button>
+    <aside class="sidebar" id="sidebar"><div class="side-brand"><span class="brand-svg" id="sideLogo"></span><span>Factor Solar<small>Panel de administración</small></span><button class="sidebar-close" id="sidebarClose" type="button" aria-label="Cerrar navegación"><span class="icon" data-icon="close"></span></button></div><nav class="side-nav" id="sideNav" aria-label="Secciones del panel"></nav><div class="side-foot" id="accountLabel">Cuenta autorizada</div></aside>
+    <section class="workspace">
+      <header class="topbar"><div class="topbar-left"><button class="btn secondary app-nav-toggle" type="button" id="navToggle" aria-label="Abrir navegación" aria-controls="sidebar" aria-expanded="false"><span class="icon" data-icon="menu"></span></button><h1 id="pageTitle">Resumen</h1></div><div class="topbar-actions"><a class="btn secondary" id="siteLink" href="index.html" target="_blank" rel="noopener noreferrer">Ver mi sitio</a><button class="btn secondary" id="logout" type="button">Cerrar sesión</button></div></header>
+      <main class="content" id="pageContent"><div class="connection">Conectando con el contenido del sitio…</div></main>
+    </section>
+  </div>
+  <nav class="toolbar-mobile hidden" id="mobileNav" aria-label="Accesos rápidos"></nav>
+  <div class="dirtybar hidden" id="dirtyBar"><p>Hay cambios sin guardar.</p><div><button class="btn secondary" id="discardChanges" type="button">Descartar</button> <button class="btn" id="saveChanges" type="button">Guardar cambios</button></div></div>
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+  <div class="modal" id="confirmModal" aria-hidden="true"><section class="modal-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><h2 id="confirmTitle">Confirma la acción</h2><p id="confirmMessage"></p><div id="confirmInputWrap" class="field hidden"><label id="confirmInputLabel" for="confirmInput">Escribe el nombre para confirmar</label><input id="confirmInput" placeholder="Escribe aquí..."></div><div class="modal-actions"><button class="btn secondary" type="button" id="cancelConfirm">Cancelar</button><button class="btn danger" type="button" id="acceptConfirm">Confirmar</button></div></section></div>
+  <script>
+    "use strict";
+    const CONFIG={
+      firebase:{apiKey:"AIzaSyD_RA_rvYdOmoIKU7KxwJfrN7Z_eqEW2Kc",authDomain:"elaniquiladordehambre-5d19c.firebaseapp.com",databaseURL:"https://elaniquiladordehambre-5d19c-default-rtdb.firebaseio.com",projectId:"elaniquiladordehambre-5d19c",storageBucket:"elaniquiladordehambre-5d19c.firebasestorage.app",messagingSenderId:"826871870575",appId:"1:826871870575:web:d85f5bf3014a1ac065099a",measurementId:"G-XC5BDRY33Q"},
+      cloudinary:{cloudName:"dkszomv2f",uploadPreset:"aniquilador"},
+      ADMIN_UIDS:["7GtDlXFAZwbInUMXcQqvKk3ZrHq1"],
+      DEVELOPER_UID:"",
+      MAX_PRODUCTS:300,
+      COLLECTION_PAGE_SIZE:30,
+      MAX_PRODUCT_IMAGES:5,
+      COLLECTION_LIMITS:{products:300,categories:12,services:15,projects:6,carousel:8,reviews:12,faq:12,quoteRanges:10},
+      MAX_IMAGE_BYTES:10*1024*1024,
+      MAX_IMAGE_PIXELS:25*1000*1000,
+      TARGET_IMAGE_BYTES:384*1024,
+      STORAGE_RESERVE_MULTIPLIER:3,
+      MAX_CLOUDINARY_UPLOADS:100,
+      MAX_CLOUDINARY_BYTES:40*1024*1024
+    };
+    const ICONS=["bolt","sun","panel","battery","inverter","plug","home","building","factory","leaf","shield-check","camera","cpu","clipboard-check","wrench","truck","bank","cash","link","phone","mail","map-pin","clock","whatsapp","facebook","instagram","cart","star","image","upload","chart"];
+    const MODULE_DEPENDENCIES={cart:["catalog"],catalog:["adminPanel"],carousel:["adminPanel"],reviews:["adminPanel"],stats:["adminPanel"],cloudinary:["adminPanel"],qr:["assistant"]};
+    const COLLECTIONS={
+      products:{title:"Productos",description:"Administra los productos que aparecen en el catálogo.",fields:[["name","Nombre","text",true],["categoryId","Categoría","category",true],["price","Precio CLP (vacío = Cotizar)","price"],["desc","Descripción corta","textarea"],["longDesc","Descripción detallada","textarea"],["specs","Especificaciones (una por línea: nombre: valor)","specs"],["includes","Qué incluye","textarea"],["img","Imagen principal","image"],["images","Enlaces de imágenes adicionales (uno por línea)","images"],["includesInstallation","Incluye instalación","checkbox"],["featured","Destacado","checkbox"],["order","Orden","number"],["active","Visible en el sitio","checkbox"]]},
+      categories:{title:"Categorías",description:"Agrupa los productos para facilitar la búsqueda.",fields:[["name","Nombre","text",true],["order","Orden","number"],["active","Visible","checkbox"]]},
+      services:{title:"Servicios",description:"Edita las tarjetas de servicios solares y eléctricos.",fields:[["title","Nombre del servicio","text",true],["group","Grupo","select",true,["solar","electrico"]],["icon","Icono SVG","icon"],["desc","Descripción","textarea"],["order","Orden","number"],["active","Visible","checkbox"]]},
+      projects:{title:"Proyectos",description:"Agrega proyectos reales y sus fotografías.",fields:[["title","Nombre del proyecto","text",true],["location","Comuna o ubicación","text"],["desc","Descripción breve","textarea"],["img","Imagen de portada","image"],["images","Otras imágenes (uno por línea)","images"],["order","Orden","number"],["active","Visible","checkbox"]]},
+      carousel:{title:"Carrusel",description:"Gestiona imágenes destacadas de la portada.",fields:[["img","Imagen","image",true],["title","Título","text"],["subtitle","Subtítulo","text"],["link","Enlace a sección","text"],["order","Orden","number"],["active","Visible","checkbox"]]},
+      reviews:{title:"Reseñas",description:"Publica únicamente opiniones reales de clientes.",fields:[["name","Nombre del cliente","text",true],["text","Reseña","textarea",true],["stars","Estrellas (1 a 5)","number",true],["date","Fecha","text"],["source","Origen","text"],["order","Orden","number"],["active","Visible","checkbox"]]},
+      faq:{title:"Preguntas frecuentes",description:"Responde dudas comunes de forma clara y precisa.",fields:[["q","Pregunta","text",true],["a","Respuesta","textarea",true],["order","Orden","number"],["active","Visible","checkbox"]]},
+      quoteRanges:{title:"Rangos del cotizador",description:"Sin rangos reales, el cotizador reúne datos pero no muestra cifras.",fields:[["system","Tipo de sistema","select",true,["ongrid","offgrid","asesoria"]],["billMin","Cuenta mensual mínima","price",true],["billMax","Cuenta mensual máxima","price",true],["priceMin","Precio mínimo","price",true],["priceMax","Precio máximo","price",true],["power","Potencia orientativa","text"],["note","Nota","textarea"],["active","Usar rango","checkbox"]]}
+    };
+    const COLLECTION_ORDER=["products","categories","services","projects","carousel","reviews","faq","quoteRanges"];
+    const saveRecordWithServiceValidation=saveRecord;
+    saveRecord=async function(event,key,oldRecord){if(key==="services"){const record=readRecordForm(key);const intro=String(record.consultationIntro||"");const questions=String(record.consultationQuestions||"").split(/\r?\n/).map(question=>question.trim()).filter(Boolean);if(intro.length>240){event.preventDefault();$("#formError").textContent="La introducción admite hasta 240 caracteres.";return}if(questions.length>5||questions.some(question=>question.length>120)){event.preventDefault();$("#formError").textContent="Usa hasta cinco preguntas, con un máximo de 120 caracteres cada una.";return}}return saveRecordWithServiceValidation(event,key,oldRecord)};
+    COLLECTIONS.services.fields.splice(4,0,["consultationIntro","Introducción del asistente (opcional)","textarea"],["consultationQuestions","Preguntas del asistente (máximo 5, una por línea)","textarea"]);
+    const SETTINGS_FIELDS=[
+      ["name","Nombre del negocio","text"],["tagline","Eslogan","text"],["years","Años de experiencia","number"],["techs","Cantidad de técnicos","number"],["projectsCount","Proyectos realizados (opcional)","number"],["coverage","Cobertura","text"],["metaDescription","Descripción para buscadores","textarea"],
+      ["wa","WhatsApp en formato internacional","tel"],["phone","Teléfono","tel"],["email","Correo","email"],["address","Dirección","text"],["fb","Facebook (enlace https)","url"],["ig","Instagram (enlace https)","url"],
+      ["heroVideo","Video de fondo (enlace https)","url"],["heroImg","Imagen de fondo (opcional)","image"],["logo","Logo (opcional)","image"],["aboutImg","Imagen de empresa","image"],["ogImg","Imagen para compartir (1200 x 630)","image"],
+      ["texts/heroTitle","Título de portada","text"],["texts/heroSub","Bajada de portada","textarea"],["texts/heroCta","Texto del botón principal","text"],["texts/aboutTitle","Título de presentación","text"],["texts/aboutText","Texto de presentación","textarea"],["texts/quoteTitle","Título de cotización","text"],["texts/quoteText","Texto de cotización","textarea"],["texts/priceNote","Nota de precios","textarea"],["texts/privacy","Texto de privacidad","textarea"],
+      ["theme/primary","Color principal","color"],["theme/accent","Color de acento","color"],["theme/bg","Color de fondo","color"],["theme/text","Color de texto","color"]
+    ];
+    const $=(selector,root=document)=>root.querySelector(selector);
+    const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector));
+    const esc=value=>String(value==null?"":value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+    const safeUrl=value=>{try{const url=new URL(String(value));return url.protocol==="https:"?url.href:""}catch{return""}};
+    const adminImageUrl=value=>{const valid=safeUrl(value);const prefix=`https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}/image/upload/`;return valid&&valid.startsWith(prefix)?valid.replace("/image/upload/","/image/upload/f_auto,q_auto,w_160,c_limit/"):valid};
+    const normalizeText=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("es-CL");
+    const money=value=>"$"+Math.max(0,Math.round(Number(value)||0)).toLocaleString("es-CL");
+    const parsePrice=value=>{const normalized=String(value||"").replace(/\s|\$/g,"");if(!normalized)return null;if(!/^[\d.,]+$/.test(normalized))throw new Error("Escribe un precio válido, por ejemplo 1.234.567.");const digits=normalized.replace(/[.,]/g,"");if(!/^\d+$/.test(digits))throw new Error("Revisa el formato del precio.");const result=Number(digits);if(!Number.isSafeInteger(result))throw new Error("El precio es demasiado alto.");return result};
+    const collectionList=value=>Object.entries(value||{}).map(([id,item])=>({id,...item})).sort((a,b)=>(Number(a.order)||0)-(Number(b.order)||0));
+    const defaults={config:{name:"Factor Solar Chile",tagline:"Energía al alcance de todos",years:15,techs:2,coverage:"Santiago y regiones de Chile",wa:"56965048155",phone:"+56 9 6504 8155",email:"fabian.alarconsoto@gmail.com",address:"El Mirador 30037, Pudahuel",fb:"",ig:"",heroVideo:"",logo:"",heroImg:"",aboutImg:"",ogImg:"",projectsCount:"",theme:{primary:"#ffc629",accent:"#f5a400",bg:"#f5f7f8",text:"#101820"},texts:{},sections:{},cartFields:{},assistantFields:{},quoteFields:{}},modules:{catalog:true,cart:true,gallery:true,carousel:true,reviews:true,stats:true,qr:true,assistant:true,quote:true,cloudinary:true,adminPanel:true},products:{},categories:{},services:{},projects:{},carousel:{},reviews:{},faq:{},quoteRanges:{},mediaUsage:null};
+    const state={db:null,auth:null,user:null,isDeveloper:false,data:structuredCloneSafe(defaults),section:"dashboard",dirty:false,editing:null,workingRecord:null,returnFocus:null,confirmCallback:null,collectionPage:0,collectionQuery:"",collectionStatus:"all"};
+    function structuredCloneSafe(value){return JSON.parse(JSON.stringify(value))}
+    function showToast(message){const toast=$("#toast");toast.textContent=message;toast.classList.remove("hidden");clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.add("hidden"),4000)}
+    function setDirty(value){state.dirty=value;$("#dirtyBar").classList.toggle("hidden",!value);$("#pageTitle").dataset.dirty=value?"true":"false"}
+    function setPath(object,path,value){const parts=path.split("/");let target=object;parts.slice(0,-1).forEach(part=>{target[part]=target[part]||{};target=target[part]});target[parts[parts.length-1]]=value}
+    function getPath(object,path){return path.split("/").reduce((value,key)=>value==null?undefined:value[key],object)}
+    function normalizeModules(modules){const output={...defaults.modules,...(modules||{})};Object.entries(MODULE_DEPENDENCIES).forEach(([name,required])=>{if(output[name]&&!required.every(key=>output[key])){output[name]=false;console.warn("Se desactivó un módulo sin sus dependencias.")}});return output}
+    function moduleAllowed(key){return state.data.modules[key]!==false}
+    function renderIconTargets(){ $$("[data-icon]").forEach(node=>node.innerHTML=icon(node.dataset.icon,22));$("#loginLogo").innerHTML='<img src="factor-solar-mark.svg" alt="">';$("#sideLogo").innerHTML='<img src="factor-solar-mark.svg" alt="">'}
+    function ensureFirebase(){return new Promise(async(resolve,reject)=>{if(!CONFIG.firebase.apiKey||!CONFIG.firebase.databaseURL){reject(new Error("Configura las credenciales de Firebase en admin.html antes de iniciar sesión."));return}try{for(const [url,name] of [["https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js","firebase-app"],["https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js","firebase-auth"],["https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js","firebase-database"]]){if(window.firebase&&window.firebase.apps.length&&name==="firebase-app")continue;if(document.querySelector(`script[data-lib="${name}"]`))continue;await new Promise((ok,no)=>{const script=document.createElement("script");script.src=url;script.dataset.lib=name;script.onload=ok;script.onerror=()=>no(new Error("No se pudo cargar la conexión segura."));document.head.appendChild(script)})}if(!firebase.apps.length)firebase.initializeApp(CONFIG.firebase);state.auth=firebase.auth();state.db=firebase.database();resolve()}catch(error){reject(error)}})}
+    function setLoginError(message){$("#loginError").textContent=message}
+    function firebaseErrorMessage(error){if(!navigator.onLine)return"No hay conexión a internet. Revisa tu conexión e inténtalo nuevamente.";const code=error&&error.code||"";if(code.includes("too-many-requests"))return"Hubo varios intentos. Espera unos minutos e inténtalo de nuevo.";if(code.includes("user-disabled"))return"Esta cuenta está deshabilitada. Comunícate con el administrador.";if(code.includes("wrong-password")||code.includes("user-not-found")||code.includes("invalid-credential"))return"El correo o la contraseña no son correctos.";if(code.includes("permission-denied"))return"No tienes permiso para guardar este cambio. Revisa tu acceso.";if(code.includes("network"))return"No se pudo conectar. Revisa internet e inténtalo de nuevo.";return error&&error.message||"Ocurrió un error. Inténtalo nuevamente."}
+    async function signIn(event){event.preventDefault();setLoginError("");$("#loginButton").disabled=true;try{await ensureFirebase();const persistence=$("#remember").checked?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION;await state.auth.setPersistence(persistence);await state.auth.signInWithEmailAndPassword($("#email").value.trim(),$("#password").value)}catch(error){setLoginError(firebaseErrorMessage(error))}finally{$("#loginButton").disabled=false}}
+    async function handleUser(user){if(!user){state.user=null;$("#adminApp").classList.add("hidden");$("#loginScreen").classList.remove("hidden");return}if(CONFIG.ADMIN_UIDS.includes("UID_CLIENTE")||CONFIG.ADMIN_UIDS.includes("UID_DESARROLLADOR")||!CONFIG.ADMIN_UIDS.includes(user.uid)){setLoginError("Esta cuenta no tiene acceso al panel.");await state.auth.signOut();return}state.user=user;state.isDeveloper=user.uid===CONFIG.DEVELOPER_UID;$("#loginScreen").classList.add("hidden");$("#adminApp").classList.remove("hidden");$("#mobileNav").classList.remove("hidden");$("#accountLabel").textContent=user.email||"Cuenta autorizada";await fetchData();renderNavigation();renderSection("dashboard")}
+    async function forgotPassword(){setLoginError("");try{await ensureFirebase();const email=$("#email").value.trim();if(email)await state.auth.sendPasswordResetEmail(email);showToast("Si el correo corresponde a una cuenta, recibirás instrucciones para recuperar el acceso.")}catch(error){showToast(firebaseErrorMessage(error))}}
+    async function fetchData(){try{const paths=["config","categories","products","services","projects","carousel","reviews","faq","quoteRanges","mediaUsage","contract/modules"];const snapshots=await Promise.all(paths.map(path=>state.db.ref("solar/"+path).once("value")));const remote={};paths.forEach((path,index)=>{remote[path==="contract/modules"?"modules":path]=snapshots[index].val()||(path==="mediaUsage"?null:{})});state.data={...structuredCloneSafe(defaults),...remote,config:{...defaults.config,...remote.config,theme:{...defaults.config.theme,...(remote.config&&remote.config.theme)},texts:{...defaults.config.texts,...(remote.config&&remote.config.texts)}},modules:normalizeModules(remote.modules)};$("#siteLink").href="index.html";return true}catch(error){$("#pageContent").innerHTML=`<div class="connection" role="alert">No fue posible leer los datos: ${esc(firebaseErrorMessage(error))}<button class="btn secondary" id="retryRead" type="button">Reintentar</button></div>`;$("#retryRead").addEventListener("click",async()=>{await fetchData();renderSection(state.section)});return false}}
+    const navItems=[["dashboard","Resumen","chart"],["products","Productos","cart"],["categories","Categorías","filter"],["services","Servicios","bolt"],["projects","Proyectos","image"],["carousel","Carrusel","image"],["reviews","Reseñas","star"],["faq","Preguntas","message"],["quoteRanges","Cotizador","cash"],["stats","Estadísticas","chart"],["qr","Código QR","qr"],["settings","Ajustes y diseño","edit"],["backup","Copia de seguridad","download"]];
+    function renderNavigation(){const feature={carousel:"carousel",reviews:"reviews",quoteRanges:"quote",stats:"stats",qr:"qr"};const available=navItems.filter(([key])=>!feature[key]||moduleAllowed(feature[key]));$("#sideNav").innerHTML=available.map(([key,label,iconName])=>`<button type="button" data-section="${key}" aria-current="${state.section===key?"page":"false"}"><span class="icon">${icon(iconName,22)}</span>${label}</button>`).join("");const quick=[["dashboard","Resumen","chart"],["products","Productos","cart"],["projects","Proyectos","image"],["settings","Más","menu"]];$("#mobileNav").innerHTML=quick.map(([key,label,iconName])=>`<button type="button" data-section="${key}"><span class="icon">${icon(iconName,22)}</span>${label}</button>`).join("")}
+    function renderSection(key){state.section=key;state.editing=null;state.workingRecord=null;renderNavigation();const item=navItems.find(entry=>entry[0]===key);$("#pageTitle").textContent=item?item[1]:"Panel";setDirty(false);const root=$("#pageContent");if(key==="dashboard")renderDashboard(root);else if(key==="settings")renderSettings(root);else if(key==="backup")renderBackup(root);else if(key==="stats")renderStats(root);else if(key==="qr")renderQr(root);else if(COLLECTIONS[key])renderCollection(root,key);else{root.innerHTML='<div class="empty">Esta herramienta estará disponible al completar la configuración correspondiente.</div>'}}
+    function pageHeader(title,description,button=""){return`<div class="page-head"><div><h2>${esc(title)}</h2><p>${esc(description)}</p></div>${button}</div>`}
+    function renderDashboard(root){
+      const products=collectionList(state.data.products);
+      const services=collectionList(state.data.services);
+      const projects=collectionList(state.data.projects);
+      const usage=state.data.mediaUsage;
+      const missing=[];
+      if(!state.data.config.fb)missing.push("El enlace de Facebook está pendiente.");
+      const missingPhotos=products.filter(product=>product.active!==false&&!product.img).length;
+      if(missingPhotos)missing.push(`${missingPhotos} producto(s) activo(s) sin imagen.`);
+      if(!products.some(product=>product.active!==false))missing.push("El catálogo todavía no tiene productos.");
+      const usageReady=usage&&Number.isSafeInteger(Number(usage.uploads))&&Number.isSafeInteger(Number(usage.bytes));
+      const usageText=usageReady?`${Number(usage.uploads)} / ${CONFIG.MAX_CLOUDINARY_UPLOADS} cargas · ${(Number(usage.bytes)/1048576).toFixed(1)} / ${(CONFIG.MAX_CLOUDINARY_BYTES/1048576).toFixed(0)} MB`:"Control de cargas sin inicializar";
+      const usageMarkup=usageReady
+        ?`<p class="metric">${esc(usageText)}</p><p class="field-help">Las nuevas cargas reservan tres veces el tamaño optimizado para incluir el original y dos variantes. El registro no se reduce al reemplazar o borrar una referencia.</p>`
+        :`<p>Antes de habilitar cargas, revisa en Cloudinary la cantidad de imágenes y el almacenamiento ya usados por la cuenta.</p><div class="form-grid"><label class="field"><span>Imágenes ya cargadas</span><input class="control" id="mediaBaselineUploads" type="number" min="0" max="${CONFIG.MAX_CLOUDINARY_UPLOADS}" step="1" placeholder="Registra el valor actual"></label><label class="field"><span>Almacenamiento usado (MB)</span><input class="control" id="mediaBaselineMegabytes" type="number" min="0" max="${CONFIG.MAX_CLOUDINARY_BYTES/1048576}" step="0.01" placeholder="Registra el valor actual"></label></div><button class="btn" id="initializeMediaUsage" type="button">Registrar uso actual</button><p class="field-help">No ingreses cero sin verificar la cuenta. Las cargas permanecerán bloqueadas mientras el control no esté inicializado.</p>`;
+      root.innerHTML=`${pageHeader("Resumen","Estado del contenido y accesos rápidos.")}<div class="grid"><article class="card"><span class="muted">Productos activos</span><div class="metric">${products.filter(item=>item.active!==false).length}</div><span class="small muted">Máximo ${CONFIG.MAX_PRODUCTS} registros de productos</span></article><article class="card"><span class="muted">Servicios activos</span><div class="metric">${services.filter(item=>item.active!==false).length}</div></article><article class="card"><span class="muted">Proyectos activos</span><div class="metric">${projects.filter(item=>item.active!==false).length}</div></article></div><section class="card" style="margin-top:16px"><h3>Uso de biblioteca multimedia</h3>${usageMarkup}<p class="field-help">Tope interno de nuevas cargas desde el panel: ${CONFIG.MAX_CLOUDINARY_UPLOADS} imágenes y ${CONFIG.MAX_CLOUDINARY_BYTES/1048576} MB.</p></section><section class="card" style="margin-top:16px"><h3>Accesos rápidos</h3><div class="quick-actions"><button class="btn" type="button" data-action="new-product">Agregar producto</button><button class="btn secondary" type="button" data-action="new-project">Agregar proyecto</button><button class="btn secondary" type="button" data-action="settings">Editar datos del sitio</button><a class="btn secondary" href="index.html" target="_blank" rel="noopener noreferrer">Ver mi sitio</a></div></section><section class="card" style="margin-top:16px"><h3>Pendientes del sitio</h3>${missing.length?`<ul>${missing.map(text=>`<li>${esc(text)}</li>`).join("")}</ul>`:"<p>No hay pendientes de contenido detectados.</p>"}</section><div class="alert">El catálogo admite hasta ${CONFIG.MAX_PRODUCTS} productos. Mantén las imágenes optimizadas antes de agregarlas.</div>`;
+      if(!usageReady)$("#initializeMediaUsage").addEventListener("click",initializeMediaUsage);
+    }
+    async function initializeMediaUsage(){
+      const uploadValue=$("#mediaBaselineUploads").value.trim();
+      const megabyteValue=$("#mediaBaselineMegabytes").value.trim();
+      if(!uploadValue||!megabyteValue){showToast("Registra ambos valores actuales antes de habilitar cargas.");return}
+      const uploads=Number(uploadValue);
+      const megabytes=Number(megabyteValue);
+      const bytes=Math.round(megabytes*1048576);
+      if(!Number.isSafeInteger(uploads)||uploads<0||uploads>CONFIG.MAX_CLOUDINARY_UPLOADS||!Number.isFinite(megabytes)||megabytes<0||bytes>CONFIG.MAX_CLOUDINARY_BYTES){
+        showToast("Ingresa el uso actual dentro de los topes indicados.");
+        return;
+      }
+      if(state.data.mediaUsage){showToast("El contador ya está inicializado; no se puede reiniciar desde aquí.");return}
+      try{
+        await state.db.ref("solar/mediaUsage").set({uploads,bytes});
+        state.data.mediaUsage={uploads,bytes};
+        showToast("Uso actual registrado; las cargas controladas ya están habilitadas.");
+        renderDashboard($("#pageContent"));
+      }catch(error){showToast(firebaseErrorMessage(error))}
+    }
+    function renderCollection(root,key){
+      const schema=COLLECTIONS[key];
+      const records=collectionList(state.data[key]);
+      const limit=CONFIG.COLLECTION_LIMITS[key];
+      const atLimit=Number.isFinite(limit)&&records.length>=limit;
+      const action=`<button class="btn" type="button" data-action="new-record" ${atLimit?"disabled":""}>Agregar</button>`;
+      const capNote=Number.isFinite(limit)?` Máximo: ${limit} elementos.`:"";
+      state.collectionPage=0;
+      state.collectionQuery="";
+      state.collectionStatus="all";
+      root.innerHTML=`${pageHeader(schema.title,schema.description+capNote,action)}<div class="list-tools"><label class="sr" for="listSearch">Buscar</label><input id="listSearch" type="search" placeholder="Buscar" value=""><select id="statusFilter" aria-label="Filtrar por estado"><option value="all">Todos los estados</option><option value="active">Visibles</option><option value="archived">Archivados</option></select></div><div id="recordEditor"></div><div class="records" id="records"></div><nav class="record-pagination" id="recordPagination" aria-label="Paginación de elementos"></nav>`;
+      if(atLimit)$$("[data-action=new-record]",root).forEach(button=>button.disabled=true);
+      renderCollectionPage(root,key);
+    }
+    function renderCollectionPage(root,key){
+      const query=normalizeText(state.collectionQuery);
+      const records=collectionList(state.data[key]).filter(record=>{
+        const searchable=normalizeText([record.name,record.title,record.q,record.desc,record.text,record.location].join(" "));
+        const matchesQuery=!query||searchable.includes(query);
+        const matchesStatus=state.collectionStatus==="all"||(state.collectionStatus==="archived"?record.active===false:record.active!==false);
+        return matchesQuery&&matchesStatus;
+      });
+      const pageCount=Math.ceil(records.length/CONFIG.COLLECTION_PAGE_SIZE);
+      const lastPage=Math.max(0,pageCount-1);
+      state.collectionPage=Math.min(Math.max(0,state.collectionPage),lastPage);
+      const start=state.collectionPage*CONFIG.COLLECTION_PAGE_SIZE;
+      const pageRecords=records.slice(start,start+CONFIG.COLLECTION_PAGE_SIZE);
+      $("#records",root).innerHTML=pageRecords.map(record=>recordMarkup(key,record)).join("")||`<div class="empty"><span class="icon">${icon("image",36)}</span><h3>${records.length?"No hay coincidencias":"Aún no hay elementos"}</h3><p>${records.length?"Prueba con otros términos o estados.":"Agrega información cuando tengas los datos definitivos."}</p>${records.length?"":`<button class="btn" type="button" data-action="new-record">Agregar</button>`}</div>`;
+      $("#recordPagination",root).innerHTML=pageCount>1?`<span aria-live="polite">Mostrando ${start+1}–${Math.min(start+CONFIG.COLLECTION_PAGE_SIZE,records.length)} de ${records.length}</span><div><button class="btn secondary" id="collectionPrevious" type="button" data-collection-page="-1" ${state.collectionPage===0?"disabled":""}>Anterior</button><span>Página ${state.collectionPage+1} de ${pageCount}</span><button class="btn secondary" id="collectionNext" type="button" data-collection-page="1" ${state.collectionPage>=lastPage?"disabled":""}>Siguiente</button></div>`:`<span aria-live="polite">${records.length?`${records.length} elementos`:""}</span>`;
+    }
+    function recordMarkup(key,record){const name=record.name||record.title||record.q||record.img||"Sin título";const description=record.desc||record.text||record.a||record.location||"";const image=adminImageUrl(record.img);const price=record.price==null||record.price===""?"Cotizar":money(record.price);return`<article class="card record"><div class="record-image">${image?`<img src="${esc(image)}" alt="" loading="lazy" decoding="async">`:icon(key==="services"?"bolt":"image",26)}</div><div><h3>${esc(name)}</h3><p>${esc(description).slice(0,150)}</p><p class="small">${key==="products"?`${price}${record.price==null||record.price===""?"":" + IVA"} · `:""}<span class="status-pill ${record.active===false?"archived":""}">${record.active===false?"Archivado":"Visible"}</span></p></div><div class="record-actions"><button class="btn secondary" type="button" data-edit="${esc(record.id)}">Editar</button><button class="btn secondary" type="button" data-duplicate="${esc(record.id)}">Duplicar</button><button class="btn secondary" type="button" data-archive="${esc(record.id)}" data-active="${record.active!==false}">${record.active===false?"Reactivar":"Archivar"}</button><button class="btn danger" type="button" data-delete="${esc(record.id)}">Eliminar</button></div></article>`}
+    function fieldMarkup(key,field,record={}){const [name,label,type,required,options]=field;const value=record[name];const fieldId=`record-${key}-${name}`;const wide=["textarea","image","images","specs"].includes(type);const inputType=["number","tel","email","url","color"].includes(type)?type:"text";const placeholder=type==="number"?"Ingresa un valor":type==="tel"?"+56 9 1234 5678":type==="email"?"nombre@correo.cl":type==="url"?"https://...":"Escribe aquí...";let control="";if(type==="textarea")control=`<textarea class="control" id="${fieldId}" data-field="${name}" placeholder="Escribe aquí..." ${required?"required":""}>${esc(value||"")}</textarea>`;else if(type==="checkbox")control=`<input id="${fieldId}" data-field="${name}" type="checkbox" ${value!==false?"checked":""}>`;else if(type==="icon")control=`<select class="control" id="${fieldId}" data-field="${name}">${ICONS.map(item=>`<option value="${item}" ${value===item?"selected":""}>${item}</option>`).join("")}</select><span class="field-help">${icon(value||"sun",26)}</span>`;else if(type==="select")control=`<select class="control" id="${fieldId}" data-field="${name}">${options.map(option=>`<option value="${option}" ${value===option?"selected":""}>${option==="solar"?"Solar":option==="electrico"?"Eléctrico":option}</option>`).join("")}</select>`;else if(type==="category")control=`<select class="control" id="${fieldId}" data-field="${name}"><option value="">Selecciona una categoría</option>${collectionList(state.data.categories).map(category=>`<option value="${esc(category.id)}" ${value===category.id?"selected":""}>${esc(category.name)}</option>`).join("")}</select>`;else if(type==="image")control=imageFieldMarkup(fieldId,name,value);else if(type==="images")control=`<textarea class="control" id="${fieldId}" data-field="${name}" placeholder="https://… (un enlace por línea)">${esc(Array.isArray(value)?value.join("\n"):"")}</textarea>`;else if(type==="specs")control=`<textarea class="control" id="${fieldId}" data-field="${name}" placeholder="Potencia: 5 kW">${esc(Array.isArray(value)?value.map(spec=>`${spec.name}: ${spec.value}`).join("\n"):"")}</textarea>`;else if(type==="price")control=`<input class="control" id="${fieldId}" data-field="${name}" inputmode="numeric" value="${value==null?"":esc(value)}" placeholder="Ej.: 1.234.567">`;else control=`<input class="control" id="${fieldId}" data-field="${name}" type="${inputType}" value="${esc(value==null?"":value)}" ${type==="color"?"":`placeholder="${placeholder}"`} ${required?"required":""}>`;return`<div class="field ${wide?"wide":""}"><label for="${fieldId}">${esc(label)}${required?" *":""}</label>${control}<small class="field-error" data-error="${name}"></small></div>`}
+    function imageFieldMarkup(id,name,value){return`<div class="dropzone"><input type="hidden" data-field="${name}" value="${esc(value||"")}"><div class="field"><label for="${id}">Enlace HTTPS o archivo de imagen</label><input class="control" id="${id}" data-image-url="${name}" type="url" value="${esc(value||"")}" placeholder="https://res.cloudinary.com/..."></div><input class="control" type="file" data-image-file="${name}" accept="image/jpeg,image/png,image/webp,image/avif"><div class="progress"><span data-progress="${name}"></span></div><small class="upload-status" data-upload-status="${name}">JPG, PNG, WebP o AVIF. Máximo 10 MB antes de comprimir.</small></div>`}
+    function renderEditor(key,record=null){const target=$("#recordEditor");state.editing=record&&record.id?{key,id:record.id,updatedAt:record.updatedAt}:null;state.workingRecord=record?structuredCloneSafe(record):{};target.innerHTML=`<section class="card"><h3>${record&&record.id?"Editar":"Nuevo"} ${esc(COLLECTIONS[key].title.toLowerCase())}</h3><form id="recordForm" novalidate><div class="form-grid">${COLLECTIONS[key].fields.map(field=>fieldMarkup(key,field,state.workingRecord)).join("")}</div><p class="field-error" id="formError" role="alert"></p><div class="form-actions"><button class="btn secondary" type="button" id="cancelEdit">Cancelar</button><button class="btn" type="submit">Guardar</button></div></form></section>`;setDirty(false);$("#recordForm").addEventListener("input",()=>setDirty(true));$("#recordForm").addEventListener("change",()=>setDirty(true));$("#recordForm").addEventListener("submit",event=>saveRecord(event,key,record));$("#cancelEdit").addEventListener("click",()=>{if(state.dirty)askConfirm("Descartar los cambios de este formulario?","",false,()=>{target.innerHTML="";setDirty(false)});else{target.innerHTML="";setDirty(false)}});$("#recordForm").addEventListener("change",event=>{if(event.target.matches("[data-image-file]"))uploadImage(event.target,key)});$("#recordForm").addEventListener("input",event=>{const field=event.target.dataset.imageUrl;if(field){const hidden=$(`[data-field="${field}"]`);hidden.value=event.target.value;setDirty(true)}})}
+    function readRecordForm(key){const record={...state.workingRecord};$$("[data-field]",$("#recordForm")).forEach(field=>{const name=field.dataset.field;const type=COLLECTIONS[key].fields.find(item=>item[0]===name)?.[2];let value;if(field.type==="checkbox")value=field.checked;else if(type==="price")value=parsePrice(field.value);else if(type==="images")value=field.value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);else if(type==="specs")value=field.value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean).map(line=>{const index=line.indexOf(":");return{name:index<0?"":line.slice(0,index).trim(),value:index<0?"":line.slice(index+1).trim()}});else value=field.value.trim();record[name]=value});return record}
+    function validateRecord(key,record){
+      const fields=COLLECTIONS[key].fields;
+      const limits={
+        products:{name:120,desc:140,longDesc:4000,includes:1000},
+        categories:{name:120},
+        services:{title:120,desc:2000,consultationIntro:240,consultationQuestions:800},
+        projects:{title:120,desc:2000,location:120},
+        carousel:{title:120,subtitle:240,link:300},
+        reviews:{name:120,text:400,source:120},
+        faq:{q:140,a:2000}
+      }[key]||{};
+      for(const [name,label,type,required] of fields){
+        const value=record[name];
+        const error=$(`[data-error="${name}"]`,$("#recordForm"));
+        if(error)error.textContent="";
+        if(required&&(value==null||value===""||Array.isArray(value)&&!value.length)){
+          if(error)error.textContent="Este campo es obligatorio.";
+          return false;
+        }
+        if(name==="img"&&value&&(!safeUrl(value)||value.length>500)){
+          if(error)error.textContent="Usa un enlace HTTPS de hasta 500 caracteres.";
+          return false;
+        }
+        if(name==="images"&&Array.isArray(value)&&(value.some(url=>!safeUrl(url)||url.length>500))){
+          if(error)error.textContent="Cada enlace debe ser HTTPS y tener hasta 500 caracteres.";
+          return false;
+        }
+        if(key==="products"&&name==="images"&&Array.isArray(value)&&value.length+(record.img?1:0)>CONFIG.MAX_PRODUCT_IMAGES){
+          if(error)error.textContent=`El máximo es ${CONFIG.MAX_PRODUCT_IMAGES} imágenes por producto, incluida la principal.`;
+          return false;
+        }
+        if(key==="projects"&&name==="images"&&Array.isArray(value)&&value.length+(record.img?1:0)>6){
+          if(error)error.textContent="Cada proyecto admite hasta seis imágenes, incluida la portada.";
+          return false;
+        }
+        if(name==="specs"&&Array.isArray(value)&&(value.length>20||value.some(spec=>!spec.name||!spec.value||spec.name.length>80||spec.value.length>200))){
+          if(error)error.textContent="Usa hasta 20 especificaciones de nombre y valor; cada valor debe estar completo.";
+          return false;
+        }
+        if(Object.prototype.hasOwnProperty.call(limits,name)&&String(value||"").length>limits[name]){
+          if(error)error.textContent=`Este campo admite hasta ${limits[name]} caracteres.`;
+          return false;
+        }
+        if(name==="stars"&&(Number(value)<1||Number(value)>5)){
+          if(error)error.textContent="Elige un valor entre 1 y 5.";
+          return false;
+        }
+        if(type==="price"&&value!==null&&(!Number.isSafeInteger(Number(value))||Number(value)<0)){
+          if(error)error.textContent="Ingresa un precio CLP válido.";
+          return false;
+        }
+      }
+      if(key==="quoteRanges"&&Number(record.billMin)>=Number(record.billMax)){
+        $("#formError").textContent="La cuenta mínima debe ser menor que la máxima.";
+        return false;
+      }
+      if(key==="quoteRanges"&&Number(record.priceMin)>Number(record.priceMax)){
+        $("#formError").textContent="El precio mínimo no puede superar el precio máximo.";
+        return false;
+      }
+      return true;
+    }
+    async function saveRecord(event,key,oldRecord){
+      event.preventDefault();
+      $("#formError").textContent="";
+      let record;
+      try{record=readRecordForm(key)}catch(error){$("#formError").textContent=error.message;return}
+      if(!validateRecord(key,record))return;
+      const limit=CONFIG.COLLECTION_LIMITS[key];
+      if(Number.isFinite(limit)&&!oldRecord&&collectionList(state.data[key]).length>=limit){
+        $("#formError").textContent=`El máximo configurado es ${limit} elementos.`;
+        return;
+      }
+      record.order=Number(record.order)||collectionList(state.data[key]).length+1;
+      record.updatedAt=firebase.database.ServerValue.TIMESTAMP;
+      const id=oldRecord&&oldRecord.id||state.db.ref(`solar/${key}`).push().key;
+      const updates={};
+      updates[`${key}/${id}`]=record;
+      updates["meta/updatedAt"]=firebase.database.ServerValue.TIMESTAMP;
+      try{
+        await state.db.ref("solar").update(updates);
+        state.data[key][id]=record;
+        showToast("Cambios guardados.");
+        setDirty(false);
+        renderSection(key);
+      }catch(error){$("#formError").textContent=firebaseErrorMessage(error)}
+    }
+    function requestFieldsMarkup(config){return["assistantFields","quoteFields"].map((scope,index)=>{const fields=config[scope]||{};const title=index?"Cotizador solar":"Asistente de solicitudes";return`<div class="field wide"><h3>Datos solicitados por ${title}</h3><p class="field-help">Se envían por WhatsApp; no se guardan en la base de datos.</p>${["nombre","direccion","correo","rut"].map(key=>`<label class="field" style="display:flex;align-items:center;gap:8px"><input type="checkbox" data-request-scope="${scope}" data-request-field="${key}" ${key==="nombre"?fields.nombre!==false?"checked":"":fields[key]?"checked":""}> Solicitar ${key}</label>`).join("")}</div>`}).join("")}
+    function renderSettings(root){const config=state.data.config||{};const modules=state.data.modules||{};root.innerHTML=`${pageHeader("Ajustes y diseño","Información, contacto, imágenes y contenido que se muestra en el sitio.")}<section class="card"><form id="settingsForm" novalidate><div class="form-grid">${SETTINGS_FIELDS.map(([key,label,type])=>{const value=getPath(config,key);return fieldMarkup("settings",[key,label,type,false],{[key]:value})}).join("")}<div class="field wide"><label>Secciones visibles</label><div class="form-grid">${["nosotros","servicios","productos","proyectos","resenas","preguntas","contacto"].map(key=>`<label class="field" style="display:flex;align-items:center;gap:8px"><input type="checkbox" data-section-field="${key}" ${config.sections&&config.sections[key]!==false?"checked":""}>${key}</label>`).join("")}</div></div><div class="field wide"><label><input type="checkbox" data-setting="showCredit" ${config.showCredit?"checked":""}> Mostrar crédito de desarrollo</label></div>${requestFieldsMarkup(config)}<div class="field wide"><h3>Datos que solicita el carrito</h3><p class="field-help">Los datos de compra se envían a WhatsApp y no se guardan en la base.</p>${["nombre","telefono","direccion","comuna","correo","rut","comentarios"].map(key=>`<label class="field" style="display:flex;align-items:center;gap:8px"><input type="checkbox" data-cart-field="${key}" ${config.cartFields&&config.cartFields[key]&&(config.cartFields[key]===true||config.cartFields[key].ask)?"checked":""}> Solicitar ${key}</label>`).join("")}</div></div><p class="field-error" id="settingsError" role="alert"></p><div class="form-actions"><button class="btn" type="submit">Guardar ajustes</button></div></form></section><section class="card"><h3>Módulos</h3><p class="field-help">Los módulos contratados y sus dependencias se muestran aquí. Su configuración requiere permisos autorizados.</p><div id="moduleList">${Object.entries(modules).map(([key,value])=>`<label class="field" style="display:flex;align-items:center;gap:8px"><input type="checkbox" data-module="${key}" ${value?"checked":""} ${!state.isDeveloper?"disabled":""}>${key}</label>`).join("")}</div><button class="btn secondary" id="saveModules" type="button" ${!state.isDeveloper?"disabled":""}>Guardar módulos</button></section>`;
+      $("#settingsForm").addEventListener("input",()=>setDirty(true));$("#settingsForm").addEventListener("change",event=>{if(event.target.matches("[data-image-file]"))uploadImage(event.target,"settings");setDirty(true)});$("#settingsForm").addEventListener("submit",saveSettings);$("#saveModules").addEventListener("click",saveModules)}
+    function collectSettings(){const config=structuredCloneSafe(state.data.config);const form=$("#settingsForm");$$("[data-field]",form).forEach(field=>{const key=field.dataset.field;const type=SETTINGS_FIELDS.find(item=>item[0]===key)?.[2];let value=field.type==="checkbox"?field.checked:field.value.trim();if(type==="number")value=value===""?null:Number(value);if(type==="url"&&value&&!safeUrl(value))throw new Error("Los enlaces deben comenzar con https://.");if(type==="image"&&value&&!safeUrl(value))throw new Error("El enlace de imagen debe comenzar con HTTPS.");setPath(config,key,value)});$$("[data-section-field]",form).forEach(field=>{config.sections=config.sections||{};config.sections[field.dataset.sectionField]=field.checked});$$("[data-setting]",form).forEach(field=>config[field.dataset.setting]=field.checked);$$("[data-cart-field]",form).forEach(field=>{config.cartFields=config.cartFields||{};config.cartFields[field.dataset.cartField]={ask:field.checked,required:field.dataset.cartField==="nombre"}});$$("[data-request-scope]",form).forEach(field=>{const scope=field.dataset.requestScope;config[scope]=config[scope]||{};config[scope][field.dataset.requestField]=field.checked});const digits=String(config.wa||"").replace(/\D/g,"");if(digits&&!/^(569\d{8}|9\d{8})$/.test(digits))throw new Error("Escribe un celular chileno válido o deja el campo vacío para ocultar WhatsApp.");config.wa=digits.startsWith("9")?`56${digits}`:digits;return config}
+    async function saveSettings(event){event.preventDefault();$("#settingsError").textContent="";let config;try{config=collectSettings()}catch(error){$("#settingsError").textContent=error.message;return}const updates={"config":config,"meta/updatedAt":firebase.database.ServerValue.TIMESTAMP};try{await state.db.ref("solar").update(updates);state.data.config=config;setDirty(false);showToast("Ajustes guardados.");renderSection("settings")}catch(error){$("#settingsError").textContent=firebaseErrorMessage(error)}}
+    async function saveModules(){if(!state.isDeveloper)return;const modules={...state.data.modules};$$("[data-module]").forEach(input=>modules[input.dataset.module]=input.checked);const normalized=normalizeModules(modules);const missing=Object.entries(modules).some(([key,value])=>value&&!normalized[key]);if(missing){showToast("Activa primero los requisitos de cada módulo.");return}try{await state.db.ref("solar").update({"contract/modules":normalized,"meta/updatedAt":firebase.database.ServerValue.TIMESTAMP});state.data.modules=normalized;showToast("Módulos actualizados.");renderNavigation()}catch(error){showToast(firebaseErrorMessage(error))}}
+    function renderBackup(root){root.innerHTML=`${pageHeader("Copia de seguridad","Descarga manualmente una copia del contenido administrable.")}<section class="card"><h3>Descargar contenido</h3><p>La copia incluye ajustes, servicios, categorías, productos, proyectos, carrusel, reseñas, preguntas y rangos de cotización. No contiene contadores de uso ni datos de acceso.</p><p class="alert">Esta copia es manual: guárdala en un lugar seguro.</p><button class="btn" id="exportBackup" type="button">Descargar copia JSON</button></section>`;$("#exportBackup").addEventListener("click",()=>{const {stats,statsProd,contract,mediaUsage,...content}=state.data;const blob=new Blob([JSON.stringify(content,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const anchor=document.createElement("a");anchor.href=url;anchor.download=`factor-solar-contenido-${new Date().toISOString().slice(0,10)}.json`;anchor.click();URL.revokeObjectURL(url)})}
+    function dateKey(date){const parts=new Intl.DateTimeFormat("en-US",{timeZone:"America/Santiago",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(date);return`${parts.find(part=>part.type==="year").value}-${parts.find(part=>part.type==="month").value}-${parts.find(part=>part.type==="day").value}`}
+    async function renderStats(root){root.innerHTML=`${pageHeader("Estadísticas","Conteos anónimos del sitio, sin datos que identifiquen a visitantes.")}<div class="list-tools"><label for="statsPeriod">Periodo</label><select id="statsPeriod"><option value="7">Últimos 7 días</option><option value="30">Últimos 30 días</option><option value="90">Últimos 90 días</option></select></div><div class="card"><p id="statsMessage" role="status">Cargando conteos…</p><div id="statsResult"></div></div><p class="field-help">Los contadores solo representan actividad agregada y no identifican a ninguna persona.</p>`;$("#statsPeriod").addEventListener("change",()=>loadStats(Number($("#statsPeriod").value)));await loadStats(7)}
+    async function loadStats(days){const result=$("#statsResult");const message=$("#statsMessage");if(!result||!message)return;message.textContent="Cargando conteos…";try{const today=dateKey(new Date());const [year,month,day]=today.split("-").map(Number);const dates=[];for(let offset=days-1;offset>=0;offset--)dates.push(dateKey(new Date(Date.UTC(year,month-1,day-offset,12))));const [snapshots,productSnapshots]=await Promise.all([Promise.all(dates.map(date=>state.db.ref(`solar/stats/${date}`).once("value"))),Promise.all(dates.map(date=>state.db.ref(`solar/statsProd/${date}`).once("value")))]);const daily=snapshots.map((snapshot,index)=>({date:dates[index],...(snapshot.val()||{})}));const views={};productSnapshots.forEach(snapshot=>Object.entries(snapshot.val()||{}).forEach(([id,count])=>views[id]=(views[id]||0)+(Number(count)||0)));const events=["visitas","visitas_qr","chat_abierto","chat_completado","cotizador_abierto","cotizador_completado","whatsapp_click","carrito_agregar","pedido_preparado"];const totals=Object.fromEntries(events.map(event=>[event,daily.reduce((sum,row)=>sum+(Number(row[event])||0),0)]));const max=Math.max(1,...daily.map(item=>Number(item.visitas)||0));const width=Math.max(280,daily.length*14);const bars=daily.map((item,index)=>{const height=Math.round((Number(item.visitas)||0)/max*100);return`<rect x="${index*14+3}" y="${110-height}" width="8" height="${height}" rx="2"><title>${item.date}: ${Number(item.visitas)||0} visitas</title></rect>`}).join("");const names=Object.fromEntries(collectionList(state.data.products).map(product=>[product.id,product.name]));const ranking=Object.entries(views).sort((a,b)=>b[1]-a[1]).slice(0,10);result.innerHTML=`<div class="grid">${events.map(event=>`<article class="card"><span class="muted">${esc(event.split("_").join(" "))}</span><div class="metric">${totals[event]}</div></article>`).join("")}</div><h3 style="margin-top:22px">Visitas por día</h3><div class="table-wrap"><svg role="img" aria-labelledby="visitsChartTitle" viewBox="0 0 ${width} 120" width="100%" height="150" style="min-width:${Math.min(width,1000)}px;max-width:100%;fill:#b48700"><title id="visitsChartTitle">Visitas de los últimos ${days} días</title>${bars}</svg></div><table class="data-table"><caption class="sr">Visitas diarias</caption><thead><tr><th>Fecha</th><th>Visitas</th><th>Clics WhatsApp</th></tr></thead><tbody>${daily.map(item=>`<tr><td>${esc(item.date)}</td><td>${Number(item.visitas)||0}</td><td>${Number(item.whatsapp_click)||0}</td></tr>`).join("")}</tbody></table><h3 style="margin-top:22px">Productos más consultados</h3>${ranking.length?`<ol>${ranking.map(([id,count])=>`<li>${esc(names[id]||"Producto archivado")} — ${count}</li>`).join("")}</ol>`:"<p>No hay visualizaciones registradas en este periodo.</p>"}`;message.textContent=`Periodo: ${days} días.`}catch(error){message.textContent=`No se pudieron cargar las estadísticas: ${esc(firebaseErrorMessage(error))}`}}
+    /* qrcode-generator 1.4.4 — Copyright (c) 2009 Kazuhiko Arase.
+       MIT License: Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+    const QR_LIBRARY="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+    let qrDownloadUrl="";
+    function loadQrLibrary(){return new Promise((resolve,reject)=>{if(window.qrcode){resolve();return}const script=document.createElement("script");script.src=QR_LIBRARY;script.integrity="sha384-mZT2gIty7ZDdOGkxfP6joZcYdMW1Jvj9dRlfpTmaJAKKXTqzygtB22k7FLe+KZC1";script.crossOrigin="anonymous";script.onload=resolve;script.onerror=()=>reject(new Error("No se pudo cargar el generador QR. Revisa la conexión y vuelve a intentarlo."));document.head.appendChild(script)})}
+    function createQrPng(svg,size){return new Promise((resolve,reject)=>{const source=URL.createObjectURL(new Blob([svg],{type:"image/svg+xml"}));const image=new Image();image.onload=()=>{try{const canvas=document.createElement("canvas");canvas.width=size;canvas.height=size;const context=canvas.getContext("2d");if(!context)throw new Error("No se pudo preparar la descarga PNG.");context.fillStyle="#fff";context.fillRect(0,0,size,size);context.drawImage(image,0,0,size,size);URL.revokeObjectURL(source);resolve(canvas.toDataURL("image/png"))}catch(error){URL.revokeObjectURL(source);reject(error)}};image.onerror=()=>{URL.revokeObjectURL(source);reject(new Error("No se pudo convertir el código QR a PNG."))};image.src=source})}
+    async     function renderQr(root){root.innerHTML=`${pageHeader("Código QR","Prepara una dirección para compartir y generar su código QR.")}<section class="card"><div class="form-grid"><div class="field"><label for="qrSiteUrl">Dirección del sitio</label><input id="qrSiteUrl" class="control" type="url" value="" placeholder="https://tudominio.cl"></div><div class="field"><label for="qrDestination">Abrir al escanear</label><select id="qrDestination" class="control"><option value="asistente">Asistente de solicitudes</option><option value="cotizador">Cotizador solar</option></select></div></div><button class="btn" id="generateQr" type="button">Generar código QR</button><div id="qrResult" style="margin-top:20px"></div></section><p class="field-help">Ingresa el dominio HTTPS definitivo; el QR dirige directamente al asistente o al cotizador seleccionado.</p>`;$("#generateQr").addEventListener("click",generateQr);$("#qrSiteUrl").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();generateQr()}})}
+    async function generateQr(){const output=$("#qrResult");const site=safeUrl($("#qrSiteUrl").value.trim());if(!site){output.innerHTML='<p class="error" role="alert">Escribe una dirección válida que comience con https://.</p>';return}let target=$("#qrDestination").value;if(target==="asistente"&&!moduleAllowed("assistant"))target=moduleAllowed("quote")?"cotizador":"";if(target==="cotizador"&&!moduleAllowed("quote"))target=moduleAllowed("assistant")?"asistente":"";if(!target){output.innerHTML='<p class="error" role="alert">Activa el asistente o el cotizador antes de generar este código.</p>';return}const url=new URL(site);url.searchParams.set("utm_source","qr");url.searchParams.set("abrir",target);const button=$("#generateQr");button.disabled=true;output.textContent="Preparando código…";try{await loadQrLibrary();const qr=qrcode(0,"M");qr.addData(url.toString());qr.make();const svg=qr.createSvgTag(4,4);const doc=new DOMParser().parseFromString(svg,"image/svg+xml");if(doc.querySelector("parsererror")||doc.documentElement.localName!=="svg")throw new Error("No se pudo crear el archivo SVG del código.");const safeSvg=new XMLSerializer().serializeToString(doc.documentElement);if(qrDownloadUrl)URL.revokeObjectURL(qrDownloadUrl);qrDownloadUrl=URL.createObjectURL(new Blob([safeSvg],{type:"image/svg+xml"}));const pngUrl=await createQrPng(safeSvg,1024);output.innerHTML=`<div class="grid" style="grid-template-columns:220px 1fr;align-items:center"><img src="${pngUrl}" alt="Código QR de acceso a ${esc(url.toString())}" style="width:220px;height:220px;border:1px solid var(--line);border-radius:12px;background:#fff"><div><p><strong>Dirección codificada</strong></p><p>${esc(url.toString())}</p><div class="quick-actions"><a class="btn" href="${pngUrl}" download="factor-solar-qr.png">Descargar PNG (1024 px)</a><a class="btn secondary" href="${qrDownloadUrl}" download="factor-solar-qr.svg">Descargar SVG</a></div></div></div>`}catch(error){output.innerHTML=`<p class="error" role="alert">${esc(error.message||"No se pudo generar el código.")}</p>`}finally{button.disabled=false}}
+    function askConfirm(title,message,requireName,callback,expectedName=""){state.confirmCallback=callback;state.returnFocus=document.activeElement;$("#confirmTitle").textContent=title;$("#confirmMessage").textContent=message;$("#confirmInputWrap").classList.toggle("hidden",!requireName);$("#confirmInput").value="";$("#confirmInput").dataset.expected=expectedName;$("#acceptConfirm").disabled=false;$("#confirmModal").classList.add("open");$("#confirmModal").setAttribute("aria-hidden","false");$("#cancelConfirm").focus()}
+    function closeConfirm(){const modal=$("#confirmModal");modal.classList.remove("open");modal.setAttribute("aria-hidden","true");state.confirmCallback=null;if(state.returnFocus)state.returnFocus.focus()}
+    async function reserveCloudinaryBudget(bytes){
+      if(!state.db||!state.user)throw new Error("Inicia sesión antes de cargar una imagen.");
+      let reason="No se pudo reservar el presupuesto de multimedia.";
+      const result=await state.db.ref("solar/mediaUsage").transaction(current=>{
+        if(!current||!Number.isSafeInteger(current.uploads)||!Number.isSafeInteger(current.bytes)){
+          reason="El control de multimedia no está inicializado. Revisa y registra el uso actual antes de subir archivos.";
+          return;
+        }
+        if(current.uploads>=CONFIG.MAX_CLOUDINARY_UPLOADS||current.bytes+bytes>CONFIG.MAX_CLOUDINARY_BYTES){
+          reason="Se alcanzó el límite interno de cargas o almacenamiento. No se inició ninguna subida.";
+          return;
+        }
+        return{uploads:current.uploads+1,bytes:current.bytes+bytes};
+      });
+      if(!result.committed)throw new Error(reason);
+      state.data.mediaUsage=result.snapshot.val();
+    }
+    async function releaseCloudinaryBudget(bytes){
+      const result=await state.db.ref("solar/mediaUsage").transaction(current=>{
+        if(!current||!Number.isSafeInteger(current.uploads)||!Number.isSafeInteger(current.bytes)||current.uploads<1||current.bytes<bytes)return;
+        return{uploads:current.uploads-1,bytes:current.bytes-bytes};
+      });
+      if(!result.committed)throw new Error("No se pudo liberar la reserva de multimedia; revisa el contador antes de volver a cargar.");
+      state.data.mediaUsage=result.snapshot.val();
+    }
+    async function uploadImage(input,key){
+      const file=input.files&&input.files[0];
+      if(!file)return;
+      const name=input.dataset.imageFile;
+      const status=$(`[data-upload-status="${name}"]`);
+      const progress=$(`[data-progress="${name}"]`);
+      const form=$("#recordForm")||$("#settingsForm");
+      const urlInput=$(`[data-image-url="${name}"]`,form);
+      if(file.size>CONFIG.MAX_IMAGE_BYTES){status.textContent="El archivo supera el máximo de 10 MB.";return}
+      if(!["image/jpeg","image/png","image/webp","image/avif"].includes(file.type)){status.textContent="Formato no compatible. Usa JPG, PNG, WebP o AVIF.";return}
+      if(!moduleAllowed("cloudinary")){status.textContent="Las cargas de imágenes están deshabilitadas.";return}
+      if(!CONFIG.cloudinary.cloudName||!CONFIG.cloudinary.uploadPreset){status.textContent="La carga requiere configurar Cloudinary; puedes pegar un enlace HTTPS.";return}
+      try{
+        status.textContent="Preparando imagen optimizada…";
+        const compressed=await compressImage(file);
+        const reservedBytes=Math.ceil(compressed.size*CONFIG.STORAGE_RESERVE_MULTIPLIER);
+        await reserveCloudinaryBudget(reservedBytes);
+        status.textContent=`Optimizada: ${(compressed.size/1024).toFixed(0)} KB.`;
+        let uploaded;
+        try{uploaded=await uploadWithProgress(compressed,progress,status)}
+        catch(error){
+          if(error.definitive){
+            try{await releaseCloudinaryBudget(reservedBytes)}
+            catch(releaseError){throw new Error(`${error.message} ${releaseError.message}`)}
+          }else{
+            throw new Error(`${error.message} La reserva se conserva por seguridad; verifica Cloudinary antes de reintentar.`);
+          }
+          throw error;
+        }
+        const hidden=$(`[data-field="${name}"]`,form);
+        hidden.value=uploaded;
+        if(urlInput)urlInput.value=uploaded;
+        setDirty(true);
+        status.textContent="Imagen cargada. Guarda los cambios para publicarla.";
+      }catch(error){status.textContent=error.message||"No se pudo cargar la imagen. Puedes reintentar o pegar un enlace HTTPS."}
+      finally{progress.style.width="0%"}
+    }
+    async function compressImage(file){
+      const bitmap=await createImageBitmap(file);
+      try{
+        if(bitmap.width*bitmap.height>CONFIG.MAX_IMAGE_PIXELS)throw new Error("La imagen supera el máximo de 25 megapíxeles.");
+        let width=Math.max(1,Math.round(bitmap.width*Math.min(1,1600/Math.max(bitmap.width,bitmap.height))));
+        let height=Math.max(1,Math.round(bitmap.height*Math.min(1,1600/Math.max(bitmap.width,bitmap.height))));
+        const canvas=document.createElement("canvas");
+        const context=canvas.getContext("2d");
+        if(!context)throw new Error("No se pudo preparar la imagen.");
+        for(let pass=0;pass<6;pass++){
+          canvas.width=width;
+          canvas.height=height;
+          context.drawImage(bitmap,0,0,width,height);
+          for(const quality of [.82,.68,.54,.42]){
+            const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/webp",quality));
+            if(!blob)throw new Error("No se pudo preparar la imagen.");
+            if(blob.size<=CONFIG.TARGET_IMAGE_BYTES)return new File([blob],file.name.replace(/\.[^.]+$/,".webp"),{type:"image/webp"});
+          }
+          width=Math.max(1,Math.round(width*.82));
+          height=Math.max(1,Math.round(height*.82));
+        }
+        throw new Error("No se pudo optimizar la imagen por debajo de 384 KB.");
+      }finally{bitmap.close()}
+    }
+    function uploadWithProgress(file,progress,status){
+      return new Promise((resolve,reject)=>{
+        const body=new FormData();
+        body.append("file",file);
+        body.append("upload_preset",CONFIG.cloudinary.uploadPreset);
+        body.append("folder","factor-solar/");
+        const request=new XMLHttpRequest();
+        request.open("POST",`https://api.cloudinary.com/v1_1/${encodeURIComponent(CONFIG.cloudinary.cloudName)}/image/upload`);
+        request.timeout=60000;
+        request.upload.onprogress=event=>{
+          if(event.lengthComputable){
+            progress.style.width=`${Math.round(event.loaded/event.total*100)}%`;
+            status.textContent=`Subiendo imagen: ${Math.round(event.loaded/event.total*100)}%`;
+          }
+        };
+        request.onload=()=>{
+          try{
+            const response=JSON.parse(request.responseText);
+            if(request.status>=200&&request.status<300&&safeUrl(response.secure_url)){
+              progress.style.width="100%";
+              resolve(response.secure_url);
+              return;
+            }
+            const error=new Error(response.error&&response.error.message||"El servicio rechazó la imagen.");
+            error.definitive=request.status>=400&&request.status<500;
+            reject(error);
+          }catch(error){reject(error)}
+        };
+        request.onerror=()=>reject(new Error("Falló la conexión. La carga pudo completarse; verifica Cloudinary antes de reintentar."));
+        request.ontimeout=()=>reject(new Error("La carga tardó demasiado y pudo completarse; verifica Cloudinary antes de reintentar."));
+        request.send(body);
+      });
+    }
+    function bindEvents(){renderIconTargets();$("#loginForm").addEventListener("submit",signIn);$("#forgotPassword").addEventListener("click",forgotPassword);$("#logout").addEventListener("click",()=>state.auth&&state.auth.signOut());$("#sideNav").addEventListener("click",event=>{const target=event.target.closest("[data-section]");if(target)renderSection(target.dataset.section)});$("#mobileNav").addEventListener("click",event=>{const target=event.target.closest("[data-section]");if(target)renderSection(target.dataset.section)});$("#navToggle").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));$("#pageContent").addEventListener("click",event=>{const target=event.target.closest("[data-action]");if(target){if(target.dataset.action==="settings")renderSection("settings");else if(target.dataset.action==="new-product")renderSection("products"),renderEditor("products");else if(target.dataset.action==="new-project")renderSection("projects"),renderEditor("projects");else if(target.dataset.action==="new-record"){const key=state.section;if(key==="products"&&collectionList(state.data.products).length>=CONFIG.MAX_PRODUCTS){showToast(`El máximo es ${CONFIG.MAX_PRODUCTS} productos.`);return}renderEditor(key);return}}const edit=event.target.closest("[data-edit]");if(edit){const record=state.data[state.section][edit.dataset.edit];renderEditor(state.section,{id:edit.dataset.edit,...record});return}const duplicate=event.target.closest("[data-duplicate]");if(duplicate){const record=structuredCloneSafe(state.data[state.section][duplicate.dataset.duplicate]);delete record.id;record.name=record.name?record.name+" (copia)":record.name;record.title=record.title?record.title+" (copia)":record.title;record.active=false;if(state.section==="products"&&collectionList(state.data.products).length>=CONFIG.MAX_PRODUCTS){showToast(`El máximo es ${CONFIG.MAX_PRODUCTS} productos.`);return}renderEditor(state.section,record);state.editing=null;return}const archive=event.target.closest("[data-archive]");if(archive){const id=archive.dataset.archive;const active=archive.dataset.active==="true";askConfirm(active?"Archivar elemento":"Reactivar elemento",active?"Dejará de mostrarse en el sitio.":"Volverá a mostrarse en el sitio.",false,()=>updateRecord(state.section,id,{active:!active}));return}const remove=event.target.closest("[data-delete]");if(remove){const id=remove.dataset.delete;const record=state.data[state.section][id];const name=record.name||record.title||record.q||"";askConfirm("Eliminar definitivamente",`Esta acción no se puede deshacer. Escribe exactamente “${name}” para confirmar.`,true,()=>deleteRecord(state.section,id,name),name);return}});$("#pageContent").addEventListener("input",event=>{if(event.target.id==="listSearch")filterRecords();if(event.target.id==="statusFilter")filterRecords()});$("#cancelConfirm").addEventListener("click",closeConfirm);$("#acceptConfirm").addEventListener("click",()=>{const callback=state.confirmCallback;if($("#confirmInputWrap").classList.contains("hidden")||$("#confirmInput").value===($("#confirmInput").dataset.expected||"")){closeConfirm();if(callback)callback()}else{$("#confirmInput").setAttribute("aria-invalid","true");$("#confirmInput").focus()}});$("#confirmInput").addEventListener("input",()=>$("#acceptConfirm").disabled=$("#confirmInput").value!==$("#confirmInput").dataset.expected);$("#confirmModal").addEventListener("click",event=>{if(event.target.id==="confirmModal")closeConfirm()});$("#saveChanges").addEventListener("click",()=>$("#recordForm")?$("#recordForm").requestSubmit():$("#settingsForm")?$("#settingsForm").requestSubmit():null);$("#discardChanges").addEventListener("click",()=>{if(state.editing)renderSection(state.section);else renderSection(state.section)});window.addEventListener("beforeunload",event=>{if(state.dirty){event.preventDefault();event.returnValue=""}});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&$("#confirmModal").classList.contains("open"))closeConfirm()});window.addEventListener("online",()=>showToast("Conexión restablecida."));window.addEventListener("offline",()=>showToast("Sin conexión. Tus cambios no guardados siguen en pantalla."))}
+    function filterRecords(){const search=$("#listSearch");const status=$("#statusFilter");if(!search||!status)return;state.collectionQuery=search.value;state.collectionStatus=status.value;state.collectionPage=0;renderCollectionPage($("#pageContent"),state.section)}
+    function bindCollectionPagination(){
+      $("#pageContent").addEventListener("change",event=>{if(event.target.id==="statusFilter")filterRecords()});
+      $("#pageContent").addEventListener("click",event=>{
+        const button=event.target.closest("[data-collection-page]");
+        if(!button||button.disabled)return;
+        const direction=Number(button.dataset.collectionPage);
+        state.collectionPage+=direction;
+        renderCollectionPage($("#pageContent"),state.section);
+        const nextButton=direction>0?$("#collectionNext"):$("#collectionPrevious");
+        if(nextButton&&!nextButton.disabled)nextButton.focus();
+      });
+    }
+    async function updateRecord(key,id,changes){const updates={};Object.entries(changes).forEach(([field,value])=>updates[`${key}/${id}/${field}`]=value);updates["meta/updatedAt"]=firebase.database.ServerValue.TIMESTAMP;try{await state.db.ref("solar").update(updates);Object.assign(state.data[key][id],changes);showToast("Estado actualizado.");renderSection(key)}catch(error){showToast(firebaseErrorMessage(error))}}
+    async function deleteRecord(key,id,name){if(key==="categories"){const used=collectionList(state.data.products).some(product=>product.categoryId===id);if(used){showToast("Mueve primero los productos de esta categoría.");return}}try{const updates={};updates[`${key}/${id}`]=null;updates["meta/updatedAt"]=firebase.database.ServerValue.TIMESTAMP;await state.db.ref("solar").update(updates);delete state.data[key][id];showToast("Elemento eliminado.");renderSection(key)}catch(error){showToast(firebaseErrorMessage(error))}}
+    function setSidebarOpen(open,restoreFocus=false){
+      const sidebar=$("#sidebar");
+      const toggle=$("#navToggle");
+      const app=$("#adminApp");
+      sidebar.classList.toggle("open",open);
+      app.classList.toggle("menu-open",open);
+      toggle.setAttribute("aria-expanded",String(open));
+      toggle.setAttribute("aria-label",open?"Cerrar navegación":"Abrir navegación");
+      $("#sidebarBackdrop").setAttribute("aria-hidden",String(!open));
+      if(!open&&restoreFocus&&window.matchMedia("(max-width:720px)").matches)toggle.focus();
+    }
+    function bindSidebarControls(){
+      const sidebar=$("#sidebar");
+      $("#navToggle").addEventListener("click",()=>setSidebarOpen(sidebar.classList.contains("open")));
+      $("#sidebarClose").addEventListener("click",()=>setSidebarOpen(false,true));
+      $("#sidebarBackdrop").addEventListener("click",()=>setSidebarOpen(false,true));
+      $("#sideNav").addEventListener("click",event=>{if(event.target.closest("[data-section]"))setSidebarOpen(false,true)});
+      $("#mobileNav").addEventListener("click",event=>{if(event.target.closest("[data-section]"))setSidebarOpen(false,true)});
+      document.addEventListener("keydown",event=>{if(event.key==="Escape"&&sidebar.classList.contains("open"))setSidebarOpen(false,true)});
+      window.addEventListener("resize",()=>{if(window.innerWidth>720&&sidebar.classList.contains("open"))setSidebarOpen(false)});
+    }
+    bindEvents();
+    bindSidebarControls();
+    bindCollectionPagination();
+    ensureFirebase().then(()=>state.auth.onAuthStateChanged(handleUser)).catch(error=>{setLoginError(firebaseErrorMessage(error));$("#loginButton").disabled=true});
+  </script>
+</body>
+</html>
