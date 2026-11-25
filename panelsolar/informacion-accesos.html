@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Accesos al panel | Factor Solar</title>
+<style>
+:root{--bg:#07090d;--card:#10141c;--line:#252d3d;--tx:#f3f5f9;--mut:#aab3c5;--blue:#4b94ff;--cu:#e8813f;--ok:#43d19e}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:400 1.08rem/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;padding-bottom:5.5rem;-webkit-text-size-adjust:100%}
+.w{width:min(940px,100% - 2rem);margin-inline:auto}
+header{padding:1.6rem 0 .4rem}
+h1{font-size:clamp(1.5rem,5vw,2.3rem);line-height:1.15;letter-spacing:-.02em}
+h2{font-size:1.35rem;margin:2.2rem 0 .8rem;color:var(--blue)}
+h3{font-size:1.15rem;margin-bottom:.4rem}
+p{color:var(--mut)}
+b{color:var(--tx)}
+.grid{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.2rem}
+.tag{display:inline-block;font:700 .85rem system-ui;border-radius:999px;padding:.15rem .8rem;border:1px solid var(--cu);color:var(--cu);margin-bottom:.5rem}
+.flow{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));counter-reset:s}
+.flow div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem;position:relative;counter-increment:s}
+.flow div::before{content:counter(s);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#1f4fa8;font:700 .95rem system-ui;margin-bottom:.4rem}
+.flow b{display:block}
+.flow span{color:var(--mut);font-size:.95rem}
+ul{padding-left:1.1rem;display:grid;gap:.3rem;color:var(--mut)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+th,td{padding:.85rem .8rem;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);font-size:1rem}
+th{background:#141a25;font-size:1rem}
+td:first-child{font-weight:700;color:var(--tx);width:25%}
+td{color:#d3dae6}
+tr:last-child td{border-bottom:0}
+.no{color:var(--cu);font-weight:600}
+@media(max-width:720px){
+ thead{display:none}
+ table,tbody,tr,td{display:block;width:100%}
+ tr{border-bottom:8px solid var(--bg);padding:.3rem 0}
+ td{border:0;padding:.4rem 1rem}
+ td:first-child{width:100%;font-size:1.05rem;color:var(--blue);padding-top:.8rem}
+ td[data-l]::before{content:attr(data-l) ": ";font-weight:700;color:var(--tx)}
+}
+.rule{border-color:var(--ok)}
+.rule h3{color:var(--ok)}
+fieldset{border:1px solid var(--line);border-radius:16px;padding:1rem;margin-bottom:.8rem;background:var(--card)}
+legend{font-weight:700;padding:0 .4rem}
+label{display:flex;gap:.7rem;align-items:flex-start;padding:.55rem .2rem;min-height:48px;cursor:pointer;color:#d3dae6}
+input{width:22px;height:22px;accent-color:var(--cu);flex:none;margin-top:.15rem}
+input:focus-visible{outline:3px solid #F5B800;outline-offset:2px}
+#rec{border-color:var(--blue)}
+.small{font-size:.92rem}
+.hl{border-left:4px solid var(--cu);background:#1a1511;border-radius:0 12px 12px 0;padding:.7rem 1rem;color:var(--tx)}
+a{color:var(--blue)}
+details{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:.1rem 1rem;margin-bottom:.6rem}
+summary{font-weight:700;padding:.8rem 0;cursor:pointer;min-height:48px}
+summary:focus-visible{outline:3px solid #F5B800;outline-offset:2px}
+details[open] summary{color:var(--blue)}
+details ul{margin-bottom:.9rem}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:5;background:#10141cf5;border-top:3px solid var(--ok);padding:.5rem 1rem calc(.5rem + env(safe-area-inset-bottom));display:flex;gap:.6rem;align-items:center;justify-content:center;font-size:.88rem}
+.bar[hidden]{display:none}
+.bar p{margin:0;max-width:780px;color:var(--tx);line-height:1.4}
+.bar button{flex:none;min-width:44px;min-height:44px;background:none;border:0;color:var(--mut);font-size:1.5rem;cursor:pointer}
+.bar button:focus-visible{outline:3px solid #F5B800}
+.tr{display:block;font-size:.82rem;color:var(--mut);margin-top:.15rem;font-weight:400}
+#rec ul{margin:.3rem 0 0 1.1rem}
+#rec .grid{margin-top:.8rem}
+</style>
+</head>
+<body>
+<header class="w">
+  <h1>¿Cómo se agregan y se quitan personas del panel?</h1>
+  <p>Diego explica en simple qué opciones tiene Fabián para manejar quién puede entrar al panel de Factor Solar. Fabián elige.</p>
+</header>
+
+<main class="w">
+<h2>Primero: qué es cada cosa</h2>
+<div class="flow">
+  <div><b>La cuenta de ingreso</b><span>El correo y la contraseña de cada persona. Se guardan en el sistema de ingreso de la base de datos.</span></div>
+  <div><b>La lista de autorizados</b><span>Dice quién puede entrar al panel y cambiar el contenido.</span></div>
+  <div><b>El panel</b><span>La página privada para cambiar los productos, precios, fotos y textos del sitio de Fabián.</span></div>
+</div>
+<p class="hl" style="margin-top:.8rem">Para que alguien pueda editar el sitio de Fabián hacen falta las dos primeras cosas: tener una cuenta de ingreso <b>y</b> estar en la lista de autorizados.</p>
+
+<h2>Cómo es hoy</h2>
+<div class="card"><p>Cada persona que usa el panel tiene su propio correo y contraseña. Diego crea esas cuentas y las deja en la lista. Con la entrega quedan creados <b>los usuarios que acordaron Diego y Fabián</b>: Fabián y Bárbara.</p><p style="margin-top:.6rem">Dos cosas que conviene saber de hoy: <b>todas las personas de la lista pueden cambiar todo el contenido del panel</b> (hoy no hay permisos distintos por persona ni por sección; eso se cotiza aparte, como se explica más abajo), y <b>la lista está guardada dentro del código del sitio</b>, así que para agregar o quitar a alguien, Diego tiene que hacer un cambio y publicarlo.</p></div>
+
+<h2>Dos tipos de administrador</h2>
+<div class="grid">
+  <div class="card"><span class="tag">Hoy · incluido</span><h3>Administradores principales</h3><p>Fabián y Bárbara. Tienen todos los permisos del panel y son los únicos que, más adelante, podrán cambiar permisos y manejar las cuentas de otros administradores.</p></div>
+  <div class="card"><span class="tag">Más adelante · se cotiza aparte</span><h3>Administradores con permisos limitados</h3><p>Personas con menos permisos que los principales. No pueden cambiar permisos ni manejar las cuentas de otros administradores.</p></div>
+</div>
+<p class="small" style="margin-top:.6rem">La propuesta de hoy incluye solo a los dos administradores principales. Crear los de permisos limitados, quitarlos, cambiar sus permisos y manejar sus cuentas se cotiza aparte, y cómo se hace depende de la opción que Fabián elija a continuación. Mientras no existan, cualquier persona agregada a la lista puede cambiar todo; por eso hoy la lista es solo Fabián y Bárbara.</p>
+
+<h2>Tres formas de manejar los accesos más adelante</h2>
+<div class="grid">
+  <div class="card"><span class="tag">Opción A</span><h3>Diego lo hace por Fabián</h3><p>Fabián le escribe a Diego por WhatsApp quién entra o quién sale, y Diego lo cambia. Fabián no tiene que aprender nada.</p><ul><li>Es lo que funciona hoy.</li><li>Diego atiende de 9:00 a 18:00: si Fabián le escribe antes de las 18:00, le responde dentro de ese horario.</li><li>Se cotiza a <span class="r">$10.000</span> la hora, con un mínimo de <span class="m">$10.000</span> por pedido.</li></ul></div>
+  <div class="card"><span class="tag">Opción B</span><h3>Fabián o Bárbara lo hacen desde el panel</h3><p>Se agrega una sección nueva al panel, llamada «Administradores». La lista de autorizados pasaría a guardarse en la base de datos y no en el código, y desde esa sección Fabián o Bárbara podrían agregar o quitar personas. Cómo se crea la cuenta de cada persona se define antes de construirlo.</p><ul><li><b>Es una función nueva: hoy no está hecha</b> y no estaba en la propuesta.</li><li>Antes de construirla, Diego revisa que se pueda hacer tal como se describe e informa a Fabián cuántas horas toma, a <span class="r">$10.000</span> la hora, y Fabián decide.</li></ul><p class="hl small" style="margin-top:.7rem"><b>Desde el panel no se puede borrar una cuenta del todo.</b> Solo se quita el acceso: la persona ya no puede entrar. Su correo sigue guardado en el sistema de ingreso de la base de datos. Diego lo borra del todo cuando Fabián se lo pide, y se cotiza como cualquier otro cambio de accesos (mínimo <span class="m">$10.000</span>).</p></div>
+  <div class="card"><span class="tag">Opción C</span><h3>Cuenta propia de Fabián en la base de datos</h3><p>Fabián abre su propia cuenta en el sistema (como abrir una cuenta nueva) y le pasa a Diego los datos para conectar el sitio. Fabián crea y borra las cuentas de ingreso, y Diego ya no ve nada de esa cuenta.</p><ul><li>Requiere que Fabián o Bárbara aprendan a usar una herramienta técnica.</li><li><b>Por sí sola no permite agregar personas al panel:</b> la lista de autorizados sigue dentro del código del sitio, así que Diego seguiría haciendo ese cambio, salvo que además se construya la opción B.</li><li>La conexión inicial y cualquier ayuda después se cotizan. <a href="#detalle-c">Ver todo lo que se aprende</a>.</li></ul></div>
+</div>
+
+<h2>La comparación, fila por fila</h2>
+<table>
+<thead><tr><th>Pregunta</th><th>A. Lo hace Diego</th><th>B. Desde el panel</th><th>C. Cuenta propia de Fabián</th></tr></thead>
+<tbody>
+<tr><td>¿Quién agrega o quita personas?</td><td data-l="A">Diego, cuando Fabián le avisa</td><td data-l="B">Fabián o Bárbara, desde el panel</td><td data-l="C">Fabián o Bárbara crean y borran las cuentas en la cuenta de Fabián. Dar permiso en el sitio lo sigue haciendo Diego, salvo que además exista la opción B</td></tr>
+<tr><td>¿Qué tiene que aprender Fabián?</td><td data-l="A">Nada</td><td data-l="B">Usar una sección nueva del panel (Diego le muestra cómo)</td><td data-l="C">Manejar una herramienta técnica de la base de datos</td></tr>
+<tr><td>¿Se puede elegir qué cambia cada persona?</td><td data-l="A"><span class="no">Hoy no:</span> todas las personas de la lista pueden cambiar todo. Los administradores con permisos limitados se cotizan aparte</td><td data-l="B"><span class="no">Hoy no existe.</span> Se cotiza aparte, junto con la sección «Administradores»</td><td data-l="C"><span class="no">Hoy no existe,</span> igual que en A y B</td></tr>
+<tr><td>¿Se puede sacar a alguien rápido?</td><td data-l="A">Fabián le escribe a Diego y Diego lo hace</td><td data-l="B">Sí, con un clic</td><td data-l="C">Sí, desde la cuenta de Fabián</td></tr>
+<tr><td>¿Quién borra del todo el correo de alguien?</td><td data-l="A">Diego</td><td data-l="B"><span class="no">Desde el panel no se puede.</span> Solo se quita el acceso y esa persona ya no puede entrar; su correo queda guardado en el sistema de ingreso de la base de datos. Diego lo borra del todo cuando Fabián se lo pide, y se cotiza como cualquier otro cambio de accesos (mínimo <span class="m">$10.000</span>).</td><td data-l="C">Fabián, desde su cuenta</td></tr>
+<tr><td>¿Quién puede ver los datos de Fabián?</td><td data-l="A">Diego tiene acceso, como hoy</td><td data-l="B">Diego tiene acceso, como hoy</td><td data-l="C">Solo Fabián</td></tr>
+<tr><td>¿Está hecho hoy?</td><td data-l="A">Sí</td><td data-l="B"><span class="no">No.</span> Se construye y se prueba</td><td data-l="C"><span class="no">No.</span> Se configura y se prueba</td></tr>
+<tr><td>¿Cuánto cuesta?</td><td data-l="A"><span class="r">$10.000</span> la hora, al usarlo, con un mínimo de <span class="m">$10.000</span> por pedido. El borrado total se cotiza igual</td><td data-l="B">Una vez, según las horas que Diego informe antes</td><td data-l="C">La configuración se cotiza; después maneja Fabián</td></tr>
+</tbody></table>
+<p class="small" style="margin-top:.6rem">¿Por qué desde el panel no se puede borrar del todo una cuenta? Porque desde un sitio como el de Fabián cada persona solo puede borrar su propia cuenta. Borrar la de otra persona se hace desde la consola de la base de datos o desde un servidor seguro, y este sitio no tiene servidor. La herramienta de Firebase para sumarle uno (Cloud Functions) exige pasar al plan de pago, con tarjeta; existen otras formas, pero son más complejas. Lo que sí haría el panel es quitar a la persona de la lista: así ya no puede entrar ni cambiar nada, aunque su correo siga guardado.</p>
+<p class="small" style="margin-top:.6rem">¿Por qué hay un mínimo por pedido? Porque cada pedido incluye verificar que viene de Fabián, hacer el cambio y confirmárselo por escrito, aunque la parte técnica sea corta. Si en el mismo pedido hay varios cambios (por ejemplo, quitar y borrar a la misma persona), se cobra un solo mínimo. Y borrar del todo el correo es opcional: con el acceso quitado, la persona ya no puede entrar ni cambiar nada.</p>
+
+<h2 id="detalle-c">Opción C en detalle: qué se aprende y qué incluye</h2>
+<p style="margin-bottom:.8rem">Es como una clase para manejar la consola de la base de datos, el panel de control donde viven las cuentas de ingreso y los datos del sitio. Esta es la lista completa. Lo que no está en la lista no está incluido y se cotiza aparte, para que no haya malentendidos.</p>
+
+<details><summary>1. Abrir y proteger la cuenta</summary><ul>
+<li>Crear la cuenta de Google que será dueña del proyecto y crear el proyecto de la base de datos.</li>
+<li>Elegir el plan gratuito, que no pide tarjeta, y entender qué es el plan de pago.</li>
+<li>Proteger esa cuenta de Google: contraseña propia y verificación en dos pasos.</li>
+<li>Dar acceso a Diego para conectar el sitio, y quitárselo después si Fabián quiere.</li></ul></details>
+
+<details><summary>2. Cuentas de ingreso (en la consola: Authentication, pestaña Users)</summary><ul>
+<li>Ver la lista de personas que tienen cuenta.</li>
+<li>Crear una cuenta con correo y contraseña.</li>
+<li>Enviar a una persona el correo para crear una contraseña nueva.</li>
+<li>Borrar una cuenta del todo.</li>
+<li>Copiar el identificador (UID) de una persona, que Diego necesita para autorizarla.</li>
+<li>Entender que son dos cosas separadas: tener cuenta de ingreso y estar en la lista de autorizados. Borrar la cuenta no cambia la lista, que está en el código del sitio.</li></ul></details>
+
+<details><summary>3. Los datos del sitio (en la consola: Realtime Database)</summary><ul>
+<li>Cómo se ven los datos: carpetas y valores con los productos, textos y precios.</li>
+<li>Mirar sin tocar: los cambios de contenido se hacen desde el panel del sitio, no desde la consola.</li>
+<li>Descargar una copia de los datos antes de cualquier cambio grande.</li>
+<li>Entender que un dato borrado o pisado puede perderse si no hay copia.</li></ul></details>
+
+<details><summary>4. Cuánto uso lleva y cuáles son los límites</summary><ul>
+<li>Dónde ver el uso (Realtime Database, pestaña Usage).</li>
+<li>Los límites del plan gratuito: 1 GB guardado, 10 GB de descarga al mes y 100 conexiones al mismo tiempo.</li>
+<li>Qué pasa si se superan: si se pasa lo guardado o la descarga, el servicio se apaga. La descarga se reactiva al empezar el mes siguiente; lo guardado exige borrar datos o pasar al plan de pago. Si se pasan las conexiones, las nuevas se rechazan hasta que se libere alguna. El proveedor describe avisos para cuando el límite ya se superó, así que no se puede prometer un aviso previo. Por eso hay que mirar el uso de vez en cuando.</li>
+<li>Qué es el plan de pago: cobra por uso y pide vincular una cuenta de facturación. No se cambia de plan sin decidirlo.</li></ul></details>
+
+<details><summary>5. Las reglas de seguridad (en la consola: Rules)</summary><ul>
+<li>Qué son y por qué no se editan por cuenta propia.</li>
+<li>Cómo pegar y publicar un archivo de reglas que entregue Diego.</li>
+<li>Qué puede pasar si una regla se cambia por error: el sitio o el panel dejan de funcionar, o quedan menos protegidos.</li></ul></details>
+
+<details><summary>6. Lo que nunca se toca sin hablar antes con Diego</summary><ul>
+<li>Borrar el proyecto.</li>
+<li>Cambiar el método de ingreso o la configuración de la aplicación web, porque se pierde la conexión con el sitio.</li>
+<li>Cambiar los datos del sitio directo en la consola.</li>
+<li>Cambiar de plan.</li></ul></details>
+
+<div class="card" style="margin-top:.9rem"><h3>Lo que hace Diego en la configuración inicial</h3><p>No es parte de la clase: conectar el sitio a la cuenta nueva, cargar las reglas y los datos iniciales, y publicar el sitio con la conexión nueva.</p></div>
+
+<div class="hl" style="margin-top:.9rem"><b>No incluye, y se cotiza aparte</b><ul style="margin-top:.4rem">
+<li>Preguntas o temas que no estén en esta lista, y repetir la clase.</li>
+<li>Cambios en el código o en las reglas del sitio, incluido agregar o quitar personas de la lista de autorizados mientras no exista la opción B.</li>
+<li>Arreglar lo que se rompa por cambios hechos en la cuenta.</li>
+<li>Las fotos y la publicación del sitio: esta opción cubre solo la base de datos.</li>
+<li>Cambios que haga el proveedor en su consola después de la clase. La clase enseña lo que existe ese día.</li></ul></div>
+
+<div class="card rule" style="margin-top:.9rem"><h3>Cómo se cobra</h3><ul><li>La configuración inicial y la clase se cotizan por horas (<span class="r">$10.000</span> la hora). Diego informa antes cuántas horas toma, y Fabián decide.</li><li>Desde que la cuenta es de Fabián, lo que se cambie, se borre o se pague en ella es responsabilidad de Fabián.</li></ul></div>
+
+<h2>Una regla para las tres opciones</h2>
+<div class="card rule"><h3>Cada persona, su propia contraseña</h3><ul><li>Cada persona usa su propio correo y su propia contraseña, y no la comparte.</li><li>Si alguien olvida su contraseña, el botón «¿Olvidaste tu contraseña?» aparece después de un ingreso fallido y lo lleva a escribirle a Fabián por WhatsApp. Fabián confirma que es la persona y le pide a Diego una contraseña nueva. La anterior deja de servir y la cuenta, con sus permisos, se mantiene igual. Quien tenga un correo real también puede pedir un correo de recuperación desde esa misma pantalla. Fabián no puede ver las contraseñas: nadie puede, ni siquiera Diego.</li><li>Si alguien deja de trabajar con Fabián, se le quita el acceso lo antes posible, apenas Fabián le avisa a Diego.</li><li>Si una contraseña se filtra, el cuidado de esa cuenta es responsabilidad de quien la tiene a cargo, es decir, de Fabián.</li></ul></div>
+
+<h2>Cómo se cotizan los cambios</h2>
+<p style="margin-bottom:.8rem">Cada cambio que Fabián le pida a Diego se cotiza: <span class="r">$10.000</span> la hora, con un mínimo de <span class="m">$10.000</span> por pedido. Diego informa antes cuántas horas toma y Fabián decide. Se paga solo cuando hay un pedido. Los errores de la propia programación de Diego no se cotizan: los corrige él.</p>
+<p class="small" style="margin-bottom:.8rem"><b>Plan de mantención (opcional):</b> $25.000 al mes, con 3,5 horas de trabajo, contratado por un mínimo de 3 meses. Las horas que no se usen en un mes pasan al siguiente, así que se pueden juntar hasta 7 horas; las que sigan sin usarse después de ese segundo mes se pierden. Los cambios de accesos y de contraseñas de administradores con permisos limitados se hacen dentro de esas horas, sin cobro aparte. Si se necesitan más horas de las que hay, la diferencia se cotiza a <span class="r">$10.000</span> la hora.</p>
+<div class="grid" style="margin-top:.9rem">
+<div class="card"><h3>Se cotiza aparte</h3><ul><li>Agregar o quitar personas del panel, borrar del todo el correo de alguien y cambiar la contraseña de otro administrador (mínimo <span class="m">$10.000</span> por pedido). Si Fabián toma el plan de mantención, estos cambios se hacen dentro de sus horas.</li><li>Administradores con permisos limitados: crearlos, quitarlos, cambiar sus permisos y manejar sus cuentas, según la opción que elija Fabián (en la opción B, con el módulo «Administradores»).</li><li>Otras funciones nuevas.</li><li>La opción C: configuración, clase y migración.</li><li>Rediseños completos y cambios estructurales.</li></ul></div>
+<div class="card"><h3>Si un proveedor llegara a cobrar</h3><ul><li>El plan de pago lo contrata Fabián con su propia tarjeta, en una cuenta a su nombre. Diego no recibe ni paga esos montos.</li><li>Si hay que mover la cuenta de imágenes, Diego lo hace sin cobrarle: Fabián crea su cuenta, Diego pasa las fotos de Factor Solar y conecta el sitio.</li></ul></div>
+<div class="card"><h3>Sobre los avisos</h3><p>Si a Diego le llega un aviso de un proveedor, se lo informa a Fabián. Algunos proveedores avisan solo cuando el límite ya se superó, así que no se puede prometer un aviso previo. Fabián puede mirar el uso de sus servicios cuando quiera.</p></div>
+</div>
+
+<h2>¿Cuál le conviene a Fabián?</h2>
+<p style="margin-bottom:.8rem">Fabián responde cinco preguntas cortas y la página muestra qué opción calza mejor. Bajo cada respuesta aparece qué gana y qué pierde. Es solo una guía.</p>
+<fieldset><legend>1. ¿Cuántas personas usarán el panel?</legend>
+<label><input type="radio" name="q1" value="a"><span>Dos o tres, y casi no cambian<small class="tr">Ganas: no hay que construir nada. Pierdes: si crece, cada cambio es un pedido.</small></span></label>
+<label><input type="radio" name="q1" value="b"><span>Más de tres, o cambian seguido<small class="tr">Ganas: menos pedidos a Diego. Pierdes: hay que construir una función nueva.</small></span></label>
+</fieldset>
+<fieldset><legend>2. ¿Cómo se siente Bárbara con los temas técnicos?</legend>
+<label><input type="radio" name="q2" value="avoid"><span>Prefiere no ver temas técnicos<small class="tr">Ganas: Bárbara no ve nada técnico. Probablemente la opción C no le acomode.</small></span></label>
+<label><input type="radio" name="q2" value="ok"><span>Se siente cómoda aprendiendo<small class="tr">Ganas: tiene más opciones. Pierdes: tiempo aprendiendo.</small></span></label>
+</fieldset>
+<fieldset><legend>3. ¿Qué prefiere Fabián?</legend>
+<label><input type="radio" name="q3" value="avisar"><span>No le molesta avisarle a Diego cuando necesite un cambio<small class="tr">Ganas: cero aprendizaje. Diego atiende de 9:00 a 18:00; el cambio no es instantáneo ni fuera de ese horario.</small></span></label>
+<label><input type="radio" name="q3" value="indep"><span>Quiere poder hacerlo solo, sin depender de Diego<small class="tr">Ganas: cambia accesos cuando quiera. Pierdes: hay que pagar la construcción.</small></span></label>
+</fieldset>
+<fieldset><legend>4. Si alguien deja de trabajar con Fabián, ¿cómo prefiere sacarle el acceso?</legend>
+<label><input type="radio" name="q4" value="diego"><span>Avisándole a Diego, que lo hace lo antes posible<small class="tr">Ganas: no aprende nada. Diego lo hace lo antes posible dentro de su horario (9:00 a 18:00); no es instantáneo.</small></span></label>
+<label><input type="radio" name="q4" value="solo"><span>Él mismo, al instante, desde el panel<small class="tr">Ganas: control inmediato. Pierdes: hay que construir la sección «Administradores».</small></span></label>
+</fieldset>
+<fieldset><legend>5. ¿Quiere las cuentas a nombre de Fabián, sin que Diego las vea?</legend>
+<label><input type="radio" name="q5" value="no"><span>No es importante<small class="tr">Ganas: nada que configurar. Diego sigue con acceso, como hoy, solo por si hay que corregir errores.</small></span></label>
+<label><input type="radio" name="q5" value="si"><span>Sí, quiere control total y privacidad<small class="tr">Ganas: solo Fabián ve esos datos. Pierdes: es más técnico y la configuración se cotiza.</small></span></label>
+</fieldset>
+<div class="card" id="rec" aria-live="polite" hidden></div>
+</main>
+<aside class="bar" id="bar" role="note"><p>Agregar o quitar personas se cotiza aparte. Si Fabián toma más adelante el plan de mantención de Diego, <b>esos cambios vienen incluidos</b>. Nada de esto cambia lo que ya acordaron.</p><button type="button" id="barx" aria-label="Ocultar aviso">×</button></aside>
+
+<script>
+/* Ajusta estos valores */
+const RATE = "$10.000", MIN = "$10.000"; /* MIN = mínimo por pedido (una hora) */
+document.querySelectorAll(".r").forEach(e => e.textContent = RATE);
+document.querySelectorAll(".m").forEach(e => e.textContent = MIN);
+const REC = {
+  A:{t:"Opción A: Diego lo hace por Fabián",
+     d:"Es lo más simple y Fabián no tiene que aprender nada. Cuando necesita un cambio, le escribe a Diego y Diego lo hace.",
+     inc:["Agregar, quitar y cambiar contraseñas: lo hace Diego cuando Fabián le avisa","Nada que aprender","Ya funciona hoy"],
+     no:["Cambiar accesos sin pasar por Diego","Respuesta instantánea o fuera de horario: Diego atiende de 9:00 a 18:00","Cambios sin costo: cada pedido se cotiza (mínimo "+MIN+") o va dentro de las horas del plan de mantención"]},
+  B:{t:"Opción B: Fabián o Bárbara lo hacen desde el panel",
+     d:"Da independencia sin una herramienta técnica: todo se haría desde el panel de Fabián. Es una función nueva que hay que construir y cotizar antes de decidir.",
+     inc:["Sección «Administradores» en el panel","Agregar y quitar personas con un clic","Se cotiza una vez, según las horas que Diego informe antes"],
+     no:["Borrar del todo un correo (lo hace Diego)","Cambiar la contraseña de otra persona (la cambia Diego)","Estar lista hoy: hay que construirla y probarla"]},
+  C:{t:"Opción C: cuenta propia de Fabián",
+     d:"Deja las cuentas a nombre de Fabián y es la que más le exige: Fabián o Bárbara tendrían que manejar una herramienta técnica.",
+     inc:["Cuentas en la cuenta propia de Fabián","Fabián o Bárbara crean y borran cuentas","Diego ya no ve esos datos"],
+     no:["Agregar personas al panel por sí sola (para eso hace falta además la opción B)","Evitar lo técnico: hay que aprender la herramienta","Configuración sin costo: se cotiza"]}
+};
+const li = a => "<ul>"+a.map(x=>"<li>"+x+"</li>").join("")+"</ul>";
+function choose(){
+  const v = n => (document.querySelector('input[name="'+n+'"]:checked')||{}).value;
+  const q1=v("q1"), q2=v("q2"), q3=v("q3"), q4=v("q4"), q5=v("q5"), box=document.getElementById("rec");
+  if(!q1||!q2||!q3||!q4||!q5){ box.hidden = true; return; }
+  const sb = (q3==="indep"?2:0) + (q1==="b"?1:0) + (q4==="solo"?1:0);
+  const k = sb >= 2 ? "B" : "A", o = REC[k];
+  let extra = "";
+  if(q5==="si") extra = q2==="ok"
+    ? " Como además quiere las cuentas a su nombre, se puede sumar la opción C."
+    : " Quiere las cuentas a su nombre, pero la opción C exige manejar una herramienta técnica y Bárbara prefiere no verla: podría manejarla solo Fabián.";
+  const note = k === "B" ? '<p class="hl small"><b>Desde el panel no se puede borrar una cuenta del todo.</b> Solo se quita el acceso: la persona ya no puede entrar. Diego lo borra del todo cuando Fabián se lo pide, y se cotiza como cualquier otro cambio de accesos (mínimo '+MIN+').</p>' : "";
+  box.innerHTML = "<h3>"+o.t+"</h3><p>"+o.d+extra+"</p><div class=\"grid\"><div><b>Incluye</b>"+li(o.inc)+"</div><div><b>No incluye</b>"+li(o.no)+"</div></div>"+note;
+  box.hidden = false;
+}
+document.querySelectorAll("input[type=radio]").forEach(i => i.addEventListener("change", choose));
+document.getElementById("barx").addEventListener("click", () => { document.getElementById("bar").hidden = true; document.body.style.paddingBottom = "3rem"; });
+</script>
+</body>
+</html>
